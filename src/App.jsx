@@ -1,12 +1,12 @@
-import { useState } from 'react';
 import './App.css';
-import { Login } from './auth/paginas/login';
-import { Cabecera } from './navegacion/componentes/Cabecera';
+import { Login } from './auth/paginas/Login';
+
+import { Navegacion } from './navegacion/paginas/Navegacion';
 
 function App() {
   return (
     <>
-      <Cabecera />
+      <Navegacion />
       <Login />
     </>
   );

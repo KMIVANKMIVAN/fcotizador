@@ -9,9 +9,15 @@ import { useForm } from 'react-hook-form';
 import axios from 'axios';
 import { useState } from 'react';
 
+import { jwtDecode } from 'jwt-decode';
+
+import { authTienda } from '../estados/authTienda';
+
 export function TarjetaLogin() {
   const apiKey = import.meta.env.VITE_URL_BACKEND;
   const loginUrl = `${apiKey}auth/login`;
+
+  const { setId, setCi, setCambContra } = authTienda();
 
   const [respuestaLogin, setRespuestaLogin] = useState([]);
   const [loginError, setLoginError] = useState(null);
@@ -31,6 +37,12 @@ export function TarjetaLogin() {
       setLoginError(null);
       setLoginErrorMensaje(null);
       setRespuestaLogin(responseData);
+
+      const { id, ci, camb_contra } = jwtDecode(responseData.tk);
+      console.log('1', id, ci, camb_contra);
+      setId(id);
+      setCi(ci);
+      setCambContra(camb_contra);
     } catch (error) {
       setRespuestaLogin([]);
       if (error.response) {
@@ -50,7 +62,10 @@ export function TarjetaLogin() {
   return (
     <>
       <div className="tarjetaLogin">
-        <img src="../../../public/logo.png" className="w-full" />
+        <img
+          src="../../../public/logopositivocopia5-8.webp"
+          className="w-full"
+        />
         <div className="grid w-full max-w-sm items-center gap-1.5">
           <form onSubmit={handleSubmit(onSubmit)}>
             <Label className="text-white">CI:</Label>
@@ -76,6 +91,7 @@ export function TarjetaLogin() {
             </div>
           </form>
         </div>
+        {/* {id && { id }} */}
         {(loginError || loginErrorMensaje) && (
           <div className="py-2">
             <Alert variant="destructive">

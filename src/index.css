@@ -85,19 +85,17 @@
   .centrarHorizontal {
     @apply flex items-center justify-center;
   }
-  .cabecera {
-    @apply flex items-center justify-between my-1;
+
+  .spanMenu,
+  .liMenu {
+    @apply flex items-center mx-6 my-4 cursor-pointer decoration-sky-500 font-semibold text-slate-500 hover:text-sky-500;
   }
-  .navCabecera {
-    /* @apply hidden */
-    @apply border-2 border-blue-500;
+  .liMenu {
+    @apply ml-10 underline underline-offset-8;
+    /* text-decoration: underline; */
   }
-  .adelante li {
-    /* @apply hidden */
-    @apply cursor-pointer m-2;
-  }
-  .adelanteUlInterno {
-    /* @apply hidden */
-    @apply ml-6;
+  .liMenuDesplegado {
+    @apply flex items-center ml-8 px-1 my-3 cursor-pointer decoration-sky-500 font-semibold text-slate-500 hover:text-sky-500 underline underline-offset-8;
+    /* text-decoration: underline; */
   }
 }
