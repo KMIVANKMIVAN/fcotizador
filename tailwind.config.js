@@ -51,6 +51,19 @@ module.exports = {
           DEFAULT: 'hsl(var(--card))',
           foreground: 'hsl(var(--card-foreground))',
         },
+        cpalet: {
+          50: '#f2f9fd',
+          100: '#e3f2fb',
+          200: '#c2e6f5',
+          300: '#8cd2ed',
+          400: '#4ebae2',
+          500: '#28a5d3',
+          600: '#1983b0',
+          700: '#15698f',
+          800: '#165976',
+          900: '#174a63',
+          950: '#102f41',
+        },
       },
       borderRadius: {
         lg: 'var(--radius)',
@@ -70,6 +83,10 @@ module.exports = {
       animation: {
         'accordion-down': 'accordion-down 0.2s ease-out',
         'accordion-up': 'accordion-up 0.2s ease-out',
+      },
+      width: {
+        90: '90%', // Agrega un ancho personalizado del 95%
+        10: '10%', // Agrega un ancho personalizado del 5%
       },
     },
   },

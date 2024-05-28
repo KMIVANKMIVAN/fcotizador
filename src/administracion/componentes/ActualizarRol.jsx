@@ -1,0 +1,113 @@
+import { useForm, Controller } from 'react-hook-form';
+import axios from 'axios';
+import { useState, useEffect } from 'react';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Button } from '@/components/ui/button';
+
+import { obtenerDatosUsuario } from '../../auth/utilidades/datosUsuarioLocalStor';
+
+import { errorToast, exitoToast } from '../../lib/notificaciones';
+
+export function ActualizarRol({ idActualizar }) {
+  const urlBackendBase = import.meta.env.VITE_URL_BACKEND;
+  const urlRoles = `${urlBackendBase}roles/${idActualizar}`;
+
+  const headers = {
+    Authorization: `Bearer ${obtenerDatosUsuario().tk}`,
+  };
+
+  const [respuestaRoles, setRespuestaRoles] = useState([]);
+  const [resPedirRol, setResPedirRol] = useState([]);
+
+  const {
+    register,
+    handleSubmit,
+    watch,
+    control,
+    formState: { errors },
+    setValue, // Asegúrate de tener esta línea
+  } = useForm();
+
+  const actualizarRoles = async (data) => {
+    data.complemento = data.complemento === '' ? null : data.complemento;
+    try {
+      const respuesta = await axios.patch(urlRoles, data, { headers });
+      exitoToast(`Se Creo el Rol: ${respuesta.data.rol}`, false);
+      setRespuestaRoles(respuesta.data);
+    } catch (error) {
+      setRespuestaRoles([]);
+      manejoError(error);
+    }
+  };
+
+  const pedirRol = async () => {
+    try {
+      const respuesta = await axios.get(urlRoles, { headers });
+      setResPedirRol(respuesta.data);
+      // Utiliza setValue para establecer los valores de los campos del formulario
+      Object.keys(respuesta.data).forEach((key) => {
+        setValue(key, respuesta.data[key]);
+      });
+    } catch (error) {
+      manejoError(error);
+    }
+  };
+
+  useEffect(() => {
+    if (idActualizar) {
+      pedirRol();
+    }
+  }, [idActualizar]);
+
+  const manejoError = (error) => {
+    if (error.response) {
+      const { data } = error.response;
+      if (data.error) {
+        errorToast(`RS: ${data.error}`, false);
+      }
+      if (data.message) {
+        errorToast(`RS: ${data.message}`, false);
+      }
+    } else if (error.request) {
+      errorToast('RF: No se pudo obtener respuesta del servidor', false);
+    } else {
+      errorToast('RF: Error al enviar la solicitud', false);
+    }
+  };
+
+  return (
+    <>
+      <div className="flex flex-col md:flex-row p-5 border-4 border-cpalet-500 rounded-lg bg-cpalet-800">
+        <form
+          onSubmit={handleSubmit(actualizarRoles)}
+          className="flex flex-col md:flex-row w-full"
+        >
+          <div className="basis-full md:basis-1/2 p-2 ">
+            <div className="py-2">
+              <Label className="text-white uppercase">rol:</Label>
+              <Input
+                className="text-white uppercase"
+                type="text"
+                {...register('rol', { required: true })}
+              />
+            </div>
+          </div>
+          <div className="basis-full md:basis-1/2 p-2 ">
+            <div className="py-2">
+              <div className="mt-6">
+                <Button
+                  type="submit"
+                  variant=""
+                  className="bg-green-500 w-full"
+                >
+                  Actualizar Rol
+                </Button>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </>
+  );
+}

@@ -11,13 +11,16 @@ import { useState } from 'react';
 
 import { jwtDecode } from 'jwt-decode';
 
-import { authTienda } from '../estados/authTienda';
+import { guardarDatosUsuario } from '../utilidades/datosUsuarioLocalStor';
+
+import { useNavigate } from 'react-router-dom';
 
 export function TarjetaLogin() {
+
+  const navigate = useNavigate();
+
   const apiKey = import.meta.env.VITE_URL_BACKEND;
   const loginUrl = `${apiKey}auth/login`;
-
-  const { setId, setCi, setCambContra } = authTienda();
 
   const [respuestaLogin, setRespuestaLogin] = useState([]);
   const [loginError, setLoginError] = useState(null);
@@ -37,12 +40,11 @@ export function TarjetaLogin() {
       setLoginError(null);
       setLoginErrorMensaje(null);
       setRespuestaLogin(responseData);
-
-      const { id, ci, camb_contra } = jwtDecode(responseData.tk);
-      console.log('1', id, ci, camb_contra);
-      setId(id);
-      setCi(ci);
-      setCambContra(camb_contra);
+      navigate("/navegacion/cotizaciones");
+      const { tk } = responseData;
+      const datosUsuario = jwtDecode(tk);
+      const convinarDatosUsuario = { ...datosUsuario, tk };
+      guardarDatosUsuario(convinarDatosUsuario);
     } catch (error) {
       setRespuestaLogin([]);
       if (error.response) {

@@ -14,7 +14,11 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
+
 import { obtenerDatosUsuario } from '../../auth/utilidades/datosUsuarioLocalStor';
+
+import { toast } from 'sonner';
 
 import { errorToast, exitoToast } from '../../lib/notificaciones';
 
@@ -23,6 +27,8 @@ export function CrearUsuarios() {
   const urlUsuarios = `${urlBackendBase}usuarios`;
   const urlSucursales = `${urlBackendBase}sucursales`;
   const urlRoles = `${urlBackendBase}roles`;
+  const urlDirecciones = `${urlBackendBase}direcciones`;
+  const urlUnidades = `${urlBackendBase}unidades`;
   const urlCargos = `${urlBackendBase}cargos`;
 
   const headers = {
@@ -34,6 +40,10 @@ export function CrearUsuarios() {
   const [respuestaSucursales, setRespuestaSucursales] = useState([]);
 
   const [respuestaRoles, setRespuestaRoles] = useState([]);
+
+  const [respuestaDirecciones, setRespuestaDirecciones] = useState([]);
+
+  const [respuestaUnidades, setRespuestaUnidades] = useState([]);
 
   const [respuestaCargos, setRespuestaCargos] = useState([]);
 
@@ -113,6 +123,48 @@ export function CrearUsuarios() {
       }
     }
   };
+  const pedirDirecciones = async () => {
+    const respuesta = await axios.get(urlDirecciones, { headers });
+    try {
+      setRespuestaDirecciones(respuesta.data);
+    } catch (error) {
+      setRespuestaUsuarios([]);
+      if (error.response) {
+        const { data } = error.response;
+        if (data.error) {
+          errorToast(`RS: ${data.error}`, false);
+        }
+        if (data.message) {
+          errorToast(`RS: ${data.message}`, false);
+        }
+      } else if (error.request) {
+        'RF: No se pudo obtener respuesta del servidor', false;
+      } else {
+        errorToast('RF: Error al enviar la solicitud', false);
+      }
+    }
+  };
+  const pedirUnidades = async () => {
+    const respuesta = await axios.get(urlUnidades, { headers });
+    try {
+      setRespuestaUnidades(respuesta.data);
+    } catch (error) {
+      setRespuestaUsuarios([]);
+      if (error.response) {
+        const { data } = error.response;
+        if (data.error) {
+          errorToast(`RS: ${data.error}`, false);
+        }
+        if (data.message) {
+          errorToast(`RS: ${data.message}`, false);
+        }
+      } else if (error.request) {
+        'RF: No se pudo obtener respuesta del servidor', false;
+      } else {
+        errorToast('RF: Error al enviar la solicitud', false);
+      }
+    }
+  };
   const pedirCargos = async () => {
     const respuesta = await axios.get(urlCargos, { headers });
     try {
@@ -138,6 +190,8 @@ export function CrearUsuarios() {
   useEffect(() => {
     pedirSucursales();
     pedirRoles();
+    pedirDirecciones();
+    pedirUnidades();
     pedirCargos();
   }, []);
   return (
