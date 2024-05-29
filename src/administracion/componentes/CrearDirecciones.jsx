@@ -17,6 +17,7 @@ import {
 import { obtenerDatosUsuario } from '../../auth/utilidades/datosUsuarioLocalStor';
 
 import { errorToast, exitoToast } from '../../lib/notificaciones';
+import { manejoError } from "../utilidades/mostrarErrores";
 
 export function CrearDirecciones() {
   const urlBackendBase = import.meta.env.VITE_URL_BACKEND;
@@ -35,30 +36,19 @@ export function CrearDirecciones() {
     handleSubmit,
     watch,
     control,
+    reset,
     formState: { errors },
   } = useForm();
 
   const crearDireccion = async (data) => {
-    data.complemento = data.complemento === '' ? null : data.complemento;
     try {
       const respuesta = await axios.post(urlDirecciones, data, { headers });
       exitoToast(`Se Creo la Direccion: ${respuesta.data.direccion}`, false);
       setRespuestaDirecciones(respuesta.data);
+      reset();
     } catch (error) {
       setRespuestaDirecciones([]);
-      if (error.response) {
-        const { data } = error.response;
-        if (data.error) {
-          errorToast(`RS: ${data.error}`, false);
-        }
-        if (data.message) {
-          errorToast(`RS: ${data.message}`, false);
-        }
-      } else if (error.request) {
-        'RF: No se pudo obtener respuesta del servidor', false;
-      } else {
-        errorToast('RF: Error al enviar la solicitud', false);
-      }
+      manejoError(error);
     }
   };
 
@@ -69,20 +59,8 @@ export function CrearDirecciones() {
       setRespuestaEmpresas(respuesta.data);
       console.log(respuesta.data);
     } catch (error) {
-      setRespuestaUsuarios([]);
-      if (error.response) {
-        const { data } = error.response;
-        if (data.error) {
-          errorToast(`RS: ${data.error}`, false);
-        }
-        if (data.message) {
-          errorToast(`RS: ${data.message}`, false);
-        }
-      } else if (error.request) {
-        'RF: No se pudo obtener respuesta del servidor', false;
-      } else {
-        errorToast('RF: Error al enviar la solicitud', false);
-      }
+      setRespuestaEmpresas([]);
+      manejoError(error);
     }
   };
   useEffect(() => {

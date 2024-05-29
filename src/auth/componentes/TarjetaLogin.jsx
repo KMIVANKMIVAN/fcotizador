@@ -1,7 +1,7 @@
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
-import { AlertCircle } from 'lucide-react';
+import { AlertCircle, Eye, EyeOff } from 'lucide-react';
 
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 
@@ -11,11 +11,16 @@ import { useState } from 'react';
 
 import { jwtDecode } from 'jwt-decode';
 
-import { guardarDatosUsuario } from '../utilidades/datosUsuarioLocalStor';
+import {
+  guardarDatosUsuario,
+  obtenerDatosUsuario,
+  eliminarDatosUsuario,
+} from '../utilidades/datosUsuarioLocalStor';
 
 import { useNavigate } from 'react-router-dom';
 
 export function TarjetaLogin() {
+  obtenerDatosUsuario ? eliminarDatosUsuario() : null;
 
   const navigate = useNavigate();
 
@@ -25,6 +30,7 @@ export function TarjetaLogin() {
   const [respuestaLogin, setRespuestaLogin] = useState([]);
   const [loginError, setLoginError] = useState(null);
   const [loginErrorMensaje, setLoginErrorMensaje] = useState(null);
+  const [mostrarContrasenia, setMostrarContrasenia] = useState(false);
 
   const {
     register,
@@ -36,15 +42,22 @@ export function TarjetaLogin() {
   const onSubmit = async (data) => {
     try {
       const respuesta = await axios.post(loginUrl, data);
-      const { data: responseData } = respuesta;
       setLoginError(null);
       setLoginErrorMensaje(null);
-      setRespuestaLogin(responseData);
-      navigate("/navegacion/cotizaciones");
-      const { tk } = responseData;
+      setRespuestaLogin(respuesta.data);
+      const { tk } = respuesta.data;
       const datosUsuario = jwtDecode(tk);
-      const convinarDatosUsuario = { ...datosUsuario, tk };
-      guardarDatosUsuario(convinarDatosUsuario);
+      if (datosUsuario.es_activo) {
+        const convinarDatosUsuario = { ...datosUsuario, tk };
+        guardarDatosUsuario(convinarDatosUsuario);
+        convinarDatosUsuario.camb_contra
+          // ? navigate('/usuarios')
+          ? navigate('/navegacion/cotizaciones')
+          : navigate('/cambiarcontras');
+      } else {
+        // window.location.href = '/';
+        setLoginError("Usted no es un Usuario Activo")
+      }
     } catch (error) {
       setRespuestaLogin([]);
       if (error.response) {
@@ -79,12 +92,24 @@ export function TarjetaLogin() {
             />
             <div className="py-2"></div>
             <Label className="text-white">Contraseña:</Label>
-            <Input
-              className="text-white"
-              type="password"
-              required
-              {...register('contrasenia', { required: true })}
-            />
+            <div className="relative">
+              <Input
+                className="text-white pr-10"
+                type={mostrarContrasenia ? 'text' : 'password'}
+                required
+                {...register('contrasenia', { required: true })}
+              />
+              <div
+                className="absolute inset-y-0 right-0 flex items-center pr-3 cursor-pointer"
+                onClick={() => setMostrarContrasenia(!mostrarContrasenia)}
+              >
+                {mostrarContrasenia ? (
+                  <EyeOff className="text-cpalet-500" />
+                ) : (
+                  <Eye className="text-cpalet-500" />
+                )}
+              </div>
+            </div>
             <div className="py-3"></div>
             <div className="centrarHorizontal">
               <Button type="submit" variant="outline" className="w-full">
@@ -93,7 +118,6 @@ export function TarjetaLogin() {
             </div>
           </form>
         </div>
-        {/* {id && { id }} */}
         {(loginError || loginErrorMensaje) && (
           <div className="py-2">
             <Alert variant="destructive">

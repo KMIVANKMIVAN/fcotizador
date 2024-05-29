@@ -17,6 +17,7 @@ import {
 import { obtenerDatosUsuario } from '../../auth/utilidades/datosUsuarioLocalStor';
 
 import { errorToast, exitoToast } from '../../lib/notificaciones';
+import { manejoError } from "../utilidades/mostrarErrores";
 
 export function CrearSucursal() {
   const urlBackendBase = import.meta.env.VITE_URL_BACKEND;
@@ -35,54 +36,30 @@ export function CrearSucursal() {
     handleSubmit,
     watch,
     control,
+    reset,
     formState: { errors },
   } = useForm();
 
   const crearSucursal = async (data) => {
-    data.complemento = data.complemento === '' ? null : data.complemento;
     try {
       const respuesta = await axios.post(urlSucursales, data, { headers });
       exitoToast(`Se Creo la Sucursal: ${respuesta.data.sucursal}`, false);
       setRespuestaSucursales(respuesta.data);
+      reset();
     } catch (error) {
       setRespuestaSucursales([]);
-      if (error.response) {
-        const { data } = error.response;
-        if (data.error) {
-          errorToast(`RS: ${data.error}`, false);
-        }
-        if (data.message) {
-          errorToast(`RS: ${data.message}`, false);
-        }
-      } else if (error.request) {
-        'RF: No se pudo obtener respuesta del servidor', false;
-      } else {
-        errorToast('RF: Error al enviar la solicitud', false);
-      }
+      manejoError(error);
     }
   };
 
   const pedirDepartamentos = async () => {
     const respuesta = await axios.get(urlDepartamentos, { headers });
-    console.log("hola");
     try {
       setRespuestaDepartamentos(respuesta.data);
       console.log(respuesta.data);
     } catch (error) {
-      setRespuestaUsuarios([]);
-      if (error.response) {
-        const { data } = error.response;
-        if (data.error) {
-          errorToast(`RS: ${data.error}`, false);
-        }
-        if (data.message) {
-          errorToast(`RS: ${data.message}`, false);
-        }
-      } else if (error.request) {
-        'RF: No se pudo obtener respuesta del servidor', false;
-      } else {
-        errorToast('RF: Error al enviar la solicitud', false);
-      }
+      setRespuestaDepartamentos([]);
+      manejoError(error);
     }
   };
   useEffect(() => {

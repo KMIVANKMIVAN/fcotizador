@@ -12,17 +12,13 @@ import { Switch } from '@/components/ui/switch';
 
 import { DialogUsuario } from './DialogUsuario';
 import { ActivarDesactivarUsuario } from './ActivarDesactivarUsuario';
+import { Pruebas } from '../paginas/Pruebas';
 
 export function TablaUsuario({ columnasUsuario, respuestaUsuarios }) {
-  // console.log('respuestaUsuarios', respuestaUsuarios);
-  const [idActualizar, setIdActualizar] = useState(null);
-  const [esActivo, setEsActivo] = useState(null);
+  const [filaSeleccionada, setFilaSeleccionada] = useState(null);
 
-  const obtenerId = (id) => {
-    setIdActualizar(id);
-  };
-  const obtenerActivo = (esActivo) => {
-    setEsActivo(esActivo);
+  const obtenerFilaSeleccionada = (fila) => {
+    setFilaSeleccionada(fila);
   };
   return (
     <>
@@ -33,7 +29,7 @@ export function TablaUsuario({ columnasUsuario, respuestaUsuarios }) {
               {columnasUsuario.map((col) => (
                 <TableHead
                   key={col.id}
-                  className={`uppercase whitespace-nowrap overflow-visible text-lg text-center text-white`}
+                  className={`uppercase whitespace-nowrap overflow-visible text-lg text-center text-cpalet-500`}
                   style={{ minWidth: col.minWidth, textAlign: col.align }}
                 >
                   {col.label}
@@ -45,7 +41,7 @@ export function TablaUsuario({ columnasUsuario, respuestaUsuarios }) {
             {respuestaUsuarios.map((row, rowIndex) => (
               <TableRow
                 key={rowIndex}
-                className={`uppercase whitespace-nowrap overflow-visible text-lg text-cpalet-500`}
+                className={`uppercase whitespace-nowrap overflow-visible text-lg text-cpalet-400`}
               >
                 {columnasUsuario.map((col) => {
                   let cellData;
@@ -55,9 +51,10 @@ export function TablaUsuario({ columnasUsuario, respuestaUsuarios }) {
                       cellData = (
                         <div
                           className="flex items-center justify-center"
-                          onClick={() => obtenerId(row.id)}
+                          onClick={() => obtenerFilaSeleccionada(row)}
                         >
-                          <DialogUsuario idActualizar={idActualizar} />
+                          <DialogUsuario filaSeleccionada={filaSeleccionada} />
+                          {/* <Pruebas filaSeleccionada={filaSeleccionada} /> */}
                         </div>
                       );
                       break;

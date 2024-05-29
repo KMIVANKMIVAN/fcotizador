@@ -13,13 +13,16 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
+import { Checkbox } from '@/components/ui/checkbox';
 
 import { obtenerDatosUsuario } from '../../auth/utilidades/datosUsuarioLocalStor';
 import { errorToast, exitoToast } from '../../lib/notificaciones';
+import { manejoError } from '../utilidades/mostrarErrores';
 
-export function ActualizarUsuarios({ idActualizar }) {
+export function ActualizarUsuarios({ filaSeleccionada }) {
+  console.log('filaSeleccionada', filaSeleccionada);
   const urlBackendBase = import.meta.env.VITE_URL_BACKEND;
-  const urlUsuarios = `${urlBackendBase}usuarios/${idActualizar}`;
+  const urlUsuarios = `${urlBackendBase}usuarios/${filaSeleccionada.id}`;
   const urlSucursales = `${urlBackendBase}sucursales`;
   const urlRoles = `${urlBackendBase}roles`;
   const urlCargos = `${urlBackendBase}cargos`;
@@ -29,10 +32,12 @@ export function ActualizarUsuarios({ idActualizar }) {
   };
 
   const [respuestaUsuarios, setRespuestaUsuarios] = useState([]);
-  const [resPedirUsuario, setResPedirUsuario] = useState([]);
   const [respuestaSucursales, setRespuestaSucursales] = useState([]);
   const [respuestaRoles, setRespuestaRoles] = useState([]);
   const [respuestaCargos, setRespuestaCargos] = useState([]);
+
+  const [rolesArray, setRolesArray] = useState([]);
+  const [selectedRoles, setSelectedRoles] = useState([]);
 
   const {
     register,
@@ -40,27 +45,27 @@ export function ActualizarUsuarios({ idActualizar }) {
     watch,
     control,
     formState: { errors },
-    setValue, // Asegúrate de tener esta línea
-  } = useForm();
+    setValue,
+  } = useForm({
+    defaultValues: {
+      nombres: filaSeleccionada.nombres,
+      apellidos: filaSeleccionada.apellidos,
+      ci: filaSeleccionada.ci,
+      complemento: filaSeleccionada.complemento,
+      correo: filaSeleccionada.correo,
+      es_activo: filaSeleccionada.es_activo ? 'true' : 'false',
+      sucursal_id: filaSeleccionada.sucursal.id.toString(),
+      cargo_id: filaSeleccionada.cargo.id.toString(),
+    },
+  });
 
   const actualizarUsuario = async (data) => {
-    data.complemento = data.complemento === '' ? null : data.complemento;
-    const respuesta = await axios.patch(urlUsuarios, data, { headers });
     try {
+      console.log('data', data);
+      const roles = rolesArray; // Los roles seleccionados
+      const respuesta = await axios.patch(urlUsuarios, { ...data, roles }, { headers });
       exitoToast(`Usuario actualizado: ${respuesta.data.nombres}`, false);
       setRespuestaUsuarios(respuesta.data);
-    } catch (error) {
-      manejoError(error);
-    }
-  };
-
-  const pedirUsuario = async () => {
-    try {
-      const respuesta = await axios.get(urlUsuarios, { headers });
-      setResPedirUsuario(respuesta.data);
-      Object.keys(respuesta.data).forEach((key) => {
-        setValue(key, respuesta.data[key]);
-      });
     } catch (error) {
       manejoError(error);
     }
@@ -98,28 +103,24 @@ export function ActualizarUsuarios({ idActualizar }) {
     pedirRoles();
     pedirCargos();
   }, []);
-  useEffect(() => {
-    if (idActualizar) {
-      pedirUsuario();
-    }
-  }, [idActualizar]);
 
-  const manejoError = (error) => {
-    if (error.response) {
-      const { data } = error.response;
-      if (data.error) {
-        errorToast(`RS: ${data.error}`, false);
-      }
-      if (data.message) {
-        errorToast(`RS: ${data.message}`, false);
-      }
-    } else if (error.request) {
-      errorToast('RF: No se pudo obtener respuesta del servidor', false);
+  useEffect(() => {
+    const selectedRolesIds = filaSeleccionada.roles.map((role) => role.id);
+    setSelectedRoles(selectedRolesIds);
+    setRolesArray(selectedRolesIds);
+  }, [filaSeleccionada]);
+
+  const handleCheckboxChange = (e) => {
+    const { name, checked } = e.target;
+    const roleId = parseInt(name); // Convertir el nombre del checkbox a número
+    if (checked) {
+      setRolesArray((prevRoles) => [...prevRoles, roleId]);
     } else {
-      errorToast('RF: Error al enviar la solicitud', false);
+      setRolesArray((prevRoles) => prevRoles.filter((role) => role !== roleId));
     }
   };
 
+  console.log('rolesArray', rolesArray);
   return (
     <div className="flex flex-col md:flex-row p-5 border-4 border-cpalet-500 rounded-lg bg-cpalet-800">
       <form
@@ -153,36 +154,22 @@ export function ActualizarUsuarios({ idActualizar }) {
           </div>
           <div className="py-2">
             <Label className="text-white uppercase">roles:</Label>
-            <Controller
-              name="roles"
-              control={control}
-              defaultValue=""
-              render={({ field }) => (
-                <Select
-                  onValueChange={(value) => field.onChange(value)}
-                  value={field.value.toString()}
-                >
-                  <SelectTrigger className="w-full text-white uppercase">
-                    <SelectValue placeholder="seleccionar" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectGroup>
-                      <SelectLabel>EXTENCIONES:</SelectLabel>
-                      {respuestaRoles.map((rol) => (
-                        <SelectItem key={rol.id} value={rol.id.toString()}>
-                          {rol.rol}
-                        </SelectItem>
-                      ))}
-                    </SelectGroup>
-                  </SelectContent>
-                </Select>
-              )}
-            />
+            {respuestaRoles.map((role) => (
+              <div key={role.id} className="basis-full md:basis-1/2 p-2">
+                <input
+                  type="checkbox"
+                  name={role.id.toString()}
+                  onChange={handleCheckboxChange}
+                  checked={rolesArray.includes(role.id)}
+                />
+                <label>{role.rol}</label>
+              </div>
+            ))}
           </div>
           <div className="py-2">
             <Label className="text-white uppercase">cargo:</Label>
             <Controller
-              name="cargo"
+              name="cargo_id"
               control={control}
               defaultValue=""
               render={({ field }) => (
@@ -195,7 +182,7 @@ export function ActualizarUsuarios({ idActualizar }) {
                   </SelectTrigger>
                   <SelectContent>
                     <SelectGroup>
-                      <SelectLabel>EXTENCIONES:</SelectLabel>
+                      <SelectLabel>CARGOS:</SelectLabel>
                       {respuestaCargos.map((cargo) => (
                         <SelectItem key={cargo.id} value={cargo.id.toString()}>
                           {cargo.cargo}
@@ -233,8 +220,8 @@ export function ActualizarUsuarios({ idActualizar }) {
                   </SelectTrigger>
                   <SelectContent>
                     <SelectGroup>
-                      <SelectLabel>EXTENCIONES:</SelectLabel>
-                      <SelectItem value={null}>SIN EXTENCION</SelectItem>
+                      <SelectLabel>EXTENSIONES:</SelectLabel>
+                      <SelectItem value={null}>SIN EXTENSION</SelectItem>
                       <SelectItem value="LP">LP</SelectItem>
                       <SelectItem value="CB">CB</SelectItem>
                       <SelectItem value="SC">SC</SelectItem>
@@ -278,7 +265,7 @@ export function ActualizarUsuarios({ idActualizar }) {
           <div className="py-2">
             <Label className="text-white uppercase">sucursal:</Label>
             <Controller
-              name="sucursal"
+              name="sucursal_id"
               control={control}
               defaultValue=""
               render={({ field }) => (
@@ -291,7 +278,7 @@ export function ActualizarUsuarios({ idActualizar }) {
                   </SelectTrigger>
                   <SelectContent>
                     <SelectGroup>
-                      <SelectLabel>EXTENCIONES:</SelectLabel>
+                      <SelectLabel>SUCURSALES:</SelectLabel>
                       {respuestaSucursales.map((sucursal) => (
                         <SelectItem
                           key={sucursal.id}

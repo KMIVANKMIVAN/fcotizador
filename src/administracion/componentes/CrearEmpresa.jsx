@@ -4,19 +4,12 @@ import { useState, useEffect } from 'react';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectLabel,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select';
 
 import { obtenerDatosUsuario } from '../../auth/utilidades/datosUsuarioLocalStor';
 
-import { errorToast, exitoToast } from '../../lib/notificaciones';
+import { exitoToast } from '../../lib/notificaciones';
+
+import { manejoError } from "../utilidades/mostrarErrores";
 
 export function CrearEmpresa() {
   const urlBackendBase = import.meta.env.VITE_URL_BACKEND;
@@ -32,36 +25,21 @@ export function CrearEmpresa() {
     handleSubmit,
     watch,
     control,
+    reset,
     formState: { errors },
   } = useForm();
 
   const crearEmpresas = async (data) => {
-    /* 
-    data.cargo = parseInt(data.cargo);
-    data.es_activo = data.es_activo === 'true' ? true : false; */
-    data.complemento = data.complemento === '' ? null : data.complemento;
     try {
       const respuesta = await axios.post(urlEmpresas, data, { headers });
       exitoToast(`Se Creo a la Empresa: ${respuesta.data.razon_social}`, false);
       setRespuestaEmpresa(respuesta.data);
+      reset();
     } catch (error) {
       setRespuestaEmpresa([]);
-      if (error.response) {
-        const { data } = error.response;
-        if (data.error) {
-          errorToast(`RS: ${data.error}`, false);
-        }
-        if (data.message) {
-          errorToast(`RS: ${data.message}`, false);
-        }
-      } else if (error.request) {
-        'RF: No se pudo obtener respuesta del servidor', false;
-      } else {
-        errorToast('RF: Error al enviar la solicitud', false);
-      }
+      manejoError(error);
     }
   };
-
   return (
     <>
       <div className="flex flex-col md:flex-row p-5 border-4 border-cpalet-500 rounded-lg bg-cpalet-800">

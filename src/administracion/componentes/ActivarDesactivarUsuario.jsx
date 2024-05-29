@@ -3,6 +3,7 @@ import axios from 'axios';
 import { obtenerDatosUsuario } from '../../auth/utilidades/datosUsuarioLocalStor';
 import { Switch } from '@/components/ui/switch';
 import { exitoToast, errorToast } from '../../lib/notificaciones';
+import { manejoError } from '../utilidades/mostrarErrores';
 
 export function ActivarDesactivarUsuario({ idActualizar, esActivo }) {
   const urlBackendBase = import.meta.env.VITE_URL_BACKEND;
@@ -31,22 +32,6 @@ export function ActivarDesactivarUsuario({ idActualizar, esActivo }) {
     } catch (error) {
       setRespuestaUsuarios([]);
       manejoError(error);
-    }
-  };
-
-  const manejoError = (error) => {
-    if (error.response) {
-      const { data } = error.response;
-      if (data.error) {
-        errorToast(`RS: ${data.error}`, false);
-      }
-      if (data.message) {
-        errorToast(`RS: ${data.message}`, false);
-      }
-    } else if (error.request) {
-      errorToast('RF: No se pudo obtener respuesta del servidor', false);
-    } else {
-      errorToast('RF: Error al enviar la solicitud', false);
     }
   };
 

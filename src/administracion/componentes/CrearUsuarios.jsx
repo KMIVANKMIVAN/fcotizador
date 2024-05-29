@@ -17,6 +17,7 @@ import {
 import { obtenerDatosUsuario } from '../../auth/utilidades/datosUsuarioLocalStor';
 
 import { errorToast, exitoToast } from '../../lib/notificaciones';
+import { manejoError } from '../utilidades/mostrarErrores';
 
 export function CrearUsuarios() {
   const urlBackendBase = import.meta.env.VITE_URL_BACKEND;
@@ -42,6 +43,7 @@ export function CrearUsuarios() {
     handleSubmit,
     watch,
     control,
+    reset,
     formState: { errors },
   } = useForm();
 
@@ -54,21 +56,10 @@ export function CrearUsuarios() {
       const respuesta = await axios.post(urlUsuarios, data, { headers });
       exitoToast(`Se Creo al Usuario: ${respuesta.data.nombres}`, false);
       setRespuestaUsuarios(respuesta.data);
+      reset();
     } catch (error) {
       setRespuestaUsuarios([]);
-      if (error.response) {
-        const { data } = error.response;
-        if (data.error) {
-          errorToast(`RS: ${data.error}`, false);
-        }
-        if (data.message) {
-          errorToast(`RS: ${data.message}`, false);
-        }
-      } else if (error.request) {
-        'RF: No se pudo obtener respuesta del servidor', false;
-      } else {
-        errorToast('RF: Error al enviar la solicitud', false);
-      }
+      manejoError(error);
     }
   };
   const pedirSucursales = async () => {
@@ -76,20 +67,8 @@ export function CrearUsuarios() {
     try {
       setRespuestaSucursales(respuesta.data);
     } catch (error) {
-      setRespuestaUsuarios([]);
-      if (error.response) {
-        const { data } = error.response;
-        if (data.error) {
-          errorToast(`RS: ${data.error}`, false);
-        }
-        if (data.message) {
-          errorToast(`RS: ${data.message}`, false);
-        }
-      } else if (error.request) {
-        'RF: No se pudo obtener respuesta del servidor', false;
-      } else {
-        errorToast('RF: Error al enviar la solicitud', false);
-      }
+      setRespuestaSucursales([]);
+      manejoError(error);
     }
   };
   const pedirRoles = async () => {
@@ -97,20 +76,8 @@ export function CrearUsuarios() {
     try {
       setRespuestaRoles(respuesta.data);
     } catch (error) {
-      setRespuestaUsuarios([]);
-      if (error.response) {
-        const { data } = error.response;
-        if (data.error) {
-          errorToast(`RS: ${data.error}`, false);
-        }
-        if (data.message) {
-          errorToast(`RS: ${data.message}`, false);
-        }
-      } else if (error.request) {
-        'RF: No se pudo obtener respuesta del servidor', false;
-      } else {
-        errorToast('RF: Error al enviar la solicitud', false);
-      }
+      setRespuestaRoles([]);
+      manejoError(error);
     }
   };
   const pedirCargos = async () => {
@@ -118,20 +85,8 @@ export function CrearUsuarios() {
     try {
       setRespuestaCargos(respuesta.data);
     } catch (error) {
-      setRespuestaUsuarios([]);
-      if (error.response) {
-        const { data } = error.response;
-        if (data.error) {
-          errorToast(`RS: ${data.error}`, false);
-        }
-        if (data.message) {
-          errorToast(`RS: ${data.message}`, false);
-        }
-      } else if (error.request) {
-        'RF: No se pudo obtener respuesta del servidor', false;
-      } else {
-        errorToast('RF: Error al enviar la solicitud', false);
-      }
+      setRespuestaCargos([]);
+      manejoError(error);
     }
   };
 
@@ -140,40 +95,41 @@ export function CrearUsuarios() {
     pedirRoles();
     pedirCargos();
   }, []);
+
   return (
     <>
-      <div className="flex flex-col md:flex-row p-5 border-4 border-cpalet-500 rounded-lg bg-cpalet-800">
+      <div className="flex flex-col md:flex-row p-5 border-4 border-cpalet-500 rounded-lg ">
         <form
           onSubmit={handleSubmit(crearUsuario)}
           className="flex flex-col md:flex-row w-full"
         >
           <div className="basis-full md:basis-1/2 p-2 ">
             <div className="py-2">
-              <Label className="text-white uppercase">nombres:</Label>
+              <Label className="text-cpalet-500 uppercase">nombres:</Label>
               <Input
-                className="text-white uppercase"
+                className="text-cpalet-500 uppercase"
                 type="text"
                 {...register('nombres', { required: true })}
               />
             </div>
             <div className="py-2">
-              <Label className="text-white uppercase">ci:</Label>
+              <Label className="text-cpalet-500 uppercase">ci:</Label>
               <Input
-                className="text-white uppercase"
+                className="text-cpalet-500 uppercase"
                 type="text"
                 {...register('ci', { required: true })}
               />
             </div>
             <div className="py-2">
-              <Label className="text-white uppercase">correo:</Label>
+              <Label className="text-cpalet-500 uppercase">correo:</Label>
               <Input
-                className="text-white lowercase"
+                className="text-cpalet-500 lowercase"
                 type="text"
                 {...register('correo', { required: true })}
               />
             </div>
             <div className="py-2">
-              <Label className="text-white uppercase">roles:</Label>
+              <Label className="text-cpalet-500 uppercase">roles:</Label>
               <Controller
                 name="roles"
                 control={control}
@@ -183,7 +139,7 @@ export function CrearUsuarios() {
                     onValueChange={(value) => field.onChange(value)}
                     value={field.value}
                   >
-                    <SelectTrigger className="w-full text-white uppercase">
+                    <SelectTrigger className="w-full text-cpalet-500 uppercase">
                       <SelectValue placeholder="seleccionar" />
                     </SelectTrigger>
                     <SelectContent>
@@ -201,7 +157,7 @@ export function CrearUsuarios() {
               />
             </div>
             <div className="py-2">
-              <Label className="text-white uppercase">cargo:</Label>
+              <Label className="text-cpalet-500 uppercase">cargo:</Label>
               <Controller
                 name="cargo"
                 control={control}
@@ -211,7 +167,7 @@ export function CrearUsuarios() {
                     onValueChange={(value) => field.onChange(value)}
                     value={field.value}
                   >
-                    <SelectTrigger className="w-full text-white uppercase">
+                    <SelectTrigger className="w-full text-cpalet-500 uppercase">
                       <SelectValue placeholder="seleccionar" />
                     </SelectTrigger>
                     <SelectContent>
@@ -234,15 +190,15 @@ export function CrearUsuarios() {
           </div>
           <div className="basis-full md:basis-1/2 p-2 ">
             <div className="py-2">
-              <Label className="text-white uppercase">apellidos:</Label>
+              <Label className="text-cpalet-500 uppercase">apellidos:</Label>
               <Input
-                className="text-white uppercase"
+                className="text-cpalet-500 uppercase"
                 type="text"
                 {...register('apellidos', { required: true })}
               />
             </div>
             <div className="py-2">
-              <Label className="text-white uppercase">complemento:</Label>
+              <Label className="text-cpalet-500 uppercase">complemento:</Label>
               <Controller
                 name="complemento"
                 control={control}
@@ -252,7 +208,7 @@ export function CrearUsuarios() {
                     onValueChange={(value) => field.onChange(value)}
                     value={field.value}
                   >
-                    <SelectTrigger className="w-full text-white uppercase">
+                    <SelectTrigger className="w-full text-cpalet-500 uppercase">
                       <SelectValue placeholder="seleccionar" />
                     </SelectTrigger>
                     <SelectContent>
@@ -276,7 +232,7 @@ export function CrearUsuarios() {
             </div>
 
             <div className="py-2">
-              <Label className="text-white uppercase">activar:</Label>
+              <Label className="text-cpalet-500 uppercase">activar:</Label>
               <Controller
                 name="es_activo"
                 control={control}
@@ -286,7 +242,7 @@ export function CrearUsuarios() {
                     onValueChange={(value) => field.onChange(value)}
                     value={field.value}
                   >
-                    <SelectTrigger className="w-full text-white uppercase">
+                    <SelectTrigger className="w-full text-cpalet-500 uppercase">
                       <SelectValue placeholder="seleccionar" />
                     </SelectTrigger>
                     <SelectContent>
@@ -301,7 +257,7 @@ export function CrearUsuarios() {
               />
             </div>
             <div className="py-2">
-              <Label className="text-white uppercase">sucursal:</Label>
+              <Label className="text-cpalet-500 uppercase">sucursal:</Label>
               <Controller
                 name="sucursal"
                 control={control}
@@ -311,7 +267,7 @@ export function CrearUsuarios() {
                     onValueChange={(value) => field.onChange(value)}
                     value={field.value}
                   >
-                    <SelectTrigger className="w-full text-white uppercase">
+                    <SelectTrigger className="w-full text-cpalet-500 uppercase">
                       <SelectValue placeholder="seleccionar" />
                     </SelectTrigger>
                     <SelectContent>

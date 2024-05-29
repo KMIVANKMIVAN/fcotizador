@@ -17,10 +17,11 @@ import {
 import { obtenerDatosUsuario } from '../../auth/utilidades/datosUsuarioLocalStor';
 
 import { errorToast, exitoToast } from '../../lib/notificaciones';
+import { manejoError } from '../utilidades/mostrarErrores';
 
-export function ActualizarSucursal({ idActualizar }) {
+export function ActualizarSucursal({ filaSeleccionada }) {
   const urlBackendBase = import.meta.env.VITE_URL_BACKEND;
-  const urlSucursales = `${urlBackendBase}sucursales/${idActualizar}`;
+  const urlSucursales = `${urlBackendBase}sucursales/${filaSeleccionada.id}`;
   const urlDepartamentos = `${urlBackendBase}departamentos`;
 
   const headers = {
@@ -28,7 +29,6 @@ export function ActualizarSucursal({ idActualizar }) {
   };
 
   const [respuestaSucursales, setRespuestaSucursales] = useState([]);
-  const [resPedirSucursal, setResPedirSucursal] = useState([]);
   const [respuestaDepartamentos, setRespuestaDepartamentos] = useState([]);
 
   const {
@@ -38,10 +38,15 @@ export function ActualizarSucursal({ idActualizar }) {
     control,
     formState: { errors },
     setValue, // Asegúrate de tener esta línea
-  } = useForm();
+  } = useForm({
+    defaultValues: {
+      sucursal: filaSeleccionada.sucursal,
+      ubicacion: filaSeleccionada.ubicacion,
+      departamento_id: filaSeleccionada.departamento.id.toString(),
+    },
+  });
 
   const crearSucursal = async (data) => {
-    data.complemento = data.complemento === '' ? null : data.complemento;
     try {
       const respuesta = await axios.patch(urlSucursales, data, { headers });
       exitoToast(`Se Actualizo la Sucursal: ${respuesta.data.sucursal}`, false);
@@ -62,47 +67,14 @@ export function ActualizarSucursal({ idActualizar }) {
     }
   };
 
-  const pedirSucursal = async () => {
-    try {
-      const respuesta = await axios.get(urlSucursales, { headers });
-      setResPedirSucursal(respuesta.data);
-      Object.keys(respuesta.data).forEach((key) => {
-        setValue(key, respuesta.data[key]);
-      });
-    } catch (error) {
-      manejoError(error);
-    }
-  };
-
   useEffect(() => {
     pedirDepartamentos();
   }, []);
 
-  useEffect(() => {
-    if (idActualizar) {
-      pedirSucursal();
-    }
-  }, [idActualizar]);
-
-  const manejoError = (error) => {
-    if (error.response) {
-      const { data } = error.response;
-      if (data.error) {
-        errorToast(`RS: ${data.error}`, false);
-      }
-      if (data.message) {
-        errorToast(`RS: ${data.message}`, false);
-      }
-    } else if (error.request) {
-      errorToast('RF: No se pudo obtener respuesta del servidor', false);
-    } else {
-      errorToast('RF: Error al enviar la solicitud', false);
-    }
-  };
-
   return (
     <>
       <div className="flex flex-col md:flex-row p-5 border-4 border-cpalet-500 rounded-lg bg-cpalet-800">
+
         <form
           onSubmit={handleSubmit(crearSucursal)}
           className="flex flex-col md:flex-row w-full"
@@ -119,16 +91,17 @@ export function ActualizarSucursal({ idActualizar }) {
             <div className="py-2">
               <Label className="text-white uppercase">departamento:</Label>
               <Controller
-                name="departamento"
+                name="departamento_id"
                 control={control}
-                defaultValue=""
                 render={({ field }) => (
                   <Select
                     onValueChange={(value) => field.onChange(value)}
                     value={field.value}
                   >
                     <SelectTrigger className="w-full text-white uppercase">
-                      <SelectValue placeholder="seleccionar" />
+                      <SelectValue
+                        placeholder="Seleccionar"
+                      />
                     </SelectTrigger>
                     <SelectContent>
                       <SelectGroup>
@@ -165,7 +138,7 @@ export function ActualizarSucursal({ idActualizar }) {
                   variant=""
                   className="bg-green-500 w-full"
                 >
-                  Crear Empresa
+                  Actualizar Sucursal
                 </Button>
               </div>
             </div>

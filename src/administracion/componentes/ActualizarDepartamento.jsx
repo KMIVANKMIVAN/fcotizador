@@ -8,6 +8,7 @@ import { Button } from '@/components/ui/button';
 import { obtenerDatosUsuario } from '../../auth/utilidades/datosUsuarioLocalStor';
 
 import { errorToast, exitoToast } from '../../lib/notificaciones';
+import { manejoError } from '../utilidades/mostrarErrores';
 
 export function ActualizarDepartamento({ idActualizar }) {
   const urlBackendBase = import.meta.env.VITE_URL_BACKEND;
@@ -30,7 +31,6 @@ export function ActualizarDepartamento({ idActualizar }) {
   } = useForm();
 
   const actualizarDepartamentos = async (data) => {
-    data.complemento = data.complemento === '' ? null : data.complemento;
     try {
       const respuesta = await axios.patch(urlDepartamentos, data, { headers });
       exitoToast(
@@ -61,22 +61,6 @@ export function ActualizarDepartamento({ idActualizar }) {
       pedirDepartamento();
     }
   }, [idActualizar]);
-
-  const manejoError = (error) => {
-    if (error.response) {
-      const { data } = error.response;
-      if (data.error) {
-        errorToast(`RS: ${data.error}`, false);
-      }
-      if (data.message) {
-        errorToast(`RS: ${data.message}`, false);
-      }
-    } else if (error.request) {
-      errorToast('RF: No se pudo obtener respuesta del servidor', false);
-    } else {
-      errorToast('RF: Error al enviar la solicitud', false);
-    }
-  };
 
   return (
     <>

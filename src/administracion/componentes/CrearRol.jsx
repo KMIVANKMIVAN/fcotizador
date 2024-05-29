@@ -8,6 +8,7 @@ import { Button } from '@/components/ui/button';
 import { obtenerDatosUsuario } from '../../auth/utilidades/datosUsuarioLocalStor';
 
 import { errorToast, exitoToast } from '../../lib/notificaciones';
+import { manejoError } from "../utilidades/mostrarErrores";
 
 export function CrearRol() {
   const urlBackendBase = import.meta.env.VITE_URL_BACKEND;
@@ -23,30 +24,19 @@ export function CrearRol() {
     handleSubmit,
     watch,
     control,
+    reset,
     formState: { errors },
   } = useForm();
 
   const crearRoles = async (data) => {
-    data.complemento = data.complemento === '' ? null : data.complemento;
     try {
       const respuesta = await axios.post(urlRoles, data, { headers });
       exitoToast(`Se Creo el Rol: ${respuesta.data.rol}`, false);
       setRespuestaRoles(respuesta.data);
+      reset();
     } catch (error) {
       setRespuestaRoles([]);
-      if (error.response) {
-        const { data } = error.response;
-        if (data.error) {
-          errorToast(`RS: ${data.error}`, false);
-        }
-        if (data.message) {
-          errorToast(`RS: ${data.message}`, false);
-        }
-      } else if (error.request) {
-        'RF: No se pudo obtener respuesta del servidor', false;
-      } else {
-        errorToast('RF: Error al enviar la solicitud', false);
-      }
+      manejoError(error);
     }
   };
 

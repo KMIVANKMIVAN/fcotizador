@@ -193,7 +193,7 @@ export function Menu() {
             <li>
               <span
                 className="link text-cpalet-500"
-                onClick={() => navigate('/navegacion/cambiarcontras')}
+                onClick={() => navigate('/cambiarcontras')}
               >
                 <LockKeyhole size={23} className="min-w-max" />
                 Cambiar Contraseña

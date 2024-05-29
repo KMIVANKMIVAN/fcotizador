@@ -17,6 +17,7 @@ import {
 import { obtenerDatosUsuario } from '../../auth/utilidades/datosUsuarioLocalStor';
 
 import { errorToast, exitoToast } from '../../lib/notificaciones';
+import { manejoError } from "../utilidades/mostrarErrores";
 
 export function CrearUnidades() {
   const urlBackendBase = import.meta.env.VITE_URL_BACKEND;
@@ -35,6 +36,7 @@ export function CrearUnidades() {
     handleSubmit,
     watch,
     control,
+    reset,
     formState: { errors },
   } = useForm();
 
@@ -44,21 +46,10 @@ export function CrearUnidades() {
       const respuesta = await axios.post(urlUnidades, data, { headers });
       exitoToast(`Se Creo la Unidad: ${respuesta.data.unidad}`, false);
       setRespuestaUnidades(respuesta.data);
+      reset();
     } catch (error) {
-      setRespuestaDirecciones([]);
-      if (error.response) {
-        const { data } = error.response;
-        if (data.error) {
-          errorToast(`RS: ${data.error}`, false);
-        }
-        if (data.message) {
-          errorToast(`RS: ${data.message}`, false);
-        }
-      } else if (error.request) {
-        'RF: No se pudo obtener respuesta del servidor', false;
-      } else {
-        errorToast('RF: Error al enviar la solicitud', false);
-      }
+      setRespuestaUnidades([]);
+      manejoError(error);
     }
   };
 
@@ -67,20 +58,8 @@ export function CrearUnidades() {
     try {
       setRespuestaDirecciones(respuesta.data);
     } catch (error) {
-      setRespuestaUsuarios([]);
-      if (error.response) {
-        const { data } = error.response;
-        if (data.error) {
-          errorToast(`RS: ${data.error}`, false);
-        }
-        if (data.message) {
-          errorToast(`RS: ${data.message}`, false);
-        }
-      } else if (error.request) {
-        'RF: No se pudo obtener respuesta del servidor', false;
-      } else {
-        errorToast('RF: Error al enviar la solicitud', false);
-      }
+      setRespuestaDirecciones([]);
+      manejoError(error);
     }
   };
   useEffect(() => {

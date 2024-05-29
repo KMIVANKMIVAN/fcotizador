@@ -8,17 +8,17 @@ import { Button } from '@/components/ui/button';
 import { obtenerDatosUsuario } from '../../auth/utilidades/datosUsuarioLocalStor';
 
 import { errorToast, exitoToast } from '../../lib/notificaciones';
+import { manejoError } from '../utilidades/mostrarErrores';
 
-export function ActualizarRol({ idActualizar }) {
+export function ActualizarRol({ filaSeleccionada }) {
   const urlBackendBase = import.meta.env.VITE_URL_BACKEND;
-  const urlRoles = `${urlBackendBase}roles/${idActualizar}`;
+  const urlRoles = `${urlBackendBase}roles/${filaSeleccionada.id}`;
 
   const headers = {
     Authorization: `Bearer ${obtenerDatosUsuario().tk}`,
   };
 
   const [respuestaRoles, setRespuestaRoles] = useState([]);
-  const [resPedirRol, setResPedirRol] = useState([]);
 
   const {
     register,
@@ -27,10 +27,13 @@ export function ActualizarRol({ idActualizar }) {
     control,
     formState: { errors },
     setValue, // Asegúrate de tener esta línea
-  } = useForm();
+  } = useForm({
+    defaultValues: {
+      rol: filaSeleccionada.rol,
+    },
+  });
 
   const actualizarRoles = async (data) => {
-    data.complemento = data.complemento === '' ? null : data.complemento;
     try {
       const respuesta = await axios.patch(urlRoles, data, { headers });
       exitoToast(`Se Creo el Rol: ${respuesta.data.rol}`, false);
@@ -38,41 +41,6 @@ export function ActualizarRol({ idActualizar }) {
     } catch (error) {
       setRespuestaRoles([]);
       manejoError(error);
-    }
-  };
-
-  const pedirRol = async () => {
-    try {
-      const respuesta = await axios.get(urlRoles, { headers });
-      setResPedirRol(respuesta.data);
-      // Utiliza setValue para establecer los valores de los campos del formulario
-      Object.keys(respuesta.data).forEach((key) => {
-        setValue(key, respuesta.data[key]);
-      });
-    } catch (error) {
-      manejoError(error);
-    }
-  };
-
-  useEffect(() => {
-    if (idActualizar) {
-      pedirRol();
-    }
-  }, [idActualizar]);
-
-  const manejoError = (error) => {
-    if (error.response) {
-      const { data } = error.response;
-      if (data.error) {
-        errorToast(`RS: ${data.error}`, false);
-      }
-      if (data.message) {
-        errorToast(`RS: ${data.message}`, false);
-      }
-    } else if (error.request) {
-      errorToast('RF: No se pudo obtener respuesta del servidor', false);
-    } else {
-      errorToast('RF: Error al enviar la solicitud', false);
     }
   };
 

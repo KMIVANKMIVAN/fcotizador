@@ -17,10 +17,11 @@ import {
 import { obtenerDatosUsuario } from '../../auth/utilidades/datosUsuarioLocalStor';
 
 import { errorToast, exitoToast } from '../../lib/notificaciones';
+import { manejoError } from '../utilidades/mostrarErrores';
 
-export function ActualizarDirecciones({ idActualizar }) {
+export function ActualizarDirecciones({ filaSeleccionada }) {
   const urlBackendBase = import.meta.env.VITE_URL_BACKEND;
-  const urlDirecciones = `${urlBackendBase}direcciones/${idActualizar}`;
+  const urlDirecciones = `${urlBackendBase}direcciones/${filaSeleccionada.id}`;
   const urlEmpresas = `${urlBackendBase}empresas`;
 
   const headers = {
@@ -28,7 +29,6 @@ export function ActualizarDirecciones({ idActualizar }) {
   };
 
   const [respuestaDirecciones, setRespuestaDirecciones] = useState([]);
-  const [resPedirDireccion, setResPedirDireccion] = useState([]);
   const [respuestaEmpresas, setRespuestaEmpresas] = useState([]);
 
   const {
@@ -38,10 +38,15 @@ export function ActualizarDirecciones({ idActualizar }) {
     control,
     formState: { errors },
     setValue, // Asegúrate de tener esta línea
-  } = useForm();
+  } = useForm({
+    defaultValues: {
+      direccion: filaSeleccionada.direccion,
+      empresa_id: filaSeleccionada.empresa.id.toString(),
+      descripcion: filaSeleccionada.descripcion,
+    },
+  });
 
   const actualizarDireccion = async (data) => {
-    data.complemento = data.complemento === '' ? null : data.complemento;
     try {
       const respuesta = await axios.patch(urlDirecciones, data, { headers });
       exitoToast(
@@ -66,44 +71,9 @@ export function ActualizarDirecciones({ idActualizar }) {
     }
   };
 
-  const pedirDireccion = async () => {
-    try {
-      const respuesta = await axios.get(urlDirecciones, { headers });
-      setResPedirDireccion(respuesta.data);
-      // Utiliza setValue para establecer los valores de los campos del formulario
-      Object.keys(respuesta.data).forEach((key) => {
-        setValue(key, respuesta.data[key]);
-      });
-    } catch (error) {
-      manejoError(error);
-    }
-  };
-
   useEffect(() => {
     pedirEmpresas();
   }, []);
-
-  useEffect(() => {
-    if (idActualizar) {
-      pedirDireccion();
-    }
-  }, [idActualizar]);
-
-  const manejoError = (error) => {
-    if (error.response) {
-      const { data } = error.response;
-      if (data.error) {
-        errorToast(`RS: ${data.error}`, false);
-      }
-      if (data.message) {
-        errorToast(`RS: ${data.message}`, false);
-      }
-    } else if (error.request) {
-      errorToast('RF: No se pudo obtener respuesta del servidor', false);
-    } else {
-      errorToast('RF: Error al enviar la solicitud', false);
-    }
-  };
 
   return (
     <>
@@ -124,9 +94,8 @@ export function ActualizarDirecciones({ idActualizar }) {
             <div className="py-2">
               <Label className="text-white uppercase">empresa:</Label>
               <Controller
-                name="empresa"
+                name="empresa_id"
                 control={control}
-                defaultValue=""
                 render={({ field }) => (
                   <Select
                     onValueChange={(value) => field.onChange(value)}

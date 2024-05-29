@@ -85,7 +85,9 @@
   .centrarHorizontal {
     @apply flex items-center justify-center;
   }
-
+  .tarjetaContras {
+    @apply bg-cpalet-500 bg-opacity-10 w-96 h-auto p-5 border-2  border-white rounded-lg;
+  }
 }
 
 .link {

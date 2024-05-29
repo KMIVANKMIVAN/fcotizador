@@ -17,11 +17,11 @@ import {
 import { obtenerDatosUsuario } from '../../auth/utilidades/datosUsuarioLocalStor';
 
 import { errorToast, exitoToast } from '../../lib/notificaciones';
+import { manejoError } from '../utilidades/mostrarErrores';
 
-
-export function ActualizarCargo({ idActualizar }) {
+export function ActualizarCargo({ filaSeleccionada }) {
   const urlBackendBase = import.meta.env.VITE_URL_BACKEND;
-  const urlCargos = `${urlBackendBase}cargos/${idActualizar}`;
+  const urlCargos = `${urlBackendBase}cargos/${filaSeleccionada.id}`;
   const urlUnidades = `${urlBackendBase}unidades`;
 
   const headers = {
@@ -29,7 +29,6 @@ export function ActualizarCargo({ idActualizar }) {
   };
 
   const [respuestaCargos, setRespuestaCargos] = useState([]);
-  const [resPedirCargo, setResPedirCargo] = useState([]);
   const [respuestaUnidades, setRespuestaUnidades] = useState([]);
 
   const {
@@ -39,10 +38,15 @@ export function ActualizarCargo({ idActualizar }) {
     control,
     formState: { errors },
     setValue, // Asegúrate de tener esta línea
-  } = useForm();
+  } = useForm({
+    defaultValues: {
+      cargo: filaSeleccionada.cargo,
+      descripcion: filaSeleccionada.descripcion,
+      unidad_id: filaSeleccionada.unidad.id.toString(),
+    },
+  });
 
   const actualizarCargo = async (data) => {
-    data.complemento = data.complemento === '' ? null : data.complemento;
     try {
       const respuesta = await axios.patch(urlCargos, data, { headers });
       exitoToast(`Se Actualizo el Cargo: ${respuesta.data.cargo}`, false);
@@ -63,43 +67,9 @@ export function ActualizarCargo({ idActualizar }) {
     }
   };
 
-  const pedirCargo = async () => {
-    try {
-      const respuesta = await axios.get(urlCargos, { headers });
-      setResPedirCargo(respuesta.data);
-      Object.keys(respuesta.data).forEach((key) => {
-        setValue(key, respuesta.data[key]);
-      });
-    } catch (error) {
-      manejoError(error);
-    }
-  };
-
   useEffect(() => {
     pedirUnidades();
   }, []);
-
-  useEffect(() => {
-    if (idActualizar) {
-      pedirCargo();
-    }
-  }, [idActualizar]);
-
-  const manejoError = (error) => {
-    if (error.response) {
-      const { data } = error.response;
-      if (data.error) {
-        errorToast(`RS: ${data.error}`, false);
-      }
-      if (data.message) {
-        errorToast(`RS: ${data.message}`, false);
-      }
-    } else if (error.request) {
-      errorToast('RF: No se pudo obtener respuesta del servidor', false);
-    } else {
-      errorToast('RF: Error al enviar la solicitud', false);
-    }
-  };
 
   return (
     <>
@@ -120,9 +90,8 @@ export function ActualizarCargo({ idActualizar }) {
             <div className="py-2">
               <Label className="text-white uppercase">unidad:</Label>
               <Controller
-                name="unidad"
+                name="unidad_id"
                 control={control}
-                defaultValue=""
                 render={({ field }) => (
                   <Select
                     onValueChange={(value) => field.onChange(value)}

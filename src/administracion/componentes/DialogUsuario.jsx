@@ -12,8 +12,9 @@ import {
 import { Button } from '@/components/ui/button'; // Importa el componente Button
 
 import { ActualizarUsuarios } from './ActualizarUsuarios';
+import { Pruebas } from '../paginas/Pruebas';
 
-export function DialogUsuario({ idActualizar }) {
+export function DialogUsuario({ filaSeleccionada }) {
   return (
     <>
       <Dialog>
@@ -24,7 +25,8 @@ export function DialogUsuario({ idActualizar }) {
           <DialogHeader>
             <DialogTitle>Actualizar</DialogTitle>
           </DialogHeader>
-          <ActualizarUsuarios idActualizar={idActualizar} />
+          <ActualizarUsuarios filaSeleccionada={filaSeleccionada} />
+          {/* <Pruebas filaSeleccionada={filaSeleccionada} /> */}
           <DialogFooter className="sm:justify-start">
             <DialogClose asChild>
               <Button type="button" variant="secondary">

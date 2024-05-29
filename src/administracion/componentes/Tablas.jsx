@@ -28,15 +28,16 @@ const renderCellContent = (value) => {
 };
 
 export function Tablas({ columnas, respuesta, titulo }) {
-  const [idActualizar, setIdActualizar] = useState(null);
+  const [filaSeleccionada, setFilaSeleccionada] = useState(null);
 
-  const obtenerId = (id) => {
-    setIdActualizar(id);
+  const obtenerFilaSeleccionada = (fila) => {
+    setFilaSeleccionada(fila);
   };
+
   return (
     <>
       {respuesta && (
-        <div className='border-4 border-cpalet-500 rounded-lg p-2'>
+        <div className="border-4 border-cpalet-500 rounded-lg p-2">
           <Table>
             {/* <TableCaption>A list of your recent items.</TableCaption> */}
             <TableHeader>
@@ -62,10 +63,10 @@ export function Tablas({ columnas, respuesta, titulo }) {
                       {col.id === 'actualizar' ? (
                         <div
                           className="flex items-center justify-center"
-                          onClick={() => obtenerId(row.id)}
+                          onClick={() => obtenerFilaSeleccionada(row)}
                         >
                           <DialogDomo
-                            idActualizar={idActualizar}
+                            filaSeleccionada={filaSeleccionada}
                             titulo={titulo}
                           />
                         </div>

@@ -8,6 +8,7 @@ import { Button } from '@/components/ui/button';
 import { obtenerDatosUsuario } from '../../auth/utilidades/datosUsuarioLocalStor';
 
 import { errorToast, exitoToast } from '../../lib/notificaciones';
+import { manejoError } from "../utilidades/mostrarErrores";
 
 export function CrearDepartamento() {
   const urlBackendBase = import.meta.env.VITE_URL_BACKEND;
@@ -23,30 +24,22 @@ export function CrearDepartamento() {
     handleSubmit,
     watch,
     control,
+    reset,
     formState: { errors },
   } = useForm();
 
   const crearDepartamentos = async (data) => {
-    data.complemento = data.complemento === '' ? null : data.complemento;
     try {
       const respuesta = await axios.post(urlDepartamentos, data, { headers });
-      exitoToast(`Se Creo el Departamento: ${respuesta.data.departamento}`, false);
+      exitoToast(
+        `Se Creo el Departamento: ${respuesta.data.departamento}`,
+        false
+      );
       setRespuestaDepartamentos(respuesta.data);
+      reset();
     } catch (error) {
       setRespuestaDepartamentos([]);
-      if (error.response) {
-        const { data } = error.response;
-        if (data.error) {
-          errorToast(`RS: ${data.error}`, false);
-        }
-        if (data.message) {
-          errorToast(`RS: ${data.message}`, false);
-        }
-      } else if (error.request) {
-        'RF: No se pudo obtener respuesta del servidor', false;
-      } else {
-        errorToast('RF: Error al enviar la solicitud', false);
-      }
+      manejoError(error);
     }
   };
 

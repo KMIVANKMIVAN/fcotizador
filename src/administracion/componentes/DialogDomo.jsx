@@ -19,24 +19,24 @@ import { ActualizarUnidades } from './ActualizarUnidades';
 import { ActualizarCargo } from './ActualizarCargo';
 import { ActualizarSucursal } from './ActualizarSucursal';
 
-export function DialogDomo({ idActualizar, titulo }) {
+export function DialogDomo({ filaSeleccionada, titulo }) {
   // Función para renderizar el componente correspondiente según el título
   const renderComponent = () => {
     switch (titulo) {
       case 'Empresa':
-        return <ActualizarEmpresa idActualizar={idActualizar} />;
+        return <ActualizarEmpresa filaSeleccionada={filaSeleccionada} />;
       case 'Departamento':
-        return <ActualizarDepartamento idActualizar={idActualizar} />;
+        return <ActualizarDepartamento filaSeleccionada={filaSeleccionada} />;
       case 'Rol':
-        return <ActualizarRol idActualizar={idActualizar} />;
+        return <ActualizarRol filaSeleccionada={filaSeleccionada} />;
       case 'Direcciones':
-        return <ActualizarDirecciones idActualizar={idActualizar} />;
+        return <ActualizarDirecciones filaSeleccionada={filaSeleccionada} />;
       case 'Unidades':
-        return <ActualizarUnidades idActualizar={idActualizar} />;
+        return <ActualizarUnidades filaSeleccionada={filaSeleccionada} />;
       case 'Cargo':
-        return <ActualizarCargo idActualizar={idActualizar} />;
+        return <ActualizarCargo filaSeleccionada={filaSeleccionada} />;
       case 'Sucursal':
-        return <ActualizarSucursal idActualizar={idActualizar} />;
+        return <ActualizarSucursal filaSeleccionada={filaSeleccionada} />;
       default:
         return null;
     }

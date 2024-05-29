@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react';
 import { obtenerDatosUsuario } from '../../auth/utilidades/datosUsuarioLocalStor';
 
 import { errorToast, exitoToast } from '../../lib/notificaciones';
+import { manejoError } from '../utilidades/mostrarErrores';
 
 import { Tablas } from './Tablas';
 import { TablaUsuario } from './TablaUsuario';
@@ -36,19 +37,7 @@ export function Buscador({ buscarUrl, titulo }) {
       setRespuestaBuscar(respuesta.data);
     } catch (error) {
       setRespuestaBuscar([]);
-      if (error.response) {
-        const { data } = error.response;
-        if (data.error) {
-          errorToast(`RS: ${data.error}`, false);
-        }
-        if (data.message) {
-          errorToast(`RS: ${data.message}`, false);
-        }
-      } else if (error.request) {
-        'RF: No se pudo obtener respuesta del servidor', false;
-      } else {
-        errorToast('RF: Error al enviar la solicitud', false);
-      }
+      manejoError(error);
     }
   };
 
@@ -81,16 +70,19 @@ export function Buscador({ buscarUrl, titulo }) {
   const tamanoTabla = tamanoTablaMap[titulo] || '500px';
   const columnas = columnasMap[titulo] || [];
   return (
-    <div className="flex flex-col items-center space-y-4 my-5">
-      <h1 className="text-xl text-cpalet-500">{titulo}</h1>
-      <div className="flex w-full md:w-[500px] items-center space-x-2">
-        <Input className="flex-grow" type="text" placeholder="Buscar..." />
-        <Button type="submit" onClick={() => buscarDatos()}>
-          Buscar
-        </Button>
+    <>
+      {/* // <div className="flex flex-col items-center space-y-4 my-5"> */}
+      <div className="flex flex-col items-center my-4">
+        <p className="text-2xl text-cpalet-500">{titulo}</p>
+        <div className="flex w-full md:w-[500px] items-center space-x-2 my-5">
+          <Input className="flex-grow" type="text" placeholder="Buscar..." />
+          <Button type="submit" onClick={() => buscarDatos()}>
+            Buscar
+          </Button>
+        </div>
       </div>
       {titulo !== 'Usuarios' && (
-        <div className={` ${tamanoTabla}  space-x-2`}>
+        <div>
           {respuestaBuscar && (
             <Tablas
               columnas={columnas}
@@ -101,7 +93,7 @@ export function Buscador({ buscarUrl, titulo }) {
         </div>
       )}
       {titulo === 'Usuarios' && (
-        <div className={` ${tamanoTabla}  space-x-2`}>
+        <div className="">
           {respuestaBuscar && (
             <TablaUsuario
               columnasUsuario={columnas}
@@ -110,6 +102,6 @@ export function Buscador({ buscarUrl, titulo }) {
           )}
         </div>
       )}
-    </div>
+    </>
   );
 }
