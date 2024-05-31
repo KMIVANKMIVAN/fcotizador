@@ -74,7 +74,6 @@ export function ActualizarSucursal({ filaSeleccionada }) {
   return (
     <>
       <div className="flex flex-col md:flex-row p-5 border-4 border-cpalet-500 rounded-lg bg-cpalet-800">
-
         <form
           onSubmit={handleSubmit(crearSucursal)}
           className="flex flex-col md:flex-row w-full"
@@ -99,9 +98,7 @@ export function ActualizarSucursal({ filaSeleccionada }) {
                     value={field.value}
                   >
                     <SelectTrigger className="w-full text-white uppercase">
-                      <SelectValue
-                        placeholder="Seleccionar"
-                      />
+                      <SelectValue placeholder="Seleccionar" />
                     </SelectTrigger>
                     <SelectContent>
                       <SelectGroup>

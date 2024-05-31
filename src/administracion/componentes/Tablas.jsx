@@ -45,7 +45,7 @@ export function Tablas({ columnas, respuesta, titulo }) {
                 {columnas.map((col) => (
                   <TableHead
                     key={col.id}
-                    className={`uppercase whitespace-nowrap overflow-visible text-lg text-center text-white`}
+                    className={`uppercase whitespace-nowrap overflow-visible text-lg text-center text-cpalet-500`}
                   >
                     {col.label}
                   </TableHead>

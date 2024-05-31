@@ -79,6 +79,15 @@ export function Navegacion() {
               <LockKeyhole size={23} className="min-w-max" />
               Cambiar Contraseña
             </span>
+            <span
+              className="link text-red-500"
+              onClick={() => {
+                eliminarDatosUsuario(), (window.location.href = '/');
+              }}
+            >
+              <LogOut size={23} className="min-w-max" />
+              Salir
+            </span>
             <span className="link text-cpalet-500">
               <ModeToggle />
               Elige el modo
@@ -86,7 +95,7 @@ export function Navegacion() {
           </SheetHeader>
         </SheetContent>
       </Sheet>
-      <div className='m-5'>
+      <div className="m-5">
         <Outlet />
       </div>
     </>

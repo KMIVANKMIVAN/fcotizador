@@ -88,6 +88,9 @@
   .tarjetaContras {
     @apply bg-cpalet-500 bg-opacity-10 w-96 h-auto p-5 border-2  border-white rounded-lg;
   }
+  .menuDomoticus {
+    @apply cursor-pointer text-lg hover:bg-sky-500 hover:ring-sky-500 hover:text-white px-1 hover:rounded-md;
+  }
 }
 
 .link {

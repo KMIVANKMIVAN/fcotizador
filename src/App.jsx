@@ -10,16 +10,6 @@ import { Domoticus } from './administracion/paginas/Domoticus';
 import { CambiarContras } from './administracion/paginas/CambiarContras';
 import { Cotizaciones } from './cotizaciones/paginas/Cotizaciones';
 import { Pruebas } from './administracion/paginas/Pruebas';
-import { ModeToggle } from '@/components/mode-toggle';
-
-import {
-  Sheet,
-  SheetContent,
-  SheetDescription,
-  SheetHeader,
-  SheetTitle,
-  SheetTrigger,
-} from '@/components/ui/sheet';
 
 const router = createBrowserRouter([
   {

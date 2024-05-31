@@ -9,7 +9,7 @@ import { obtenerDatosUsuario } from '../../auth/utilidades/datosUsuarioLocalStor
 
 import { exitoToast } from '../../lib/notificaciones';
 
-import { manejoError } from "../utilidades/mostrarErrores";
+import { manejoError } from '../utilidades/mostrarErrores';
 
 export function CrearEmpresa() {
   const urlBackendBase = import.meta.env.VITE_URL_BACKEND;
@@ -81,12 +81,15 @@ export function CrearEmpresa() {
               />
             </div>
             <div className="py-2">
-              <Label className="text-white uppercase">correo:</Label>
-              <Input
-                className="text-white lowercase"
-                type="text"
-                {...register('correo', { required: true })}
-              />
+              <div className="mt-6">
+                <Button
+                  type="submit"
+                  variant=""
+                  className="bg-green-500 w-full"
+                >
+                  Crear Empresa
+                </Button>
+              </div>
             </div>
           </div>
           <div className="basis-full md:basis-1/2 p-2 ">
@@ -114,17 +117,13 @@ export function CrearEmpresa() {
                 {...register('linea_gratuita', { required: false })}
               />
             </div>
-
             <div className="py-2">
-              <div className="mt-6">
-                <Button
-                  type="submit"
-                  variant=""
-                  className="bg-green-500 w-full"
-                >
-                  Crear Empresa
-                </Button>
-              </div>
+              <Label className="text-white uppercase">correo:</Label>
+              <Input
+                className="text-white lowercase"
+                type="text"
+                {...register('correo', { required: true })}
+              />
             </div>
           </div>
         </form>
