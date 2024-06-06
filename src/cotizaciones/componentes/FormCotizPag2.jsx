@@ -1,5 +1,8 @@
-import { Label } from '@/components/ui/label';
+import axios from 'axios';
+import { useState, useEffect } from 'react';
 import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { useForm, Controller } from 'react-hook-form';
 
 import {
   Select,
@@ -11,7 +14,60 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 
+import { obtenerDatosUsuario } from '../../auth/utilidades/datosUsuarioLocalStor';
+import { manejoError } from '../../administracion/utilidades/mostrarErrores';
+
 export function FormCotizPag2() {
+  const urlBackendBase = import.meta.env.VITE_URL_BACKEND;
+  const urlTipocotizacion = `${urlBackendBase}tiposcotizaciones`;
+  // const url = `${urlBackendBase}`;
+
+  const headers = {
+    Authorization: `Bearer ${obtenerDatosUsuario().tk}`,
+  };
+
+  const [area, setArea] = useState(0);
+  const [altura, setAltura] = useState(0);
+  const [volumen, setVolumen] = useState(0);
+
+  const [respuestaTipocotizacion, setRespuestaTipocotizacion] = useState([]);
+  // const [respuesta, setRespuesta] = useState([]);
+
+  const pedirTipocotizacion = async () => {
+    const respuesta = await axios.get(urlTipocotizacion, { headers });
+    try {
+      setRespuestaTipocotizacion(respuesta.data);
+    } catch (error) {
+      setRespuestaTipocotizacion([]);
+      manejoError(error);
+    }
+  };
+  /* const pedir = async () => {
+    const respuesta = await axios.get(url, { headers });
+    try {
+      setRespuesta(respuesta.data);
+    } catch (error) {
+      setRespuesta([]);
+      manejoError(error);
+    }
+  }; */
+
+  const handleChangeArea = (e) => {
+    const newArea = parseFloat(e.target.value);
+    setArea(newArea);
+    setVolumen(newArea * altura);
+  };
+
+  const handleChangeAltura = (e) => {
+    const newAltura = parseFloat(e.target.value);
+    setAltura(newAltura);
+    setVolumen(newAltura * area);
+  };
+
+  useEffect(() => {
+    pedirTipocotizacion();
+    // pedir();
+  }, []);
   return (
     <>
       <div
@@ -19,15 +75,15 @@ export function FormCotizPag2() {
         className="flex flex-wrap w-full"
       >
         <div className="flex flex-col md:flex-row w-full mb-4">
-          <div className="basis-full md:basis-1/3 p-2">
+          <div className="basis-full md:basis-1/4 p-2">
             <div className="py-2 flex flex-wrap items-center">
               <div className="w-1/3">
                 <Label className="text-cpalet-500 uppercase">Área:</Label>
                 <Input
                   className="text-cpalet-500 uppercase"
                   type="number"
-                  // value={area}
-                  // onChange={handleChangeArea}
+                  value={area}
+                  onChange={handleChangeArea}
                 />
               </div>
               <div className="w-1/3">
@@ -35,8 +91,8 @@ export function FormCotizPag2() {
                 <Input
                   className="text-cpalet-500 uppercase"
                   type="number"
-                  // value={altura}
-                  // onChange={handleChangeAltura}
+                  value={altura}
+                  onChange={handleChangeAltura}
                 />
               </div>
               <div className="w-1/3">
@@ -44,154 +100,60 @@ export function FormCotizPag2() {
                 <Input
                   className="text-cpalet-500 uppercase"
                   type="number"
-                  // value={volumen}
+                  value={volumen}
                   // readOnly
                 />
               </div>
             </div>
           </div>
-          <div className="basis-full md:basis-1/3 p-2">
+          <div className="basis-full md:basis-1/4 p-2">
             <div className="py-2">
-              <Label className="text-cpalet-500 uppercase">Campo 1:</Label>
-              <Input
-                className="text-cpalet-500 uppercase"
-                type="text"
-                // {...register('campo2', { required: true })}
-              />
+              <Label className="text-cpalet-500 uppercase">
+                tipo de cotizacion:
+              </Label>
+              <Select>
+                <SelectTrigger className="w-full text-cpalet-500 uppercase">
+                  <SelectValue placeholder="Seleccionar" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectGroup>
+                    <SelectLabel>TIPO DE COTIZACION:</SelectLabel>
+                    {respuestaTipocotizacion.map((tipocotizacion) => (
+                      <SelectItem
+                        key={tipocotizacion.id}
+                        value={tipocotizacion.id.toString()}
+                      >
+                        {tipocotizacion.tipocotizacion}
+                      </SelectItem>
+                    ))}
+                  </SelectGroup>
+                </SelectContent>
+              </Select>
             </div>
           </div>
-          <div className="basis-full md:basis-1/3 p-2">
+          <div className="basis-full md:basis-1/4 p-2">
             <div className="py-2">
-              <Label className="text-cpalet-500 uppercase">Campo 2:</Label>
-              <Input
-                className="text-cpalet-500 uppercase"
-                type="text"
-                // {...register('campo2', { required: true })}
-              />
+              <Label className="text-cpalet-500 uppercase">
+                cantidad de ventanas:
+              </Label>
+              <Select>
+                <SelectTrigger className="w-full text-cpalet-500 uppercase">
+                  <SelectValue placeholder="Seleccionar" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectGroup>
+                    <SelectLabel>CANTIDAD DE VENTANAS:</SelectLabel>
+                    <SelectItem value={1}>1 Ventana</SelectItem>
+                    <SelectItem value={2}>2 Ventanas</SelectItem>
+                    <SelectItem value={3}>3 Ventanas</SelectItem>
+                    <SelectItem value={4}>4 Ventanas</SelectItem>
+                  </SelectGroup>
+                </SelectContent>
+              </Select>
             </div>
           </div>
-        </div>
-        <div className="w-full md:w-1/2 p-2">
-          <div className="py-2">
-            <Label className="text-cpalet-500 uppercase">Departamentos:</Label>
-            <Select
-            // onValueChange={setSelectedDepartamento}
-            // value={selectedDepartamento}
-            >
-              <SelectTrigger className="w-full text-cpalet-500 uppercase">
-                <SelectValue placeholder="Seleccionar" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectGroup>
-                  <SelectLabel>DEPARTAMENTOS:</SelectLabel>
-                  {/* {respuestaDepartamentos.map((departamento) => (
-                    <SelectItem
-                      key={departamento.id}
-                      value={departamento.id.toString()}
-                    >
-                      {departamento.departamento}
-                    </SelectItem>
-                  ))} */}
-                </SelectGroup>
-              </SelectContent>
-            </Select>
-          </div>
-
-          <div className="py-2">
-            <Label className="text-cpalet-500 uppercase">Zonas:</Label>
-
-            <Select
-            // onValueChange={(value) => field.onChange(value)}
-            // value={field.value}
-            >
-              <SelectTrigger className="w-full text-cpalet-500 uppercase">
-                <SelectValue placeholder="Seleccionar" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectGroup>
-                  <SelectLabel>ZONAS:</SelectLabel>
-                  {/* {zonas.map((zona) => (
-                    <SelectItem key={zona.zona} value={zona.zona}>
-                      {zona.zona}
-                    </SelectItem>
-                  ))} */}
-                </SelectGroup>
-              </SelectContent>
-            </Select>
-          </div>
-
-          <div className="py-2">
-            <Label className="text-cpalet-500 uppercase">Tipo de Cotización:</Label>
-
-            <Select
-            // onValueChange={(value) => field.onChange(value)}
-            // value={field.value}
-            >
-              <SelectTrigger className="w-full text-cpalet-500 uppercase">
-                <SelectValue placeholder="Seleccionar" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectGroup>
-                  <SelectLabel>TIPO DE COTIZACIÓN:</SelectLabel>
-                  {/* {tipoCotizacion.map((tipo) => (
-                    <SelectItem
-                      key={tipo.tipoCotizacion}
-                      value={tipo.tipoCotizacion}
-                    >
-                      {tipo.tipoCotizacion}
-                    </SelectItem>
-                  ))} */}
-                </SelectGroup>
-              </SelectContent>
-            </Select>
-          </div>
-        </div>
-
-        <div className="w-full md:w-1/2 p-2">
-          <div className="py-2">
-            <Label className="text-cpalet-500 uppercase">Orientación:</Label>
-
-            <Select
-            // onValueChange={(value) => field.onChange(value)}
-            // value={field.value}
-            >
-              <SelectTrigger className="w-full text-cpalet-500 uppercase">
-                <SelectValue placeholder="Seleccionar" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectGroup>
-                  <SelectLabel>ORIENTACIÓN:</SelectLabel>
-                  {/* {orientacion.map((ori) => (
-                    <SelectItem key={ori.orientacion} value={ori.orientacion}>
-                      {ori.orientacion}
-                    </SelectItem>
-                  ))} */}
-                </SelectGroup>
-              </SelectContent>
-            </Select>
-          </div>
-
-          <div className="py-2">
-            <Label className="text-cpalet-500 uppercase">Tipo de Pared:</Label>
-
-            <Select
-            // onValueChange={(value) => field.onChange(value)}
-            // value={field.value}
-            >
-              <SelectTrigger className="w-full text-cpalet-500 uppercase">
-                <SelectValue placeholder="Seleccionar" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectGroup>
-                  <SelectLabel>TIPO DE PARED:</SelectLabel>
-                  {/* {tipoPared.map((pared) => (
-                    <SelectItem key={pared.tipoPared} value={pared.tipoPared}>
-                      {pared.tipoPared}
-                    </SelectItem>
-                  ))} */}
-                </SelectGroup>
-              </SelectContent>
-            </Select>
+          <div className="basis-full md:basis-1/4 p-2">
+            <div className="py-2"></div>
           </div>
         </div>
       </div>

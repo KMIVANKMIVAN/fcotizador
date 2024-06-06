@@ -170,7 +170,7 @@ export function ActualizarUsuarios({ filaSeleccionada }) {
               </div>
             ))}
           </div>
-          <div className="py-2">
+          <div className="py-2 md:w-64">
             <Label className="text-cpalet-500 uppercase">cargo:</Label>
             <Controller
               name="cargo_id"
@@ -180,6 +180,7 @@ export function ActualizarUsuarios({ filaSeleccionada }) {
                 <Select
                   onValueChange={(value) => field.onChange(value)}
                   value={field.value.toString()}
+                  
                 >
                   <SelectTrigger className="w-full text-cpalet-500 uppercase">
                     <SelectValue placeholder="seleccionar" />
@@ -299,7 +300,7 @@ export function ActualizarUsuarios({ filaSeleccionada }) {
           </div>
           <div className="py-2">
             <div className="mt-6">
-              <Button type="submit" variant="" className="bg-green-500 w-full">
+              <Button type="submit" variant="mibotoncrear" className="w-full">
                 Actualizar Usuario
               </Button>
             </div>

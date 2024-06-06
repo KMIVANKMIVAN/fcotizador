@@ -45,7 +45,7 @@ export function Tablas({ columnas, respuesta, titulo }) {
                 {columnas.map((col) => (
                   <TableHead
                     key={col.id}
-                    className={`uppercase whitespace-nowrap overflow-visible text-lg text-center text-cpalet-500`}
+                    className={`capitalize whitespace-nowrap overflow-visible text-lg text-center text-cpalet-500`}
                   >
                     {col.label}
                   </TableHead>
@@ -58,7 +58,7 @@ export function Tablas({ columnas, respuesta, titulo }) {
                   {columnas.map((col) => (
                     <TableCell
                       key={col.id}
-                      className={`uppercase whitespace-nowrap overflow-visible  text-lg text-cpalet-500`}
+                      className={`whitespace-nowrap overflow-visible  text-lg text-cpalet-500`}
                     >
                       {col.id === 'actualizar' ? (
                         <div

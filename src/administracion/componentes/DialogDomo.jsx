@@ -48,11 +48,15 @@ export function DialogDomo({ filaSeleccionada, titulo }) {
         <DialogTrigger asChild>
           <FilePenLine variant="outline" />
         </DialogTrigger>
-        <DialogContent className="sm:max-w-md">
+        <DialogContent className="sm:max-w-md md:max-w-xl">
           <DialogHeader>
-            <DialogTitle className="text-cpalet-500 uppercase">Actualizar</DialogTitle>
+            <DialogTitle className="text-cpalet-500 uppercase">
+              Actualizar
+            </DialogTitle>
           </DialogHeader>
-          {renderComponent()}
+          <div className="max-h-[calc(100vh-200px)] overflow-y-auto">
+            {renderComponent()}
+          </div>
           <DialogFooter className="sm:justify-start">
             <DialogClose asChild>
               <Button type="button" variant="secondary">

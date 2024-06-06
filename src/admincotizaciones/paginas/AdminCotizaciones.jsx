@@ -16,6 +16,7 @@ import { CrearTipopared } from '../componentes/CrearTipopared';
 import { CrearTipotecho } from '../componentes/CrearTipotecho';
 import { CrearTiposuelo } from '../componentes/CrearTiposuelo';
 import { CrearTipovidrio } from '../componentes/CrearTipovidrio';
+import { CrearTipocotizacion } from '../componentes/CrearTipocotizacion';
 
 import { Buscador } from '../componentes/Buscador';
 
@@ -48,6 +49,8 @@ export function AdminCotizaciones() {
         return <CrearTiposuelo buscarUrl={buscarUrl} titulo={titulo} />;
       case 'CrearTipovidrio':
         return <CrearTipovidrio buscarUrl={buscarUrl} titulo={titulo} />;
+      case 'CrearTipocotizacion':
+        return <CrearTipocotizacion buscarUrl={buscarUrl} titulo={titulo} />;
       default:
         return null;
     }
@@ -139,6 +142,18 @@ export function AdminCotizaciones() {
               }
             >
               <h1 className="menuDomoticus">Crear Nivel de Piso</h1>
+            </BreadcrumbItem>
+            <BreadcrumbSeparator></BreadcrumbSeparator>
+            <BreadcrumbItem
+              onClick={() =>
+                handleSelection(
+                  'CrearTipocotizacion',
+                  'tiposcotizaciones',
+                  'Tipo_de_Cotizacion'
+                )
+              }
+            >
+              <h1 className="menuDomoticus">Crear Tipo de Cotizacion</h1>
             </BreadcrumbItem>
           </BreadcrumbList>
         </Breadcrumb>

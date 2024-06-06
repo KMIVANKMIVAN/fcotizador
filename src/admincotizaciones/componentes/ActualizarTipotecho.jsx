@@ -82,8 +82,8 @@ export function ActualizarTipotecho({ filaSeleccionada }) {
               <div className="mt-6">
                 <Button
                   type="submit"
-                  variant=""
-                  className="bg-green-500 w-full"
+                  variant="mibotoncrear"
+                  className="w-full"
                 >
                   Actualizar Tipo de Techo
                 </Button>

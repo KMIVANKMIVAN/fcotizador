@@ -9,12 +9,12 @@ export const columnasUsuario = [
     id: 'resetear',
     label: 'RESETEAR CONSTRASEñA',
   }, */
-  { id: 'nombres', label: 'NOMBRES' },
+  { id: 'nombres', label: 'nombres' },
   { id: 'apellidos', label: 'apellidos' },
-  { id: 'ci', label: 'ci' },
+  { id: 'ci', label: 'CI' },
   { id: 'complemento', label: 'complemento' },
   { id: 'correo', label: 'correo' },
-  { id: 'es_activo', label: 'ACTIVO' },
+  { id: 'es_activo', label: 'activo' },
   {
     id: 'se_cambiado_cntr',
     label: 'cambio contraseña',
@@ -53,7 +53,7 @@ export const columnasEmpresas = [
   { id: 'razon_social', label: 'razon social' },
   { id: 'nit', label: 'nit' },
   { id: 'ubicacion', label: 'ubicacion' },
-  { id: 'pagina_web', label: 'pagina_web' },
+  { id: 'pagina_web', label: 'pagina web' },
   { id: 'telefono', label: 'telefono' },
   {
     id: 'linea_gratuita',

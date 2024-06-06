@@ -64,11 +64,7 @@ export function ActualizarRol({ filaSeleccionada }) {
           <div className="basis-full md:basis-1/2 p-2 ">
             <div className="py-2">
               <div className="mt-6">
-                <Button
-                  type="submit"
-                  variant=""
-                  className="bg-green-500 w-full"
-                >
+                <Button type="submit" variant="mibotoncrear" className="w-full">
                   Actualizar Rol
                 </Button>
               </div>

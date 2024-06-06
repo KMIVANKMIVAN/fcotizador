@@ -18,6 +18,8 @@ import { ActualizarTipopared } from './ActualizarTipopared';
 import { ActualizarTiposuelo } from './ActualizarTiposuelo';
 import { ActualizarTipotecho } from './ActualizarTipotecho';
 import { ActualizarTipovidrio } from './ActualizarTipovidrio';
+import { ActualizarTipocotizacion } from './ActualizarTipocotizacion';
+
 
 export function DialogAdmCotiz({ filaSeleccionada, titulo }) {
   // Función para renderizar el componente correspondiente según el título
@@ -37,6 +39,8 @@ export function DialogAdmCotiz({ filaSeleccionada, titulo }) {
         return <ActualizarTipotecho filaSeleccionada={filaSeleccionada} />;
       case 'Tipo_de_Vidrio':
         return <ActualizarTipovidrio filaSeleccionada={filaSeleccionada} />;
+      case 'Tipo_de_Cotizacion':
+        return <ActualizarTipocotizacion filaSeleccionada={filaSeleccionada} />;
       default:
         return null;
     }

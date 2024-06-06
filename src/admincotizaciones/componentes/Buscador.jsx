@@ -17,6 +17,7 @@ import {
   columnasTiposuelo,
   columnasTipotecho,
   columnasTipovidrio,
+  columnasTipocotizacion
 } from '../utilidades/estructuraDatos';
 
 export function Buscador({ buscarUrl, titulo }) {
@@ -52,6 +53,7 @@ export function Buscador({ buscarUrl, titulo }) {
     Tipo_de_Suelo: columnasTiposuelo,
     Tipo_de_Techo: columnasTipotecho,
     Tipo_de_Vidrio: columnasTipovidrio,
+    Tipo_de_Cotizacion: columnasTipocotizacion,
   };
 
   const columnas = columnasMap[titulo] || [];

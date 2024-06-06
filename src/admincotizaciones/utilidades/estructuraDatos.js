@@ -10,6 +10,12 @@ export const columnasTipotecho = [
   { id: 'tipotecho', label: 'tipo de techo' },
   { id: 'valor', label: 'valor' },
 ];
+export const columnasTipocotizacion = [
+  { id: 'id', label: 'ID' },
+  { id: 'actualizar', label: 'actualizar' },
+  { id: 'tipocotizacion', label: 'tipo de cotizacion' },
+  // { id: 'valor', label: 'valor' },
+];
 export const columnasTiposuelo = [
   { id: 'id', label: 'ID' },
   { id: 'actualizar', label: 'actualizar' },

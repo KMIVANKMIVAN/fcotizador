@@ -80,8 +80,8 @@ export function ActualizarOrientacion({ filaSeleccionada }) {
               <div className="mt-6">
                 <Button
                   type="submit"
-                  variant=""
-                  className="bg-green-500 w-full"
+                  variant="mibotoncrear"
+                  className="w-full"
                 >
                   Actualizar Orientacion
                 </Button>

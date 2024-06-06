@@ -29,7 +29,7 @@ export function TablaUsuario({ columnasUsuario, respuestaUsuarios }) {
               {columnasUsuario.map((col) => (
                 <TableHead
                   key={col.id}
-                  className={`uppercase whitespace-nowrap overflow-visible text-lg text-center text-cpalet-500`}
+                  className={`capitalize whitespace-nowrap overflow-visible text-lg text-center text-cpalet-500`}
                   style={{ minWidth: col.minWidth, textAlign: col.align }}
                 >
                   {col.label}
@@ -41,7 +41,7 @@ export function TablaUsuario({ columnasUsuario, respuestaUsuarios }) {
             {respuestaUsuarios.map((row, rowIndex) => (
               <TableRow
                 key={rowIndex}
-                className={`uppercase whitespace-nowrap overflow-visible text-lg text-cpalet-400`}
+                className={` whitespace-nowrap overflow-visible text-lg text-cpalet-400`}
               >
                 {columnasUsuario.map((col) => {
                   let cellData;

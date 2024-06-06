@@ -21,7 +21,7 @@ export function DialogUsuario({ filaSeleccionada }) {
         <DialogTrigger asChild>
           <FilePenLine variant="outline" />
         </DialogTrigger>
-        <DialogContent className="sm:max-w-sm md:max-w-md max-h-screen overflow-y-auto p-4">
+        <DialogContent className="sm:max-w-md md:max-w-2xl">
           <DialogHeader>
             <DialogTitle className="text-cpalet-500 uppercase">Actualizar</DialogTitle>
           </DialogHeader>

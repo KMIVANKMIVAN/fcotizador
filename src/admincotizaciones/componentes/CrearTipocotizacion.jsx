@@ -9,13 +9,13 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
 
-export function ActualizarTipopared({ filaSeleccionada }) {
+export function CrearTipocotizacion() {
   const urlBackendBase = import.meta.env.VITE_URL_BACKEND;
-  const urlTipopared = `${urlBackendBase}tiposparedes/${filaSeleccionada.id}`;
+  const urlTipocotizacion = `${urlBackendBase}tiposcotizaciones`;
 
   const headers = { Authorization: `Bearer ${obtenerDatosUsuario().tk}` };
 
-  const [respuestaTipopared, setRespuestaTipopared] = useState([]);
+  const [respuestaTipocotizacion, setRespuestaTipocotizacion] = useState([]);
 
   const {
     register,
@@ -24,24 +24,19 @@ export function ActualizarTipopared({ filaSeleccionada }) {
     control,
     reset,
     formState: { errors },
-  } = useForm({
-    defaultValues: {
-      tipopared: filaSeleccionada.tipopared,
-      valor: filaSeleccionada.valor,
-    },
-  });
+  } = useForm();
 
-  const actualizarTipopared = async (data) => {
+  const crearTipocotizacion = async (data) => {
     try {
-      const respuesta = await axios.patch(urlTipopared, data, { headers });
+      const respuesta = await axios.post(urlTipocotizacion, data, { headers });
       exitoToast(
-        `Se Actualizo el Tipo de Pared: ${respuesta.data.tipopared}`,
+        `Se Creo el Tipo de Cotizacion: ${respuesta.data.tipocotizacion}`,
         false
       );
-      setRespuestaTipopared(respuesta.data);
+      setRespuestaTipocotizacion(respuesta.data);
       reset();
     } catch (error) {
-      setRespuestaTipopared([]);
+      setRespuestaTipocotizacion([]);
       manejoError(error);
     }
   };
@@ -50,42 +45,26 @@ export function ActualizarTipopared({ filaSeleccionada }) {
     <>
       <div className="flex flex-col md:flex-row p-5 border-4 border-cpalet-500 rounded-lg ">
         <form
-          onSubmit={handleSubmit(actualizarTipopared)}
+          onSubmit={handleSubmit(crearTipocotizacion)}
           className="flex flex-col md:flex-row w-full"
         >
           <div className="basis-full md:basis-1/2 p-2 ">
             <div className="py-2">
               <Label className="text-cpalet-500 uppercase">
-                tipo de pared:
+                tipo de cotizacion:
               </Label>
               <Input
                 className="text-cpalet-500 uppercase"
                 type="text"
-                {...register('tipopared', { required: true })}
+                {...register('tipocotizacion', { required: true })}
               />
             </div>
           </div>
           <div className="basis-full md:basis-1/2 p-2 ">
             <div className="py-2">
-              <Label className="text-cpalet-500 uppercase">valor:</Label>
-              <Input
-                className="text-cpalet-500 uppercase"
-                type="number"
-                step="0.0001"
-                min="0"
-                max="1"
-                {...register('valor', { required: true })}
-              />
-            </div>
-
-            <div className="py-2">
               <div className="mt-6">
-                <Button
-                  type="submit"
-                  variant="mibotoncrear"
-                  className="w-full"
-                >
-                  Actualizar Tipo de Pared
+                <Button type="submit" variant="mibotoncrear" className="w-full">
+                  Crear Tipo de Pared
                 </Button>
               </div>
             </div>

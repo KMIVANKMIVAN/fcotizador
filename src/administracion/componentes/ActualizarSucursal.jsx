@@ -130,11 +130,7 @@ export function ActualizarSucursal({ filaSeleccionada }) {
 
             <div className="py-2">
               <div className="mt-6">
-                <Button
-                  type="submit"
-                  variant=""
-                  className="bg-green-500 w-full"
-                >
+                <Button type="submit" variant="mibotoncrear" className="w-full">
                   Actualizar Sucursal
                 </Button>
               </div>
