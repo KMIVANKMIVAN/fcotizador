@@ -17,7 +17,7 @@ import {
 import { obtenerDatosUsuario } from '../../auth/utilidades/datosUsuarioLocalStor';
 
 import { errorToast, exitoToast } from '../../lib/notificaciones';
-import { manejoError } from "../utilidades/mostrarErrores";
+import { manejoError } from '../utilidades/mostrarErrores';
 
 export function CrearDirecciones() {
   const urlBackendBase = import.meta.env.VITE_URL_BACKEND;
@@ -54,7 +54,7 @@ export function CrearDirecciones() {
 
   const pedirEmpresas = async () => {
     const respuesta = await axios.get(urlEmpresas, { headers });
-    console.log("hola");
+    console.log('hola');
     try {
       setRespuestaEmpresas(respuesta.data);
       console.log(respuesta.data);
@@ -69,22 +69,22 @@ export function CrearDirecciones() {
 
   return (
     <>
-      <div className="flex flex-col md:flex-row p-5 border-4 border-cpalet-500 rounded-lg bg-cpalet-800">
+      <div className="flex flex-col md:flex-row p-5 border-4 border-cpalet-500 rounded-lg ">
         <form
           onSubmit={handleSubmit(crearDireccion)}
           className="flex flex-col md:flex-row w-full"
         >
           <div className="basis-full md:basis-1/2 p-2 ">
             <div className="py-2">
-              <Label className="text-white uppercase">direccion:</Label>
+              <Label className="text-cpalet-500 uppercase">direccion:</Label>
               <Input
-                className="text-white uppercase"
+                className="text-cpalet-500 uppercase"
                 type="text"
                 {...register('direccion', { required: true })}
               />
             </div>
             <div className="py-2">
-              <Label className="text-white uppercase">empresa:</Label>
+              <Label className="text-cpalet-500 uppercase">empresa:</Label>
               <Controller
                 name="empresa"
                 control={control}
@@ -94,7 +94,7 @@ export function CrearDirecciones() {
                     onValueChange={(value) => field.onChange(value)}
                     value={field.value}
                   >
-                    <SelectTrigger className="w-full text-white uppercase">
+                    <SelectTrigger className="w-full text-cpalet-500 uppercase">
                       <SelectValue placeholder="seleccionar" />
                     </SelectTrigger>
                     <SelectContent>
@@ -117,9 +117,9 @@ export function CrearDirecciones() {
           </div>
           <div className="basis-full md:basis-1/2 p-2 ">
             <div className="py-2">
-              <Label className="text-white uppercase">descripcion:</Label>
+              <Label className="text-cpalet-500 uppercase">descripcion:</Label>
               <Input
-                className="text-white uppercase"
+                className="text-cpalet-500 uppercase"
                 type="text"
                 {...register('descripcion', { required: true })}
               />
@@ -129,8 +129,8 @@ export function CrearDirecciones() {
               <div className="mt-6">
                 <Button
                   type="submit"
-                  variant=""
-                  className="bg-green-500 w-full"
+                  variant="mibotoncrear"
+                  className="w-full"
                 >
                   Crear Direccion
                 </Button>

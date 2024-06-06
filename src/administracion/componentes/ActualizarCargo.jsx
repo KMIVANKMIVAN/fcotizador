@@ -73,22 +73,22 @@ export function ActualizarCargo({ filaSeleccionada }) {
 
   return (
     <>
-      <div className="flex flex-col md:flex-row p-5 border-4 border-cpalet-500 rounded-lg bg-cpalet-800">
+      <div className="flex flex-col md:flex-row p-5 border-4 border-cpalet-500 rounded-lg ">
         <form
           onSubmit={handleSubmit(actualizarCargo)}
           className="flex flex-col md:flex-row w-full"
         >
           <div className="basis-full md:basis-1/2 p-2 ">
             <div className="py-2">
-              <Label className="text-white uppercase">cargo:</Label>
+              <Label className="text-cpalet-500 uppercase">cargo:</Label>
               <Input
-                className="text-white uppercase"
+                className="text-cpalet-500 uppercase"
                 type="text"
                 {...register('cargo', { required: true })}
               />
             </div>
             <div className="py-2">
-              <Label className="text-white uppercase">unidad:</Label>
+              <Label className="text-cpalet-500 uppercase">unidad:</Label>
               <Controller
                 name="unidad_id"
                 control={control}
@@ -97,7 +97,7 @@ export function ActualizarCargo({ filaSeleccionada }) {
                     onValueChange={(value) => field.onChange(value)}
                     value={field.value}
                   >
-                    <SelectTrigger className="w-full text-white uppercase">
+                    <SelectTrigger className="w-full text-cpalet-500 uppercase">
                       <SelectValue placeholder="seleccionar" />
                     </SelectTrigger>
                     <SelectContent>
@@ -120,9 +120,9 @@ export function ActualizarCargo({ filaSeleccionada }) {
           </div>
           <div className="basis-full md:basis-1/2 p-2 ">
             <div className="py-2">
-              <Label className="text-white uppercase">descripcion:</Label>
+              <Label className="text-cpalet-500 uppercase">descripcion:</Label>
               <Input
-                className="text-white uppercase"
+                className="text-cpalet-500 uppercase"
                 type="text"
                 {...register('descripcion', { required: true })}
               />

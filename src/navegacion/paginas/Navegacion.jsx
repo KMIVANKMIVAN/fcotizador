@@ -1,26 +1,22 @@
 import { Outlet } from 'react-router-dom';
-// import { Menu } from '../componentes/Menu';
 
 import { Menu } from 'lucide-react';
 
 import {
-  ChevronDown,
   LogOut,
   LockKeyhole,
-  ChevronLeft,
-  ChevronRight,
   UsersRound,
   NotebookText,
   PackageOpen,
+  FileCog,
 } from 'lucide-react';
 
 import {
   Sheet,
   SheetContent,
-  SheetDescription,
   SheetHeader,
-  SheetTitle,
   SheetTrigger,
+  SheetClose,
 } from '@/components/ui/sheet';
 
 import { useNavigate } from 'react-router-dom';
@@ -32,62 +28,86 @@ import { ModeToggle } from '../../components/mode-toggle';
 
 export function Navegacion() {
   const navigate = useNavigate();
-  //  <main className="max-w-5xl flex-1 mx-auto  bg-cpalet-900"> *
+  const rolesUsuario = obtenerDatosUsuario().roles;
+  let mostrarMenu = false;
+  if (
+    JSON.stringify([1, 2, 3]) === JSON.stringify(rolesUsuario) ||
+    rolesUsuario.includes(2)
+  ) {
+    mostrarMenu = true;
+  }
   return (
     <>
-      {/* <div className="flex">
-        <Menu />
-        <div className="w-5xl flex-1 m-5 md:w-auto bg-cpalet-900">
-          <div className="reset-styles">
-            <Outlet />
-          </div>
-        </div>
-      </div> */}
       <Sheet>
-        <div className="bg-cpalet-500 w-full h-10 flex  items-center mb-5">
+      <div className="bg-cpalet-500 w-full h-10 flex items-center mb-5 sticky top-0 z-50">
           <SheetTrigger>
             <Menu className="ml-5 text-white" />
           </SheetTrigger>
         </div>
         <SheetContent>
           <SheetHeader>
-            <span
-              className="link text-cpalet-500"
-              onClick={() => navigate('/navegacion/usuarios')}
-            >
-              <UsersRound size={23} className="min-w-max" />
-              Usuarios
-            </span>
-            <span
-              className="link text-cpalet-500"
-              onClick={() => navigate('/navegacion/domoticus')}
-            >
-              <PackageOpen size={23} className="min-w-max" />
-              Domoticus
-            </span>
-            <span
-              className="link text-cpalet-500"
-              onClick={() => navigate('/navegacion/cotizaciones')}
-            >
-              <NotebookText size={23} className="min-w-max" />
-              Cotizaciones
-            </span>
-            <span
-              className="link text-cpalet-500"
-              onClick={() => navigate('/cambiarcontras')}
-            >
-              <LockKeyhole size={23} className="min-w-max" />
-              Cambiar Contraseña
-            </span>
-            <span
-              className="link text-red-500"
-              onClick={() => {
-                eliminarDatosUsuario(), (window.location.href = '/');
-              }}
-            >
-              <LogOut size={23} className="min-w-max" />
-              Salir
-            </span>
+            {mostrarMenu && (
+              <SheetClose asChild>
+                <span
+                  className="link text-cpalet-500"
+                  onClick={() => navigate('/navegacion/usuarios')}
+                >
+                  <UsersRound size={23} className="min-w-max" />
+                  Usuarios
+                </span>
+              </SheetClose>
+            )}
+            {mostrarMenu && (
+              <SheetClose asChild>
+                <span
+                  className="link text-cpalet-500"
+                  onClick={() => navigate('/navegacion/admincotizaciones')}
+                >
+                  <FileCog size={23} className="min-w-max" />
+                  Administracion de Valores
+                </span>
+              </SheetClose>
+            )}
+            {mostrarMenu && (
+              <SheetClose asChild>
+                <span
+                  className="link text-cpalet-500"
+                  onClick={() => navigate('/navegacion/domoticus')}
+                >
+                  <PackageOpen size={23} className="min-w-max" />
+                  Domoticus
+                </span>
+              </SheetClose>
+            )}
+            <SheetClose asChild>
+              <span
+                className="link text-cpalet-500"
+                onClick={() => navigate('/navegacion/cotizaciones')}
+              >
+                <NotebookText size={23} className="min-w-max" />
+                Cotizaciones
+              </span>
+            </SheetClose>
+            <SheetClose asChild>
+              <span
+                className="link text-cpalet-500"
+                onClick={() => navigate('/cambiarcontras')}
+              >
+                <LockKeyhole size={23} className="min-w-max" />
+                Cambiar Contraseña
+              </span>
+            </SheetClose>
+            <SheetClose asChild>
+              <span
+                className="link text-red-500"
+                onClick={() => {
+                  eliminarDatosUsuario(), (window.location.href = '/');
+                }}
+              >
+                <LogOut size={23} className="min-w-max" />
+                Salir
+              </span>
+            </SheetClose>
             <span className="link text-cpalet-500">
               <ModeToggle />
               Elige el modo

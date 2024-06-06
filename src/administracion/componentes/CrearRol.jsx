@@ -8,7 +8,7 @@ import { Button } from '@/components/ui/button';
 import { obtenerDatosUsuario } from '../../auth/utilidades/datosUsuarioLocalStor';
 
 import { errorToast, exitoToast } from '../../lib/notificaciones';
-import { manejoError } from "../utilidades/mostrarErrores";
+import { manejoError } from '../utilidades/mostrarErrores';
 
 export function CrearRol() {
   const urlBackendBase = import.meta.env.VITE_URL_BACKEND;
@@ -42,16 +42,16 @@ export function CrearRol() {
 
   return (
     <>
-      <div className="flex flex-col md:flex-row p-5 border-4 border-cpalet-500 rounded-lg bg-cpalet-800">
+      <div className="flex flex-col md:flex-row p-5 border-4 border-cpalet-500 rounded-lg ">
         <form
           onSubmit={handleSubmit(crearRoles)}
           className="flex flex-col md:flex-row w-full"
         >
           <div className="basis-full md:basis-1/2 p-2 ">
             <div className="py-2">
-              <Label className="text-white uppercase">rol:</Label>
+              <Label className="text-cpalet-500 uppercase">rol:</Label>
               <Input
-                className="text-white uppercase"
+                className="text-cpalet-500 uppercase"
                 type="text"
                 {...register('rol', { required: true })}
               />
@@ -62,8 +62,8 @@ export function CrearRol() {
               <div className="mt-6">
                 <Button
                   type="submit"
-                  variant=""
-                  className="bg-green-500 w-full"
+                  variant="mibotoncrear"
+                  className="w-full"
                 >
                   Crear Roles
                 </Button>

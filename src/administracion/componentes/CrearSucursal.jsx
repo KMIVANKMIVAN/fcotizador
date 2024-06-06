@@ -17,19 +17,19 @@ import {
 import { obtenerDatosUsuario } from '../../auth/utilidades/datosUsuarioLocalStor';
 
 import { errorToast, exitoToast } from '../../lib/notificaciones';
-import { manejoError } from "../utilidades/mostrarErrores";
+import { manejoError } from '../utilidades/mostrarErrores';
 
 export function CrearSucursal() {
   const urlBackendBase = import.meta.env.VITE_URL_BACKEND;
   const urlSucursales = `${urlBackendBase}sucursales`;
-  const urlDepartamentos = `${urlBackendBase}departamentos`;
+  const urlCiudades = `${urlBackendBase}ciudades`;
 
   const headers = {
     Authorization: `Bearer ${obtenerDatosUsuario().tk}`,
   };
 
   const [respuestaSucursales, setRespuestaSucursales] = useState([]);
-  const [respuestaDepartamentos, setRespuestaDepartamentos] = useState([]);
+  const [respuestaCiudades, setRespuestaCiudades] = useState([]);
 
   const {
     register,
@@ -52,40 +52,40 @@ export function CrearSucursal() {
     }
   };
 
-  const pedirDepartamentos = async () => {
-    const respuesta = await axios.get(urlDepartamentos, { headers });
+  const pedirCiudades = async () => {
+    const respuesta = await axios.get(urlCiudades, { headers });
     try {
-      setRespuestaDepartamentos(respuesta.data);
+      setRespuestaCiudades(respuesta.data);
       console.log(respuesta.data);
     } catch (error) {
-      setRespuestaDepartamentos([]);
+      setRespuestaCiudades([]);
       manejoError(error);
     }
   };
   useEffect(() => {
-    pedirDepartamentos();
+    pedirCiudades();
   }, []);
 
   return (
     <>
-      <div className="flex flex-col md:flex-row p-5 border-4 border-cpalet-500 rounded-lg bg-cpalet-800">
+      <div className="flex flex-col md:flex-row p-5 border-4 border-cpalet-500 rounded-lg ">
         <form
           onSubmit={handleSubmit(crearSucursal)}
           className="flex flex-col md:flex-row w-full"
         >
           <div className="basis-full md:basis-1/2 p-2 ">
             <div className="py-2">
-              <Label className="text-white uppercase">sucursal:</Label>
+              <Label className="text-cpalet-500 uppercase">sucursal:</Label>
               <Input
-                className="text-white uppercase"
+                className="text-cpalet-500 uppercase"
                 type="text"
                 {...register('sucursal', { required: true })}
               />
             </div>
             <div className="py-2">
-              <Label className="text-white uppercase">departamento:</Label>
+              <Label className="text-cpalet-500 uppercase">ciudad:</Label>
               <Controller
-                name="departamento"
+                name="ciudad"
                 control={control}
                 defaultValue=""
                 render={({ field }) => (
@@ -93,18 +93,18 @@ export function CrearSucursal() {
                     onValueChange={(value) => field.onChange(value)}
                     value={field.value}
                   >
-                    <SelectTrigger className="w-full text-white uppercase">
+                    <SelectTrigger className="w-full text-cpalet-500 uppercase">
                       <SelectValue placeholder="seleccionar" />
                     </SelectTrigger>
                     <SelectContent>
                       <SelectGroup>
-                        <SelectLabel>DEPARTAMENTOS:</SelectLabel>
-                        {respuestaDepartamentos.map((departamento) => (
+                        <SelectLabel>CIUDADES:</SelectLabel>
+                        {respuestaCiudades.map((ciudad) => (
                           <SelectItem
-                            key={departamento.id}
-                            value={departamento.id.toString()}
+                            key={ciudad.id}
+                            value={ciudad.id.toString()}
                           >
-                            {departamento.departamento}
+                            {ciudad.ciudad}
                           </SelectItem>
                         ))}
                       </SelectGroup>
@@ -116,9 +116,9 @@ export function CrearSucursal() {
           </div>
           <div className="basis-full md:basis-1/2 p-2 ">
             <div className="py-2">
-              <Label className="text-white uppercase">ubicacion:</Label>
+              <Label className="text-cpalet-500 uppercase">ubicacion:</Label>
               <Input
-                className="text-white uppercase"
+                className="text-cpalet-500 uppercase"
                 type="text"
                 {...register('ubicacion', { required: true })}
               />
@@ -128,10 +128,10 @@ export function CrearSucursal() {
               <div className="mt-6">
                 <Button
                   type="submit"
-                  variant=""
-                  className="bg-green-500 w-full"
+                  variant="mibotoncrear"
+                  className="w-full"
                 >
-                  Crear Empresa
+                  Crear Sucursal
                 </Button>
               </div>
             </div>

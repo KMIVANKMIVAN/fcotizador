@@ -23,7 +23,7 @@ export function DialogUsuario({ filaSeleccionada }) {
         </DialogTrigger>
         <DialogContent className="sm:max-w-sm md:max-w-md max-h-screen overflow-y-auto p-4">
           <DialogHeader>
-            <DialogTitle>Actualizar</DialogTitle>
+            <DialogTitle className="text-cpalet-500 uppercase">Actualizar</DialogTitle>
           </DialogHeader>
           <div className="max-h-[calc(100vh-200px)] overflow-y-auto">
             <ActualizarUsuarios filaSeleccionada={filaSeleccionada} />

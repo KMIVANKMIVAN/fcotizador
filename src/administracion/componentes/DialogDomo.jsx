@@ -12,7 +12,7 @@ import {
 import { Button } from '@/components/ui/button'; // Importa el componente Button
 
 import { ActualizarEmpresa } from './ActualizarEmpresa';
-import { ActualizarDepartamento } from './ActualizarDepartamento';
+import { ActualizarCiudad } from './ActualizarCiudad';
 import { ActualizarRol } from './ActualizarRol';
 import { ActualizarDirecciones } from './ActualizarDirecciones';
 import { ActualizarUnidades } from './ActualizarUnidades';
@@ -25,8 +25,8 @@ export function DialogDomo({ filaSeleccionada, titulo }) {
     switch (titulo) {
       case 'Empresa':
         return <ActualizarEmpresa filaSeleccionada={filaSeleccionada} />;
-      case 'Departamento':
-        return <ActualizarDepartamento filaSeleccionada={filaSeleccionada} />;
+      case 'Ciudad':
+        return <ActualizarCiudad filaSeleccionada={filaSeleccionada} />;
       case 'Rol':
         return <ActualizarRol filaSeleccionada={filaSeleccionada} />;
       case 'Direcciones':
@@ -50,7 +50,7 @@ export function DialogDomo({ filaSeleccionada, titulo }) {
         </DialogTrigger>
         <DialogContent className="sm:max-w-md">
           <DialogHeader>
-            <DialogTitle>Actualizar</DialogTitle>
+            <DialogTitle className="text-cpalet-500 uppercase">Actualizar</DialogTitle>
           </DialogHeader>
           {renderComponent()}
           <DialogFooter className="sm:justify-start">

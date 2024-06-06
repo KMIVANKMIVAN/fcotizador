@@ -1,6 +1,10 @@
-import { useForm, Controller } from 'react-hook-form';
 import axios from 'axios';
 import { useState, useEffect } from 'react';
+import { obtenerDatosUsuario } from '../../auth/utilidades/datosUsuarioLocalStor';
+import { errorToast, exitoToast } from '../../lib/notificaciones';
+import { useForm, Controller } from 'react-hook-form';
+import { manejoError } from '../../administracion/utilidades/mostrarErrores';
+
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
@@ -14,83 +18,71 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 
-import { obtenerDatosUsuario } from '../../auth/utilidades/datosUsuarioLocalStor';
-
-import { errorToast, exitoToast } from '../../lib/notificaciones';
-import { manejoError } from '../utilidades/mostrarErrores';
-
-export function ActualizarUnidades({ filaSeleccionada }) {
+export function CrearCiudadZona() {
   const urlBackendBase = import.meta.env.VITE_URL_BACKEND;
-  const urlUnidades = `${urlBackendBase}unidades/${filaSeleccionada.id}`;
-  const urlDirecciones = `${urlBackendBase}direcciones`;
+  const urlCiudadZona = `${urlBackendBase}ciudadeszonas`;
+  const urlCiudades = `${urlBackendBase}ciudades`;
 
-  const headers = {
-    Authorization: `Bearer ${obtenerDatosUsuario().tk}`,
-  };
+  const headers = { Authorization: `Bearer ${obtenerDatosUsuario().tk}` };
 
-  const [respuestaUnidades, setRespuestaUnidades] = useState([]);
-  const [respuestaDirecciones, setRespuestaDirecciones] = useState([]);
+  const [respuestaCiudadZona, setRespuestaCiudadZona] = useState([]);
+  const [respuestaCiudades, setRespuestaCiudades] = useState([]);
 
   const {
     register,
     handleSubmit,
     watch,
     control,
+    reset,
     formState: { errors },
-    setValue, // Asegúrate de tener esta línea
-  } = useForm({
-    defaultValues: {
-      unidad: filaSeleccionada.unidad,
-      descripcion: filaSeleccionada.descripcion,
-      direccion_id: filaSeleccionada.direccion.id.toString(),
-    },
-  });
+  } = useForm();
 
-  const actualizarUnidad = async (data) => {
+  const crearCiudadZona = async (data) => {
     try {
-      const respuesta = await axios.patch(urlUnidades, data, { headers });
-      exitoToast(`Se Creo la Unidad: ${respuesta.data.unidad}`, false);
-      setRespuestaUnidades(respuesta.data);
+      const respuesta = await axios.post(urlCiudadZona, data, { headers });
+      exitoToast(`Se Creo la Ciudad Zona: ${respuesta.data.ciudadzona}`, false);
+      setRespuestaCiudadZona(respuesta.data);
+      reset();
     } catch (error) {
-      setRespuestaDirecciones([]);
+      setRespuestaCiudadZona([]);
       manejoError(error);
     }
   };
 
-  const pedirDirecciones = async () => {
-    const respuesta = await axios.get(urlDirecciones, { headers });
+  const pedirCiudades = async () => {
+    const respuesta = await axios.get(urlCiudades, { headers });
     try {
-      setRespuestaDirecciones(respuesta.data);
+      setRespuestaCiudades(respuesta.data);
+      console.log(respuesta.data);
     } catch (error) {
-      setRespuestaUsuarios([]);
+      setRespuestaCiudades([]);
       manejoError(error);
     }
   };
-
   useEffect(() => {
-    pedirDirecciones();
+    pedirCiudades();
   }, []);
 
   return (
     <>
       <div className="flex flex-col md:flex-row p-5 border-4 border-cpalet-500 rounded-lg ">
         <form
-          onSubmit={handleSubmit(actualizarUnidad)}
+          onSubmit={handleSubmit(crearCiudadZona)}
           className="flex flex-col md:flex-row w-full"
         >
           <div className="basis-full md:basis-1/2 p-2 ">
             <div className="py-2">
-              <Label className="text-cpalet-500 uppercase">unidad:</Label>
+              <Label className="text-cpalet-500 uppercase">ciudad zona:</Label>
               <Input
                 className="text-cpalet-500 uppercase"
                 type="text"
-                {...register('unidad', { required: true })}
+                {...register('ciudadzona', { required: true })}
               />
             </div>
             <div className="py-2">
-              <Label className="text-cpalet-500 uppercase">direccion:</Label>
+              <Label className="text-cpalet-500 uppercase">ciudad:</Label>
               <Controller
-                name="direccion_id"
+                name="ciudad"
                 control={control}
                 defaultValue=""
                 render={({ field }) => (
@@ -103,13 +95,13 @@ export function ActualizarUnidades({ filaSeleccionada }) {
                     </SelectTrigger>
                     <SelectContent>
                       <SelectGroup>
-                        <SelectLabel>DIRECCIONES:</SelectLabel>
-                        {respuestaDirecciones.map((direccion) => (
+                        <SelectLabel>CIUDADES:</SelectLabel>
+                        {respuestaCiudades.map((ciudad) => (
                           <SelectItem
-                            key={direccion.id}
-                            value={direccion.id.toString()}
+                            key={ciudad.id}
+                            value={ciudad.id.toString()}
                           >
-                            {direccion.direccion}
+                            {ciudad.ciudad}
                           </SelectItem>
                         ))}
                       </SelectGroup>
@@ -121,11 +113,11 @@ export function ActualizarUnidades({ filaSeleccionada }) {
           </div>
           <div className="basis-full md:basis-1/2 p-2 ">
             <div className="py-2">
-              <Label className="text-cpalet-500 uppercase">descripcion:</Label>
+              <Label className="text-cpalet-500 uppercase">valor:</Label>
               <Input
                 className="text-cpalet-500 uppercase"
-                type="text"
-                {...register('descripcion', { required: true })}
+                type="number"
+                {...register('valor', { required: true })}
               />
             </div>
 
@@ -133,10 +125,10 @@ export function ActualizarUnidades({ filaSeleccionada }) {
               <div className="mt-6">
                 <Button
                   type="submit"
-                  variant=""
-                  className="bg-green-500 w-full"
+                  variant="mibotoncrear"
+                  className="w-full"
                 >
-                  Actualizar Unidad
+                  Crear Ciudad Zona
                 </Button>
               </div>
             </div>

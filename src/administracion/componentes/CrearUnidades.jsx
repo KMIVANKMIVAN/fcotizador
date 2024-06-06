@@ -17,7 +17,7 @@ import {
 import { obtenerDatosUsuario } from '../../auth/utilidades/datosUsuarioLocalStor';
 
 import { errorToast, exitoToast } from '../../lib/notificaciones';
-import { manejoError } from "../utilidades/mostrarErrores";
+import { manejoError } from '../utilidades/mostrarErrores';
 
 export function CrearUnidades() {
   const urlBackendBase = import.meta.env.VITE_URL_BACKEND;
@@ -68,22 +68,22 @@ export function CrearUnidades() {
 
   return (
     <>
-      <div className="flex flex-col md:flex-row p-5 border-4 border-cpalet-500 rounded-lg bg-cpalet-800">
+      <div className="flex flex-col md:flex-row p-5 border-4 border-cpalet-500 rounded-lg ">
         <form
           onSubmit={handleSubmit(crearUnidad)}
           className="flex flex-col md:flex-row w-full"
         >
           <div className="basis-full md:basis-1/2 p-2 ">
             <div className="py-2">
-              <Label className="text-white uppercase">unidad:</Label>
+              <Label className="text-cpalet-500 uppercase">unidad:</Label>
               <Input
-                className="text-white uppercase"
+                className="text-cpalet-500 uppercase"
                 type="text"
                 {...register('unidad', { required: true })}
               />
             </div>
             <div className="py-2">
-              <Label className="text-white uppercase">direccion:</Label>
+              <Label className="text-cpalet-500 uppercase">direccion:</Label>
               <Controller
                 name="direccion"
                 control={control}
@@ -93,7 +93,7 @@ export function CrearUnidades() {
                     onValueChange={(value) => field.onChange(value)}
                     value={field.value}
                   >
-                    <SelectTrigger className="w-full text-white uppercase">
+                    <SelectTrigger className="w-full text-cpalet-500 uppercase">
                       <SelectValue placeholder="seleccionar" />
                     </SelectTrigger>
                     <SelectContent>
@@ -116,9 +116,9 @@ export function CrearUnidades() {
           </div>
           <div className="basis-full md:basis-1/2 p-2 ">
             <div className="py-2">
-              <Label className="text-white uppercase">descripcion:</Label>
+              <Label className="text-cpalet-500 uppercase">descripcion:</Label>
               <Input
-                className="text-white uppercase"
+                className="text-cpalet-500 uppercase"
                 type="text"
                 {...register('descripcion', { required: true })}
               />
@@ -128,8 +128,8 @@ export function CrearUnidades() {
               <div className="mt-6">
                 <Button
                   type="submit"
-                  variant=""
-                  className="bg-green-500 w-full"
+                  variant="mibotoncrear"
+                  className="w-full"
                 >
                   Crear Unidad
                 </Button>

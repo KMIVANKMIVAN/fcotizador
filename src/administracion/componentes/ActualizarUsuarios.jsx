@@ -63,7 +63,11 @@ export function ActualizarUsuarios({ filaSeleccionada }) {
     try {
       console.log('data', data);
       const roles = rolesArray; // Los roles seleccionados
-      const respuesta = await axios.patch(urlUsuarios, { ...data, roles }, { headers });
+      const respuesta = await axios.patch(
+        urlUsuarios,
+        { ...data, roles },
+        { headers }
+      );
       exitoToast(`Usuario actualizado: ${respuesta.data.nombres}`, false);
       setRespuestaUsuarios(respuesta.data);
     } catch (error) {
@@ -122,38 +126,38 @@ export function ActualizarUsuarios({ filaSeleccionada }) {
 
   console.log('rolesArray', rolesArray);
   return (
-    <div className="flex flex-col md:flex-row p-5 border-4 border-cpalet-500 rounded-lg bg-cpalet-800">
+    <div className="flex flex-col md:flex-row p-5 border-4 border-cpalet-500 rounded-lg ">
       <form
         onSubmit={handleSubmit(actualizarUsuario)}
         className="flex flex-col md:flex-row w-full"
       >
         <div className="basis-full md:basis-1/2 p-2">
           <div className="py-2">
-            <Label className="text-white uppercase">nombres:</Label>
+            <Label className="text-cpalet-500 uppercase">nombres:</Label>
             <Input
-              className="text-white uppercase"
+              className="text-cpalet-500 uppercase"
               type="text"
               {...register('nombres', { required: true })}
             />
           </div>
           <div className="py-2">
-            <Label className="text-white uppercase">ci:</Label>
+            <Label className="text-cpalet-500 uppercase">ci:</Label>
             <Input
-              className="text-white uppercase"
+              className="text-cpalet-500 uppercase"
               type="text"
               {...register('ci', { required: true })}
             />
           </div>
           <div className="py-2">
-            <Label className="text-white uppercase">correo:</Label>
+            <Label className="text-cpalet-500 uppercase">correo:</Label>
             <Input
-              className="text-white lowercase"
+              className="text-cpalet-500 lowercase"
               type="text"
               {...register('correo', { required: true })}
             />
           </div>
           <div className="py-2">
-            <Label className="text-white uppercase">roles:</Label>
+            <Label className="text-cpalet-500 uppercase">roles:</Label>
             {respuestaRoles.map((role) => (
               <div key={role.id} className="basis-full md:basis-1/2 p-2">
                 <input
@@ -167,7 +171,7 @@ export function ActualizarUsuarios({ filaSeleccionada }) {
             ))}
           </div>
           <div className="py-2">
-            <Label className="text-white uppercase">cargo:</Label>
+            <Label className="text-cpalet-500 uppercase">cargo:</Label>
             <Controller
               name="cargo_id"
               control={control}
@@ -177,7 +181,7 @@ export function ActualizarUsuarios({ filaSeleccionada }) {
                   onValueChange={(value) => field.onChange(value)}
                   value={field.value.toString()}
                 >
-                  <SelectTrigger className="w-full text-white uppercase">
+                  <SelectTrigger className="w-full text-cpalet-500 uppercase">
                     <SelectValue placeholder="seleccionar" />
                   </SelectTrigger>
                   <SelectContent>
@@ -197,15 +201,15 @@ export function ActualizarUsuarios({ filaSeleccionada }) {
         </div>
         <div className="basis-full md:basis-1/2 p-2">
           <div className="py-2">
-            <Label className="text-white uppercase">apellidos:</Label>
+            <Label className="text-cpalet-500 uppercase">apellidos:</Label>
             <Input
-              className="text-white uppercase"
+              className="text-cpalet-500 uppercase"
               type="text"
               {...register('apellidos', { required: true })}
             />
           </div>
           <div className="py-2">
-            <Label className="text-white uppercase">complemento:</Label>
+            <Label className="text-cpalet-500 uppercase">complemento:</Label>
             <Controller
               name="complemento"
               control={control}
@@ -215,7 +219,7 @@ export function ActualizarUsuarios({ filaSeleccionada }) {
                   onValueChange={(value) => field.onChange(value)}
                   value={field.value}
                 >
-                  <SelectTrigger className="w-full text-white uppercase">
+                  <SelectTrigger className="w-full text-cpalet-500 uppercase">
                     <SelectValue placeholder="seleccionar" />
                   </SelectTrigger>
                   <SelectContent>
@@ -238,7 +242,7 @@ export function ActualizarUsuarios({ filaSeleccionada }) {
             />
           </div>
           <div className="py-2">
-            <Label className="text-white uppercase">activar:</Label>
+            <Label className="text-cpalet-500 uppercase">activar:</Label>
             <Controller
               name="es_activo"
               control={control}
@@ -248,7 +252,7 @@ export function ActualizarUsuarios({ filaSeleccionada }) {
                   onValueChange={(value) => field.onChange(value)}
                   value={field.value}
                 >
-                  <SelectTrigger className="w-full text-white uppercase">
+                  <SelectTrigger className="w-full text-cpalet-500 uppercase">
                     <SelectValue placeholder="seleccionar" />
                   </SelectTrigger>
                   <SelectContent>
@@ -263,7 +267,7 @@ export function ActualizarUsuarios({ filaSeleccionada }) {
             />
           </div>
           <div className="py-2">
-            <Label className="text-white uppercase">sucursal:</Label>
+            <Label className="text-cpalet-500 uppercase">sucursal:</Label>
             <Controller
               name="sucursal_id"
               control={control}
@@ -273,7 +277,7 @@ export function ActualizarUsuarios({ filaSeleccionada }) {
                   onValueChange={(value) => field.onChange(value)}
                   value={field.value.toString()}
                 >
-                  <SelectTrigger className="w-full text-white uppercase">
+                  <SelectTrigger className="w-full text-cpalet-500 uppercase">
                     <SelectValue placeholder="seleccionar" />
                   </SelectTrigger>
                   <SelectContent>

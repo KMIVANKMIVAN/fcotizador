@@ -8,17 +8,17 @@ import { Button } from '@/components/ui/button';
 import { obtenerDatosUsuario } from '../../auth/utilidades/datosUsuarioLocalStor';
 
 import { errorToast, exitoToast } from '../../lib/notificaciones';
-import { manejoError } from "../utilidades/mostrarErrores";
+import { manejoError } from '../utilidades/mostrarErrores';
 
-export function CrearDepartamento() {
+export function CrearCiudad() {
   const urlBackendBase = import.meta.env.VITE_URL_BACKEND;
-  const urlDepartamentos = `${urlBackendBase}departamentos`;
+  const urlCiudades = `${urlBackendBase}ciudades`;
 
   const headers = {
     Authorization: `Bearer ${obtenerDatosUsuario().tk}`,
   };
 
-  const [respuestaDepartamentos, setRespuestaDepartamentos] = useState([]);
+  const [respuestaCiudades, setRespuestaCiudades] = useState([]);
   const {
     register,
     handleSubmit,
@@ -28,35 +28,40 @@ export function CrearDepartamento() {
     formState: { errors },
   } = useForm();
 
-  const crearDepartamentos = async (data) => {
+  const crearCiudades = async (data) => {
     try {
-      const respuesta = await axios.post(urlDepartamentos, data, { headers });
-      exitoToast(
-        `Se Creo el Departamento: ${respuesta.data.departamento}`,
-        false
-      );
-      setRespuestaDepartamentos(respuesta.data);
+      const respuesta = await axios.post(urlCiudades, data, { headers });
+      exitoToast(`Se Creo la Ciudad: ${respuesta.data.ciudad}`, false);
+      setRespuestaCiudades(respuesta.data);
       reset();
     } catch (error) {
-      setRespuestaDepartamentos([]);
+      setRespuestaCiudades([]);
       manejoError(error);
     }
   };
 
   return (
     <>
-      <div className="flex flex-col md:flex-row p-5 border-4 border-cpalet-500 rounded-lg bg-cpalet-800">
+      <div className="flex flex-col md:flex-row p-5 border-4 border-cpalet-500 rounded-lg ">
         <form
-          onSubmit={handleSubmit(crearDepartamentos)}
+          onSubmit={handleSubmit(crearCiudades)}
           className="flex flex-col md:flex-row w-full"
         >
           <div className="basis-full md:basis-1/2 p-2 ">
             <div className="py-2">
-              <Label className="text-white uppercase">departamento:</Label>
+              <Label className="text-cpalet-500 uppercase">ciudad:</Label>
               <Input
-                className="text-white uppercase"
+                className="text-cpalet-500 uppercase"
                 type="text"
-                {...register('departamento', { required: true })}
+                {...register('ciudad', { required: true })}
+              />
+            </div>
+            <div className="py-2">
+              <Label className="text-cpalet-500 uppercase">valor:</Label>
+              <Input
+                className="text-cpalet-500 uppercase"
+                type="number"
+                {...register('valor', { required: true })}
               />
             </div>
           </div>
@@ -65,10 +70,10 @@ export function CrearDepartamento() {
               <div className="mt-6">
                 <Button
                   type="submit"
-                  variant=""
-                  className="bg-green-500 w-full"
+                  variant="mibotoncrear"
+                  className="w-full"
                 >
-                  Crear Departamento
+                  Crear Ciudad
                 </Button>
               </div>
             </div>

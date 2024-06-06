@@ -22,14 +22,14 @@ import { manejoError } from '../utilidades/mostrarErrores';
 export function ActualizarSucursal({ filaSeleccionada }) {
   const urlBackendBase = import.meta.env.VITE_URL_BACKEND;
   const urlSucursales = `${urlBackendBase}sucursales/${filaSeleccionada.id}`;
-  const urlDepartamentos = `${urlBackendBase}departamentos`;
+  const urlCiudades = `${urlBackendBase}ciudades`;
 
   const headers = {
     Authorization: `Bearer ${obtenerDatosUsuario().tk}`,
   };
 
   const [respuestaSucursales, setRespuestaSucursales] = useState([]);
-  const [respuestaDepartamentos, setRespuestaDepartamentos] = useState([]);
+  const [respuestaCiudades, setRespuestaCiudades] = useState([]);
 
   const {
     register,
@@ -42,11 +42,11 @@ export function ActualizarSucursal({ filaSeleccionada }) {
     defaultValues: {
       sucursal: filaSeleccionada.sucursal,
       ubicacion: filaSeleccionada.ubicacion,
-      departamento_id: filaSeleccionada.departamento.id.toString(),
+      ciudad_id: filaSeleccionada.ciudad.id.toString(),
     },
   });
 
-  const crearSucursal = async (data) => {
+  const actualizarSucursal = async (data) => {
     try {
       const respuesta = await axios.patch(urlSucursales, data, { headers });
       exitoToast(`Se Actualizo la Sucursal: ${respuesta.data.sucursal}`, false);
@@ -57,10 +57,10 @@ export function ActualizarSucursal({ filaSeleccionada }) {
     }
   };
 
-  const pedirDepartamentos = async () => {
-    const respuesta = await axios.get(urlDepartamentos, { headers });
+  const pedirCiudades = async () => {
+    const respuesta = await axios.get(urlCiudades, { headers });
     try {
-      setRespuestaDepartamentos(respuesta.data);
+      setRespuestaCiudades(respuesta.data);
     } catch (error) {
       setRespuestaUsuarios([]);
       manejoError(error);
@@ -68,47 +68,47 @@ export function ActualizarSucursal({ filaSeleccionada }) {
   };
 
   useEffect(() => {
-    pedirDepartamentos();
+    pedirCiudades();
   }, []);
 
   return (
     <>
-      <div className="flex flex-col md:flex-row p-5 border-4 border-cpalet-500 rounded-lg bg-cpalet-800">
+      <div className="flex flex-col md:flex-row p-5 border-4 border-cpalet-500 rounded-lg ">
         <form
-          onSubmit={handleSubmit(crearSucursal)}
+          onSubmit={handleSubmit(actualizarSucursal)}
           className="flex flex-col md:flex-row w-full"
         >
           <div className="basis-full md:basis-1/2 p-2 ">
             <div className="py-2">
-              <Label className="text-white uppercase">sucursal:</Label>
+              <Label className="text-cpalet-500 uppercase">sucursal:</Label>
               <Input
-                className="text-white uppercase"
+                className="text-cpalet-500 uppercase"
                 type="text"
                 {...register('sucursal', { required: true })}
               />
             </div>
             <div className="py-2">
-              <Label className="text-white uppercase">departamento:</Label>
+              <Label className="text-cpalet-500 uppercase">ciudad:</Label>
               <Controller
-                name="departamento_id"
+                name="ciudad_id"
                 control={control}
                 render={({ field }) => (
                   <Select
                     onValueChange={(value) => field.onChange(value)}
                     value={field.value}
                   >
-                    <SelectTrigger className="w-full text-white uppercase">
+                    <SelectTrigger className="w-full text-cpalet-500 uppercase">
                       <SelectValue placeholder="Seleccionar" />
                     </SelectTrigger>
                     <SelectContent>
                       <SelectGroup>
-                        <SelectLabel>DEPARTAMENTOS:</SelectLabel>
-                        {respuestaDepartamentos.map((departamento) => (
+                        <SelectLabel>CIUDADES:</SelectLabel>
+                        {respuestaCiudades.map((ciudad) => (
                           <SelectItem
-                            key={departamento.id}
-                            value={departamento.id.toString()}
+                            key={ciudad.id}
+                            value={ciudad.id.toString()}
                           >
-                            {departamento.departamento}
+                            {ciudad.ciudad}
                           </SelectItem>
                         ))}
                       </SelectGroup>
@@ -120,9 +120,9 @@ export function ActualizarSucursal({ filaSeleccionada }) {
           </div>
           <div className="basis-full md:basis-1/2 p-2 ">
             <div className="py-2">
-              <Label className="text-white uppercase">ubicacion:</Label>
+              <Label className="text-cpalet-500 uppercase">ubicacion:</Label>
               <Input
-                className="text-white uppercase"
+                className="text-cpalet-500 uppercase"
                 type="text"
                 {...register('ubicacion', { required: true })}
               />

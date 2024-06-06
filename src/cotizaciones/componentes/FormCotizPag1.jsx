@@ -50,12 +50,12 @@ export function FormCotizPag1() {
       >
         <div className="w-full md:w-1/2 p-2">
           <div className="py-2">
-            <Label className="text-white uppercase">Departamentos:</Label>
+            <Label className="text-cpalet-500 uppercase">Departamentos:</Label>
             <Select
             // onValueChange={setSelectedDepartamento}
             // value={selectedDepartamento}
             >
-              <SelectTrigger className="w-full text-white uppercase">
+              <SelectTrigger className="w-full text-cpalet-500 uppercase">
                 <SelectValue placeholder="Seleccionar" />
               </SelectTrigger>
               <SelectContent>
@@ -75,13 +75,13 @@ export function FormCotizPag1() {
           </div>
 
           <div className="py-2">
-            <Label className="text-white uppercase">Zonas:</Label>
+            <Label className="text-cpalet-500 uppercase">Zonas:</Label>
 
             <Select
             // onValueChange={(value) => field.onChange(value)}
             // value={field.value}
             >
-              <SelectTrigger className="w-full text-white uppercase">
+              <SelectTrigger className="w-full text-cpalet-500 uppercase">
                 <SelectValue placeholder="Seleccionar" />
               </SelectTrigger>
               <SelectContent>
@@ -98,13 +98,13 @@ export function FormCotizPag1() {
           </div>
 
           <div className="py-2">
-            <Label className="text-white uppercase">Tipo de Cotización:</Label>
+            <Label className="text-cpalet-500 uppercase">Tipo de Cotización:</Label>
 
             <Select
             // onValueChange={(value) => field.onChange(value)}
             // value={field.value}
             >
-              <SelectTrigger className="w-full text-white uppercase">
+              <SelectTrigger className="w-full text-cpalet-500 uppercase">
                 <SelectValue placeholder="Seleccionar" />
               </SelectTrigger>
               <SelectContent>
@@ -126,13 +126,13 @@ export function FormCotizPag1() {
 
         <div className="w-full md:w-1/2 p-2">
           <div className="py-2">
-            <Label className="text-white uppercase">Orientación:</Label>
+            <Label className="text-cpalet-500 uppercase">Orientación:</Label>
 
             <Select
             // onValueChange={(value) => field.onChange(value)}
             // value={field.value}
             >
-              <SelectTrigger className="w-full text-white uppercase">
+              <SelectTrigger className="w-full text-cpalet-500 uppercase">
                 <SelectValue placeholder="Seleccionar" />
               </SelectTrigger>
               <SelectContent>
@@ -149,13 +149,13 @@ export function FormCotizPag1() {
           </div>
 
           <div className="py-2">
-            <Label className="text-white uppercase">Tipo de Pared:</Label>
+            <Label className="text-cpalet-500 uppercase">Tipo de Pared:</Label>
 
             <Select
             // onValueChange={(value) => field.onChange(value)}
             // value={field.value}
             >
-              <SelectTrigger className="w-full text-white uppercase">
+              <SelectTrigger className="w-full text-cpalet-500 uppercase">
                 <SelectValue placeholder="Seleccionar" />
               </SelectTrigger>
               <SelectContent>

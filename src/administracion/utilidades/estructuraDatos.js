@@ -69,15 +69,16 @@ export const columnasRoles = [
   { id: 'actualizar', label: 'actualizar' },
   { id: 'rol', label: 'rol' },
 ];
-export const columnasDepartamento = [
+export const columnasCiudades = [
   { id: 'id', label: 'ID' },
   { id: 'actualizar', label: 'actualizar' },
-  { id: 'departamento', label: 'departamento' },
+  { id: 'ciudad', label: 'ciudad' },
+  { id: 'valor', label: 'valor' },
 ];
 export const columnasSucursales = [
   { id: 'id', label: 'ID' },
   { id: 'actualizar', label: 'actualizar' },
   { id: 'sucursal', label: 'sucursal' },
   { id: 'ubicacion', label: 'ubicacion' },
-  { id: 'departamento', label: 'departamento' },
+  { id: 'ciudad', label: 'ciudad' },
 ];

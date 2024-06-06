@@ -10,6 +10,7 @@ import { Domoticus } from './administracion/paginas/Domoticus';
 import { CambiarContras } from './administracion/paginas/CambiarContras';
 import { Cotizaciones } from './cotizaciones/paginas/Cotizaciones';
 import { Pruebas } from './administracion/paginas/Pruebas';
+import { AdminCotizaciones } from './admincotizaciones/paginas/AdminCotizaciones';
 
 const router = createBrowserRouter([
   {
@@ -39,6 +40,10 @@ const router = createBrowserRouter([
       {
         path: 'cotizaciones',
         element: <Cotizaciones />,
+      },
+      {
+        path: 'admincotizaciones',
+        element: <AdminCotizaciones />,
       },
     ],
   },

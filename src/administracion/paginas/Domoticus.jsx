@@ -12,7 +12,7 @@ import {
 import { CrearEmpresa } from '../componentes/CrearEmpresa';
 import { CrearSucursal } from '../componentes/CrearSucursal';
 import { CrearRol } from '../componentes/CrearRol';
-import { CrearDepartamento } from '../componentes/CrearDepartamento';
+import { CrearCiudad } from '../componentes/CrearCiudad';
 import { CrearDirecciones } from '../componentes/CrearDirecciones';
 import { CrearUnidades } from '../componentes/CrearUnidades';
 import { CrearCargo } from '../componentes/CrearCargo';
@@ -38,8 +38,8 @@ export function Domoticus() {
         return <CrearSucursal buscarUrl={buscarUrl} titulo={titulo} />;
       case 'CrearRol':
         return <CrearRol buscarUrl={buscarUrl} titulo={titulo} />;
-      case 'CrearDepartamento':
-        return <CrearDepartamento buscarUrl={buscarUrl} titulo={titulo} />;
+      case 'CrearCiudad':
+        return <CrearCiudad buscarUrl={buscarUrl} titulo={titulo} />;
       case 'CrearDirecciones':
         return <CrearDirecciones buscarUrl={buscarUrl} titulo={titulo} />;
       case 'CrearUnidades':
@@ -61,13 +61,9 @@ export function Domoticus() {
                 handleSelection('CrearEmpresa', 'empresas', 'Empresa')
               }
             >
-              <h1 className="menuDomoticus">
-                Crear Empresa
-              </h1>
+              <h1 className="menuDomoticus">Crear Empresa</h1>
             </BreadcrumbItem>
-            <BreadcrumbSeparator>
-              <Slash />
-            </BreadcrumbSeparator>
+            <BreadcrumbSeparator></BreadcrumbSeparator>
             <BreadcrumbItem
               onClick={() =>
                 handleSelection(
@@ -79,9 +75,7 @@ export function Domoticus() {
             >
               <h1 className="menuDomoticus">Crear Direcciones</h1>
             </BreadcrumbItem>
-            <BreadcrumbSeparator>
-              <Slash />
-            </BreadcrumbSeparator>
+            <BreadcrumbSeparator></BreadcrumbSeparator>
             <BreadcrumbItem
               onClick={() =>
                 handleSelection('CrearUnidades', 'unidades', 'Unidades')
@@ -89,39 +83,27 @@ export function Domoticus() {
             >
               <h1 className="menuDomoticus">Crear Unidades</h1>
             </BreadcrumbItem>
-            <BreadcrumbSeparator>
-              <Slash />
-            </BreadcrumbSeparator>
+            <BreadcrumbSeparator></BreadcrumbSeparator>
             <BreadcrumbItem
               onClick={() => handleSelection('CrearCargo', 'cargos', 'Cargo')}
             >
               <h1 className="menuDomoticus">Crear Cargo</h1>
             </BreadcrumbItem>
-            <BreadcrumbSeparator>
-              <Slash />
-            </BreadcrumbSeparator>
+            <BreadcrumbSeparator></BreadcrumbSeparator>
             <BreadcrumbItem
               onClick={() => handleSelection('CrearRol', 'roles', 'Rol')}
             >
               <h1 className="menuDomoticus">Crear Rol</h1>
             </BreadcrumbItem>
-            <BreadcrumbSeparator>
-              <Slash />
-            </BreadcrumbSeparator>
+            <BreadcrumbSeparator></BreadcrumbSeparator>
             <BreadcrumbItem
               onClick={() =>
-                handleSelection(
-                  'CrearDepartamento',
-                  'departamentos',
-                  'Departamento'
-                )
+                handleSelection('CrearCiudad', 'ciudades', 'Ciudad')
               }
             >
-              <h1 className="menuDomoticus">Crear Departamento</h1>
+              <h1 className="menuDomoticus">Crear Ciudad</h1>
             </BreadcrumbItem>
-            <BreadcrumbSeparator>
-              <Slash />
-            </BreadcrumbSeparator>
+            <BreadcrumbSeparator></BreadcrumbSeparator>
             <BreadcrumbItem
               onClick={() =>
                 handleSelection('CrearSucursal', 'sucursales', 'Sucursal')

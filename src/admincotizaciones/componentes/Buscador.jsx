@@ -4,21 +4,19 @@ import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { obtenerDatosUsuario } from '../../auth/utilidades/datosUsuarioLocalStor';
 
-import { errorToast, exitoToast } from '../../lib/notificaciones';
 import { manejoError } from '../utilidades/mostrarErrores';
 
 import { Tablas } from './Tablas';
-import { TablaUsuario } from './TablaUsuario';
 
 import {
-  columnasCargos,
-  columnasCiudades,
-  columnasDirecciones,
-  columnasEmpresas,
-  columnasRoles,
-  columnasSucursales,
-  columnasUnidades,
-  columnasUsuario,
+  columnasCiudadzona,
+  columnasCotizacion,
+  columnasNivelpiso,
+  columnasOrientacion,
+  columnasTipopared,
+  columnasTiposuelo,
+  columnasTipotecho,
+  columnasTipovidrio,
 } from '../utilidades/estructuraDatos';
 
 export function Buscador({ buscarUrl, titulo }) {
@@ -46,49 +44,42 @@ export function Buscador({ buscarUrl, titulo }) {
   }, [titulo]);
 
   const columnasMap = {
-    Empresa: columnasEmpresas,
-    Direcciones: columnasDirecciones,
-    Unidades: columnasUnidades,
-    Cargo: columnasCargos,
-    Rol: columnasRoles,
-    Ciudad: columnasCiudades,
-    Sucursal: columnasSucursales,
-    Usuarios: columnasUsuario,
+    Ciudad_Zona: columnasCiudadzona,
+    Cotizacion: columnasCotizacion,
+    Nivel_de_Piso: columnasNivelpiso,
+    Orientacion: columnasOrientacion,
+    Tipo_de_Pared: columnasTipopared,
+    Tipo_de_Suelo: columnasTiposuelo,
+    Tipo_de_Techo: columnasTipotecho,
+    Tipo_de_Vidrio: columnasTipovidrio,
   };
 
   const columnas = columnasMap[titulo] || [];
+  const tituloSinSubrayados = titulo.replace(/_/g, ' ');
+
   return (
     <>
       <div className="flex flex-col items-center my-4">
-        <p className="text-2xl text-cpalet-500">{titulo}</p>
+        <p className="text-2xl text-cpalet-500">{tituloSinSubrayados}</p>
         <div className="flex w-full md:w-[500px] items-center space-x-2 my-5">
           <Input className="flex-grow" type="text" placeholder="Buscar..." />
           <Button
-            type="submit"
+            // className="bg-cpalet-500"
             variant="mibotonprimario"
+            type="submit"
             onClick={() => buscarDatos()}
           >
             Buscar
           </Button>
         </div>
       </div>
-      {titulo !== 'Usuarios' && (
+      {titulo && (
         <div>
           {respuestaBuscar && (
             <Tablas
               columnas={columnas}
               respuesta={respuestaBuscar}
               titulo={titulo}
-            />
-          )}
-        </div>
-      )}
-      {titulo === 'Usuarios' && (
-        <div className="">
-          {respuestaBuscar && (
-            <TablaUsuario
-              columnasUsuario={columnas}
-              respuestaUsuarios={respuestaBuscar}
             />
           )}
         </div>

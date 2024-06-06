@@ -53,8 +53,8 @@ export function CrearCargo() {
   };
 
   const pedirUnidades = async () => {
-    const respuesta = await axios.get(urlUnidades, { headers });
     try {
+      const respuesta = await axios.get(urlUnidades, { headers });
       setRespuestaUnidades(respuesta.data);
     } catch (error) {
       setRespuestaUnidades([]);
@@ -67,22 +67,22 @@ export function CrearCargo() {
 
   return (
     <>
-      <div className="flex flex-col md:flex-row p-5 border-4 border-cpalet-500 rounded-lg bg-cpalet-800">
+      <div className="flex flex-col md:flex-row p-5 border-4 border-cpalet-500 rounded-lg ">
         <form
           onSubmit={handleSubmit(crearCargo)}
           className="flex flex-col md:flex-row w-full"
         >
           <div className="basis-full md:basis-1/2 p-2 ">
             <div className="py-2">
-              <Label className="text-white uppercase">cargo:</Label>
+              <Label className="text-cpalet-500 uppercase">cargo:</Label>
               <Input
-                className="text-white uppercase"
+                className="text-cpalet-500 uppercase"
                 type="text"
                 {...register('cargo', { required: true })}
               />
             </div>
             <div className="py-2">
-              <Label className="text-white uppercase">unidad:</Label>
+              <Label className="text-cpalet-500 uppercase">unidad:</Label>
               <Controller
                 name="unidad"
                 control={control}
@@ -92,7 +92,7 @@ export function CrearCargo() {
                     onValueChange={(value) => field.onChange(value)}
                     value={field.value}
                   >
-                    <SelectTrigger className="w-full text-white uppercase">
+                    <SelectTrigger className="w-full text-cpalet-500 uppercase">
                       <SelectValue placeholder="seleccionar" />
                     </SelectTrigger>
                     <SelectContent>
@@ -115,9 +115,9 @@ export function CrearCargo() {
           </div>
           <div className="basis-full md:basis-1/2 p-2 ">
             <div className="py-2">
-              <Label className="text-white uppercase">descripcion:</Label>
+              <Label className="text-cpalet-500 uppercase">descripcion:</Label>
               <Input
-                className="text-white uppercase"
+                className="text-cpalet-500 uppercase"
                 type="text"
                 {...register('descripcion', { required: true })}
               />
@@ -127,8 +127,8 @@ export function CrearCargo() {
               <div className="mt-6">
                 <Button
                   type="submit"
-                  variant=""
-                  className="bg-green-500 w-full"
+                  variant="mibotoncrear"
+                  className="w-full"
                 >
                   Crear Empresa
                 </Button>
