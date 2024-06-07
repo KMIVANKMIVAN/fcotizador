@@ -50,11 +50,11 @@ export function CrearTipocotizacion() {
         >
           <div className="basis-full md:basis-1/2 p-2 ">
             <div className="py-2">
-              <Label className="text-cpalet-500 uppercase">
+              <Label className="text-cpalet-500 capitalize">
                 tipo de cotizacion:
               </Label>
               <Input
-                className="text-cpalet-500 uppercase"
+                className="text-cpalet-500 capitalize"
                 type="text"
                 {...register('tipocotizacion', { required: true })}
               />

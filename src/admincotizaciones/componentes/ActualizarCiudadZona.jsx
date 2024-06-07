@@ -81,15 +81,15 @@ export function ActualizarCiudadZona({ filaSeleccionada }) {
         >
           <div className="basis-full md:basis-1/2 p-2 ">
             <div className="py-2">
-              <Label className="text-cpalet-500 uppercase">ciudad zona:</Label>
+              <Label className="text-cpalet-500 capitalize">ciudad zona:</Label>
               <Input
-                className="text-cpalet-500 uppercase"
+                className="text-cpalet-500 capitalize"
                 type="text"
                 {...register('ciudadzona', { required: true })}
               />
             </div>
             <div className="py-2">
-              <Label className="text-cpalet-500 uppercase">ciudad:</Label>
+              <Label className="text-cpalet-500 capitalize">ciudad:</Label>
               <Controller
                 name="ciudad_id"
                 control={control}
@@ -99,7 +99,7 @@ export function ActualizarCiudadZona({ filaSeleccionada }) {
                     onValueChange={(value) => field.onChange(value)}
                     value={field.value}
                   >
-                    <SelectTrigger className="w-full text-cpalet-500 uppercase">
+                    <SelectTrigger className="w-full text-cpalet-500 capitalize">
                       <SelectValue placeholder="seleccionar" />
                     </SelectTrigger>
                     <SelectContent>
@@ -122,9 +122,9 @@ export function ActualizarCiudadZona({ filaSeleccionada }) {
           </div>
           <div className="basis-full md:basis-1/2 p-2 ">
             <div className="py-2">
-              <Label className="text-cpalet-500 uppercase">valor:</Label>
+              <Label className="text-cpalet-500 capitalize">valor:</Label>
               <Input
-                className="text-cpalet-500 uppercase"
+                className="text-cpalet-500 capitalize"
                 type="number"
                 step="0.0001"
                 min="0"

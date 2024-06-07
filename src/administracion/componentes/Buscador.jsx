@@ -32,8 +32,8 @@ export function Buscador({ buscarUrl, titulo }) {
   };
 
   const buscarDatos = async () => {
-    const respuesta = await axios.get(url, { headers });
     try {
+      const respuesta = await axios.get(url, { headers });
       setRespuestaBuscar(respuesta.data);
     } catch (error) {
       setRespuestaBuscar([]);

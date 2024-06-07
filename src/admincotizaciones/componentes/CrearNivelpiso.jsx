@@ -50,11 +50,11 @@ export function CrearNivelpiso() {
         >
           <div className="basis-full md:basis-1/2 p-2 ">
             <div className="py-2">
-              <Label className="text-cpalet-500 uppercase">
+              <Label className="text-cpalet-500 capitalize">
                 nivel de piso:
               </Label>
               <Input
-                className="text-cpalet-500 uppercase"
+                className="text-cpalet-500 capitalize"
                 type="text"
                 {...register('nivelpiso', { required: true })}
               />
@@ -62,9 +62,9 @@ export function CrearNivelpiso() {
           </div>
           <div className="basis-full md:basis-1/2 p-2 ">
             <div className="py-2">
-              <Label className="text-cpalet-500 uppercase">valor:</Label>
+              <Label className="text-cpalet-500 capitalize">valor:</Label>
               <Input
-                className="text-cpalet-500 uppercase"
+                className="text-cpalet-500 capitalize"
                 type="number"
                 {...register('valor', { required: true })}
               />

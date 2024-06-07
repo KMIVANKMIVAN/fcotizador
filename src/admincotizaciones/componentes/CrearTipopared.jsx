@@ -50,11 +50,11 @@ export function CrearTipopared() {
         >
           <div className="basis-full md:basis-1/2 p-2 ">
             <div className="py-2">
-              <Label className="text-cpalet-500 uppercase">
+              <Label className="text-cpalet-500 capitalize">
                 tipo de pared:
               </Label>
               <Input
-                className="text-cpalet-500 uppercase"
+                className="text-cpalet-500 capitalize"
                 type="text"
                 {...register('tipopared', { required: true })}
               />
@@ -62,9 +62,9 @@ export function CrearTipopared() {
           </div>
           <div className="basis-full md:basis-1/2 p-2 ">
             <div className="py-2">
-              <Label className="text-cpalet-500 uppercase">valor:</Label>
+              <Label className="text-cpalet-500 capitalize">valor:</Label>
               <Input
-                className="text-cpalet-500 uppercase"
+                className="text-cpalet-500 capitalize"
                 type="number"
                 {...register('valor', { required: true })}
               />

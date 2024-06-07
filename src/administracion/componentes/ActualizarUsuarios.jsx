@@ -124,7 +124,6 @@ export function ActualizarUsuarios({ filaSeleccionada }) {
     }
   };
 
-  console.log('rolesArray', rolesArray);
   return (
     <div className="flex flex-col md:flex-row p-5 border-4 border-cpalet-500 rounded-lg ">
       <form
@@ -133,23 +132,23 @@ export function ActualizarUsuarios({ filaSeleccionada }) {
       >
         <div className="basis-full md:basis-1/2 p-2">
           <div className="py-2">
-            <Label className="text-cpalet-500 uppercase">nombres:</Label>
+            <Label className="text-cpalet-500 capitalize">nombres:</Label>
             <Input
-              className="text-cpalet-500 uppercase"
+              className="text-cpalet-500 capitalize"
               type="text"
               {...register('nombres', { required: true })}
             />
           </div>
           <div className="py-2">
-            <Label className="text-cpalet-500 uppercase">ci:</Label>
+            <Label className="text-cpalet-500 capitalize">ci:</Label>
             <Input
-              className="text-cpalet-500 uppercase"
+              className="text-cpalet-500 capitalize"
               type="text"
               {...register('ci', { required: true })}
             />
           </div>
           <div className="py-2">
-            <Label className="text-cpalet-500 uppercase">correo:</Label>
+            <Label className="text-cpalet-500 capitalize">correo:</Label>
             <Input
               className="text-cpalet-500 lowercase"
               type="text"
@@ -157,7 +156,7 @@ export function ActualizarUsuarios({ filaSeleccionada }) {
             />
           </div>
           <div className="py-2">
-            <Label className="text-cpalet-500 uppercase">roles:</Label>
+            <Label className="text-cpalet-500 capitalize">roles:</Label>
             {respuestaRoles.map((role) => (
               <div key={role.id} className="basis-full md:basis-1/2 p-2">
                 <input
@@ -166,12 +165,12 @@ export function ActualizarUsuarios({ filaSeleccionada }) {
                   onChange={handleCheckboxChange}
                   checked={rolesArray.includes(role.id)}
                 />
-                <label>{role.rol}</label>
+                <span className="text-cpalet-500 capitalize">{role.rol}</span>
               </div>
             ))}
           </div>
           <div className="py-2 md:w-64">
-            <Label className="text-cpalet-500 uppercase">cargo:</Label>
+            <Label className="text-cpalet-500 capitalize">cargo:</Label>
             <Controller
               name="cargo_id"
               control={control}
@@ -182,7 +181,7 @@ export function ActualizarUsuarios({ filaSeleccionada }) {
                   value={field.value.toString()}
                   
                 >
-                  <SelectTrigger className="w-full text-cpalet-500 uppercase">
+                  <SelectTrigger className="w-full text-cpalet-500 capitalize">
                     <SelectValue placeholder="seleccionar" />
                   </SelectTrigger>
                   <SelectContent>
@@ -202,15 +201,15 @@ export function ActualizarUsuarios({ filaSeleccionada }) {
         </div>
         <div className="basis-full md:basis-1/2 p-2">
           <div className="py-2">
-            <Label className="text-cpalet-500 uppercase">apellidos:</Label>
+            <Label className="text-cpalet-500 capitalize">apellidos:</Label>
             <Input
-              className="text-cpalet-500 uppercase"
+              className="text-cpalet-500 capitalize"
               type="text"
               {...register('apellidos', { required: true })}
             />
           </div>
           <div className="py-2">
-            <Label className="text-cpalet-500 uppercase">complemento:</Label>
+            <Label className="text-cpalet-500 capitalize">complemento:</Label>
             <Controller
               name="complemento"
               control={control}
@@ -220,7 +219,7 @@ export function ActualizarUsuarios({ filaSeleccionada }) {
                   onValueChange={(value) => field.onChange(value)}
                   value={field.value}
                 >
-                  <SelectTrigger className="w-full text-cpalet-500 uppercase">
+                  <SelectTrigger className="w-full text-cpalet-500 capitalize">
                     <SelectValue placeholder="seleccionar" />
                   </SelectTrigger>
                   <SelectContent>
@@ -243,7 +242,7 @@ export function ActualizarUsuarios({ filaSeleccionada }) {
             />
           </div>
           <div className="py-2">
-            <Label className="text-cpalet-500 uppercase">activar:</Label>
+            <Label className="text-cpalet-500 capitalize">activar:</Label>
             <Controller
               name="es_activo"
               control={control}
@@ -253,7 +252,7 @@ export function ActualizarUsuarios({ filaSeleccionada }) {
                   onValueChange={(value) => field.onChange(value)}
                   value={field.value}
                 >
-                  <SelectTrigger className="w-full text-cpalet-500 uppercase">
+                  <SelectTrigger className="w-full text-cpalet-500 capitalize">
                     <SelectValue placeholder="seleccionar" />
                   </SelectTrigger>
                   <SelectContent>
@@ -268,7 +267,7 @@ export function ActualizarUsuarios({ filaSeleccionada }) {
             />
           </div>
           <div className="py-2">
-            <Label className="text-cpalet-500 uppercase">sucursal:</Label>
+            <Label className="text-cpalet-500 capitalize">sucursal:</Label>
             <Controller
               name="sucursal_id"
               control={control}
@@ -278,7 +277,7 @@ export function ActualizarUsuarios({ filaSeleccionada }) {
                   onValueChange={(value) => field.onChange(value)}
                   value={field.value.toString()}
                 >
-                  <SelectTrigger className="w-full text-cpalet-500 uppercase">
+                  <SelectTrigger className="w-full text-cpalet-500 capitalize">
                     <SelectValue placeholder="seleccionar" />
                   </SelectTrigger>
                   <SelectContent>

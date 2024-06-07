@@ -54,17 +54,17 @@ export function ActualizarCiudad({ filaSeleccionada }) {
         >
           <div className="basis-full md:basis-1/2 p-2 ">
             <div className="py-2">
-              <Label className="text-cpalet-500 uppercase">ciudad:</Label>
+              <Label className="text-cpalet-500 capitalize">ciudad:</Label>
               <Input
-                className="text-cpalet-500 uppercase"
+                className="text-cpalet-500 capitalize"
                 type="text"
                 {...register('ciudad', { required: true })}
               />
             </div>
             <div className="py-2">
-              <Label className="text-cpalet-500 uppercase">valor:</Label>
+              <Label className="text-cpalet-500 capitalize">valor:</Label>
               <Input
-                className="text-cpalet-500 uppercase"
+                className="text-cpalet-500 capitalize"
                 type="number"
                 step="0.0001"
                 min="0"

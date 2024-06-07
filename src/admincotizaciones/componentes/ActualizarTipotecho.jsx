@@ -55,11 +55,11 @@ export function ActualizarTipotecho({ filaSeleccionada }) {
         >
           <div className="basis-full md:basis-1/2 p-2 ">
             <div className="py-2">
-              <Label className="text-cpalet-500 uppercase">
+              <Label className="text-cpalet-500 capitalize">
                 tipo de techo:
               </Label>
               <Input
-                className="text-cpalet-500 uppercase"
+                className="text-cpalet-500 capitalize"
                 type="text"
                 {...register('tipotecho', { required: true })}
               />
@@ -67,9 +67,9 @@ export function ActualizarTipotecho({ filaSeleccionada }) {
           </div>
           <div className="basis-full md:basis-1/2 p-2 ">
             <div className="py-2">
-              <Label className="text-cpalet-500 uppercase">valor:</Label>
+              <Label className="text-cpalet-500 capitalize">valor:</Label>
               <Input
-                className="text-cpalet-500 uppercase"
+                className="text-cpalet-500 capitalize"
                 type="number"
                 step="0.0001"
                 min="0"

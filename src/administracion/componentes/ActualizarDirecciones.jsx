@@ -84,15 +84,15 @@ export function ActualizarDirecciones({ filaSeleccionada }) {
         >
           <div className="basis-full md:basis-1/2 p-2 ">
             <div className="py-2">
-              <Label className="text-cpalet-500 uppercase">direccion:</Label>
+              <Label className="text-cpalet-500 capitalize">direccion:</Label>
               <Input
-                className="text-cpalet-500 uppercase"
+                className="text-cpalet-500 capitalize"
                 type="text"
                 {...register('direccion', { required: true })}
               />
             </div>
             <div className="py-2">
-              <Label className="text-cpalet-500 uppercase">empresa:</Label>
+              <Label className="text-cpalet-500 capitalize">empresa:</Label>
               <Controller
                 name="empresa_id"
                 control={control}
@@ -101,7 +101,7 @@ export function ActualizarDirecciones({ filaSeleccionada }) {
                     onValueChange={(value) => field.onChange(value)}
                     value={field.value}
                   >
-                    <SelectTrigger className="w-full text-cpalet-500 uppercase">
+                    <SelectTrigger className="w-full text-cpalet-500 capitalize">
                       <SelectValue placeholder="seleccionar" />
                     </SelectTrigger>
                     <SelectContent>
@@ -124,9 +124,9 @@ export function ActualizarDirecciones({ filaSeleccionada }) {
           </div>
           <div className="basis-full md:basis-1/2 p-2 ">
             <div className="py-2">
-              <Label className="text-cpalet-500 uppercase">descripcion:</Label>
+              <Label className="text-cpalet-500 capitalize">descripcion:</Label>
               <Input
-                className="text-cpalet-500 uppercase"
+                className="text-cpalet-500 capitalize"
                 type="text"
                 {...register('descripcion', { required: true })}
               />

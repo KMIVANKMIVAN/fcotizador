@@ -17,22 +17,26 @@ import {
   columnasTiposuelo,
   columnasTipotecho,
   columnasTipovidrio,
-  columnasTipocotizacion
+  columnasTipocotizacion,
 } from '../utilidades/estructuraDatos';
 
-export function Buscador({ buscarUrl, titulo }) {
+export function Buscador({ buscarUrl, buscarUrlPorNom, titulo }) {
   const urlBackendBase = import.meta.env.VITE_URL_BACKEND;
-  const url = `${urlBackendBase}${buscarUrl}`;
 
   const [respuestaBuscar, setRespuestaBuscar] = useState([]);
+  const [textoBuscar, setTextoBuscar] = useState('');
 
   const headers = {
     Authorization: `Bearer ${obtenerDatosUsuario().tk}`,
   };
 
   const buscarDatos = async () => {
-    const respuesta = await axios.get(url, { headers });
+    const url = textoBuscar
+      ? `${urlBackendBase}${buscarUrl}/${buscarUrlPorNom}/${textoBuscar}`
+      : `${urlBackendBase}${buscarUrl}`;
+
     try {
+      const respuesta = await axios.get(url, { headers });
       setRespuestaBuscar(respuesta.data);
     } catch (error) {
       setRespuestaBuscar([]);
@@ -58,13 +62,23 @@ export function Buscador({ buscarUrl, titulo }) {
 
   const columnas = columnasMap[titulo] || [];
   const tituloSinSubrayados = titulo.replace(/_/g, ' ');
-
+  console.log('respuestaBuscar', respuestaBuscar);
+  useEffect(() => {
+    setRespuestaBuscar([]);
+    setTextoBuscar(''); // Restablece textoBuscar cuando cambia el título
+  }, [titulo]);
   return (
     <>
       <div className="flex flex-col items-center my-4">
         <p className="text-2xl text-cpalet-500">{tituloSinSubrayados}</p>
         <div className="flex w-full md:w-[500px] items-center space-x-2 my-5">
-          <Input className="flex-grow" type="text" placeholder="Buscar..." />
+          <Input
+            className="flex-grow"
+            type="text"
+            placeholder="Buscar..."
+            value={textoBuscar}
+            onChange={(e) => setTextoBuscar(e.target.value)}
+          />
           <Button
             // className="bg-cpalet-500"
             variant="mibotonprimario"
@@ -78,11 +92,13 @@ export function Buscador({ buscarUrl, titulo }) {
       {titulo && (
         <div>
           {respuestaBuscar && (
-            <Tablas
-              columnas={columnas}
-              respuesta={respuestaBuscar}
-              titulo={titulo}
-            />
+            <>
+              <Tablas
+                columnas={columnas}
+                respuesta={respuestaBuscar}
+                titulo={titulo}
+              />
+            </>
           )}
         </div>
       )}

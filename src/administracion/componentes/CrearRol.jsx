@@ -49,9 +49,9 @@ export function CrearRol() {
         >
           <div className="basis-full md:basis-1/2 p-2 ">
             <div className="py-2">
-              <Label className="text-cpalet-500 uppercase">rol:</Label>
+              <Label className="text-cpalet-500 capitalize">rol:</Label>
               <Input
-                className="text-cpalet-500 uppercase"
+                className="text-cpalet-500 capitalize"
                 type="text"
                 {...register('rol', { required: true })}
               />

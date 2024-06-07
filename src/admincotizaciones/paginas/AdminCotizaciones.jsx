@@ -23,12 +23,14 @@ import { Buscador } from '../componentes/Buscador';
 export function AdminCotizaciones() {
   const [selectedComponent, setSelectedComponent] = useState(null);
   const [buscarUrl, setBuscarUrl] = useState('');
+  const [buscarUrlPorNom, setBuscarUrlPorNom] = useState('');
   const [titulo, setTitulo] = useState('');
 
-  const handleSelection = (component, url, title) => {
+  const handleSelection = (component, url, title, urlpornom) => {
     setSelectedComponent(component);
     setBuscarUrl(url);
     setTitulo(title);
+    setBuscarUrlPorNom(urlpornom);
   };
 
   const renderComponent = () => {
@@ -65,7 +67,8 @@ export function AdminCotizaciones() {
                 handleSelection(
                   'CrearCiudadZona',
                   'ciudadeszonas',
-                  'Ciudad_Zona'
+                  'Ciudad_Zona',
+                  'porciudzona'
                 )
               }
             >
@@ -77,7 +80,8 @@ export function AdminCotizaciones() {
                 handleSelection(
                   'CrearTipotecho',
                   'tipostechos',
-                  'Tipo_de_Techo'
+                  'Tipo_de_Techo',
+                  'portipotecho'
                 )
               }
             >
@@ -89,7 +93,8 @@ export function AdminCotizaciones() {
                 handleSelection(
                   'CrearTiposuelo',
                   'tipossuelos',
-                  'Tipo_de_Suelo'
+                  'Tipo_de_Suelo',
+                  'portiposuelo'
                 )
               }
             >
@@ -101,7 +106,8 @@ export function AdminCotizaciones() {
                 handleSelection(
                   'CrearTipovidrio',
                   'tiposvidrios',
-                  'Tipo_de_Vidrio'
+                  'Tipo_de_Vidrio',
+                  'portipovidrio'
                 )
               }
             >
@@ -113,7 +119,8 @@ export function AdminCotizaciones() {
                 handleSelection(
                   'CrearOrientacion',
                   'orientaciones',
-                  'Orientacion'
+                  'Orientacion',
+                  'pororient'
                 )
               }
             >
@@ -125,7 +132,8 @@ export function AdminCotizaciones() {
                 handleSelection(
                   'CrearTipopared',
                   'tiposparedes',
-                  'Tipo_de_Pared'
+                  'Tipo_de_Pared',
+                  'portipopared'
                 )
               }
             >
@@ -137,7 +145,8 @@ export function AdminCotizaciones() {
                 handleSelection(
                   'CrearNivelpiso',
                   'nivelespisos',
-                  'Nivel_de_Piso'
+                  'Nivel_de_Piso',
+                  'pornivelpiso'
                 )
               }
             >
@@ -149,7 +158,8 @@ export function AdminCotizaciones() {
                 handleSelection(
                   'CrearTipocotizacion',
                   'tiposcotizaciones',
-                  'Tipo_de_Cotizacion'
+                  'Tipo_de_Cotizacion',
+                  'portipocotiz'
                 )
               }
             >
@@ -162,7 +172,11 @@ export function AdminCotizaciones() {
         <>
           <div className="w-full ">{renderComponent()}</div>
           <div className="w-full ">
-            <Buscador buscarUrl={buscarUrl} titulo={titulo} />
+            <Buscador
+              buscarUrl={buscarUrl}
+              buscarUrlPorNom={buscarUrlPorNom}
+              titulo={titulo}
+            />
           </div>
         </>
       )}

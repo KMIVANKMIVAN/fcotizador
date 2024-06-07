@@ -80,15 +80,15 @@ export function ActualizarSucursal({ filaSeleccionada }) {
         >
           <div className="basis-full md:basis-1/2 p-2 ">
             <div className="py-2">
-              <Label className="text-cpalet-500 uppercase">sucursal:</Label>
+              <Label className="text-cpalet-500 capitalize">sucursal:</Label>
               <Input
-                className="text-cpalet-500 uppercase"
+                className="text-cpalet-500 capitalize"
                 type="text"
                 {...register('sucursal', { required: true })}
               />
             </div>
             <div className="py-2">
-              <Label className="text-cpalet-500 uppercase">ciudad:</Label>
+              <Label className="text-cpalet-500 capitalize">ciudad:</Label>
               <Controller
                 name="ciudad_id"
                 control={control}
@@ -97,7 +97,7 @@ export function ActualizarSucursal({ filaSeleccionada }) {
                     onValueChange={(value) => field.onChange(value)}
                     value={field.value}
                   >
-                    <SelectTrigger className="w-full text-cpalet-500 uppercase">
+                    <SelectTrigger className="w-full text-cpalet-500 capitalize">
                       <SelectValue placeholder="Seleccionar" />
                     </SelectTrigger>
                     <SelectContent>
@@ -120,9 +120,9 @@ export function ActualizarSucursal({ filaSeleccionada }) {
           </div>
           <div className="basis-full md:basis-1/2 p-2 ">
             <div className="py-2">
-              <Label className="text-cpalet-500 uppercase">ubicacion:</Label>
+              <Label className="text-cpalet-500 capitalize">ubicacion:</Label>
               <Input
-                className="text-cpalet-500 uppercase"
+                className="text-cpalet-500 capitalize"
                 type="text"
                 {...register('ubicacion', { required: true })}
               />

@@ -10,7 +10,7 @@ import {
   TableRow,
 } from '@/components/ui/table';
 
-import { DialogAdmCotiz } from './DialogAdmCotiz';
+// import { DialogDomo } from './DialogDomo';
 
 const getSecondProperty = (obj) => {
   if (typeof obj === 'object' && obj !== null) {
@@ -29,11 +29,11 @@ const renderCellContent = (value) => {
 
 export function Tablas({ columnas, respuesta, titulo }) {
   const [filaSeleccionada, setFilaSeleccionada] = useState(null);
-  console.log('respuesta', respuesta);
+
   const obtenerFilaSeleccionada = (fila) => {
     setFilaSeleccionada(fila);
   };
-
+  console.log('respuesta', respuesta);
   return (
     <>
       {respuesta && (
@@ -65,10 +65,10 @@ export function Tablas({ columnas, respuesta, titulo }) {
                           className="flex items-center justify-center"
                           onClick={() => obtenerFilaSeleccionada(row)}
                         >
-                          <DialogAdmCotiz
+                          {/* <DialogDomo
                             filaSeleccionada={filaSeleccionada}
                             titulo={titulo}
-                          />
+                          /> */}
                         </div>
                       ) : (
                         renderCellContent(row[col.id])

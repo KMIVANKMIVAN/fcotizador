@@ -54,7 +54,7 @@ export function DialogAdmCotiz({ filaSeleccionada, titulo }) {
         </DialogTrigger>
         <DialogContent className="sm:max-w-md">
           <DialogHeader>
-            <DialogTitle className="text-cpalet-500 uppercase">Actualizar</DialogTitle>
+            <DialogTitle className="text-cpalet-500 capitalize">Actualizar</DialogTitle>
           </DialogHeader>
           {renderComponent()}
           <DialogFooter className="sm:justify-start">

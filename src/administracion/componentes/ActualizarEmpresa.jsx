@@ -65,23 +65,23 @@ export function ActualizarEmpresa({ filaSeleccionada }) {
         >
           <div className="basis-full md:basis-1/2 p-2 ">
             <div className="py-2">
-              <Label className="text-cpalet-500 uppercase">razon social:</Label>
+              <Label className="text-cpalet-500 capitalize">razon social:</Label>
               <Input
-                className="text-cpalet-500 uppercase"
+                className="text-cpalet-500 capitalize"
                 type="text"
                 {...register('razon_social', { required: true })}
               />
             </div>
             <div className="py-2">
-              <Label className="text-cpalet-500 uppercase">ubicacion:</Label>
+              <Label className="text-cpalet-500 capitalize">ubicacion:</Label>
               <Input
-                className="text-cpalet-500 uppercase"
+                className="text-cpalet-500 capitalize"
                 type="text"
                 {...register('ubicacion', { required: true })}
               />
             </div>
             <div className="py-2">
-              <Label className="text-cpalet-500 uppercase">telefono:</Label>
+              <Label className="text-cpalet-500 capitalize">telefono:</Label>
               <Input
                 className="text-cpalet-500 lowercase"
                 type="text"
@@ -89,7 +89,7 @@ export function ActualizarEmpresa({ filaSeleccionada }) {
               />
             </div>
             <div className="py-2">
-              <Label className="text-cpalet-500 uppercase">celular:</Label>
+              <Label className="text-cpalet-500 capitalize">celular:</Label>
               <Input
                 className="text-cpalet-500 lowercase"
                 type="text"
@@ -97,7 +97,7 @@ export function ActualizarEmpresa({ filaSeleccionada }) {
               />
             </div>
             <div className="py-2">
-              <Label className="text-cpalet-500 uppercase">correo:</Label>
+              <Label className="text-cpalet-500 capitalize">correo:</Label>
               <Input
                 className="text-cpalet-500 lowercase"
                 type="text"
@@ -107,27 +107,27 @@ export function ActualizarEmpresa({ filaSeleccionada }) {
           </div>
           <div className="basis-full md:basis-1/2 p-2 ">
             <div className="py-2">
-              <Label className="text-cpalet-500 uppercase">nit:</Label>
+              <Label className="text-cpalet-500 capitalize">nit:</Label>
               <Input
-                className="text-cpalet-500 uppercase"
+                className="text-cpalet-500 capitalize"
                 type="text"
                 {...register('nit', { required: true })}
               />
             </div>
             <div className="py-2">
-              <Label className="text-cpalet-500 uppercase">pagina web:</Label>
+              <Label className="text-cpalet-500 capitalize">pagina web:</Label>
               <Input
-                className="text-cpalet-500 uppercase"
+                className="text-cpalet-500 capitalize"
                 type="text"
                 {...register('pagina_web', { required: false })}
               />
             </div>
             <div className="py-2">
-              <Label className="text-cpalet-500 uppercase">
+              <Label className="text-cpalet-500 capitalize">
                 linea gratuita:
               </Label>
               <Input
-                className="text-cpalet-500 uppercase"
+                className="text-cpalet-500 capitalize"
                 type="text"
                 {...register('linea_gratuita', { required: false })}
               />

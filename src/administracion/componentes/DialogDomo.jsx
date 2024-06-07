@@ -50,7 +50,7 @@ export function DialogDomo({ filaSeleccionada, titulo }) {
         </DialogTrigger>
         <DialogContent className="sm:max-w-md md:max-w-xl">
           <DialogHeader>
-            <DialogTitle className="text-cpalet-500 uppercase">
+            <DialogTitle className="text-cpalet-500 capitalize">
               Actualizar
             </DialogTitle>
           </DialogHeader>

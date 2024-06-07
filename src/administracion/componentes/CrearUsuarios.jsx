@@ -105,23 +105,23 @@ export function CrearUsuarios() {
         >
           <div className="basis-full md:basis-1/2 p-2 ">
             <div className="py-2">
-              <Label className="text-cpalet-500 uppercase">nombres:</Label>
+              <Label className="text-cpalet-500 capitalize">nombres:</Label>
               <Input
-                className="text-cpalet-500 uppercase"
+                className="text-cpalet-500 capitalize"
                 type="text"
                 {...register('nombres', { required: true })}
               />
             </div>
             <div className="py-2">
-              <Label className="text-cpalet-500 uppercase">ci:</Label>
+              <Label className="text-cpalet-500 capitalize">ci:</Label>
               <Input
-                className="text-cpalet-500 uppercase"
+                className="text-cpalet-500 capitalize"
                 type="text"
                 {...register('ci', { required: true })}
               />
             </div>
             <div className="py-2">
-              <Label className="text-cpalet-500 uppercase">correo:</Label>
+              <Label className="text-cpalet-500 capitalize">correo:</Label>
               <Input
                 className="text-cpalet-500 lowercase"
                 type="text"
@@ -129,7 +129,7 @@ export function CrearUsuarios() {
               />
             </div>
             <div className="py-2">
-              <Label className="text-cpalet-500 uppercase">roles:</Label>
+              <Label className="text-cpalet-500 capitalize">roles:</Label>
               <Controller
                 name="roles"
                 control={control}
@@ -139,7 +139,7 @@ export function CrearUsuarios() {
                     onValueChange={(value) => field.onChange(value)}
                     value={field.value}
                   >
-                    <SelectTrigger className="w-full text-cpalet-500 uppercase">
+                    <SelectTrigger className="w-full text-cpalet-500 capitalize">
                       <SelectValue placeholder="seleccionar" />
                     </SelectTrigger>
                     <SelectContent>
@@ -157,7 +157,7 @@ export function CrearUsuarios() {
               />
             </div>
             <div className="py-2">
-              <Label className="text-cpalet-500 uppercase">cargo:</Label>
+              <Label className="text-cpalet-500 capitalize">cargo:</Label>
               <Controller
                 name="cargo"
                 control={control}
@@ -167,7 +167,7 @@ export function CrearUsuarios() {
                     onValueChange={(value) => field.onChange(value)}
                     value={field.value}
                   >
-                    <SelectTrigger className="w-full text-cpalet-500 uppercase">
+                    <SelectTrigger className="w-full text-cpalet-500 capitalize">
                       <SelectValue placeholder="seleccionar" />
                     </SelectTrigger>
                     <SelectContent>
@@ -190,15 +190,15 @@ export function CrearUsuarios() {
           </div>
           <div className="basis-full md:basis-1/2 p-2 ">
             <div className="py-2">
-              <Label className="text-cpalet-500 uppercase">apellidos:</Label>
+              <Label className="text-cpalet-500 capitalize">apellidos:</Label>
               <Input
-                className="text-cpalet-500 uppercase"
+                className="text-cpalet-500 capitalize"
                 type="text"
                 {...register('apellidos', { required: true })}
               />
             </div>
             <div className="py-2">
-              <Label className="text-cpalet-500 uppercase">complemento:</Label>
+              <Label className="text-cpalet-500 capitalize">complemento:</Label>
               <Controller
                 name="complemento"
                 control={control}
@@ -208,7 +208,7 @@ export function CrearUsuarios() {
                     onValueChange={(value) => field.onChange(value)}
                     value={field.value}
                   >
-                    <SelectTrigger className="w-full text-cpalet-500 uppercase">
+                    <SelectTrigger className="w-full text-cpalet-500 capitalize">
                       <SelectValue placeholder="seleccionar" />
                     </SelectTrigger>
                     <SelectContent>
@@ -232,7 +232,7 @@ export function CrearUsuarios() {
             </div>
 
             <div className="py-2">
-              <Label className="text-cpalet-500 uppercase">activar:</Label>
+              <Label className="text-cpalet-500 capitalize">activar:</Label>
               <Controller
                 name="es_activo"
                 control={control}
@@ -242,7 +242,7 @@ export function CrearUsuarios() {
                     onValueChange={(value) => field.onChange(value)}
                     value={field.value}
                   >
-                    <SelectTrigger className="w-full text-cpalet-500 uppercase">
+                    <SelectTrigger className="w-full text-cpalet-500 capitalize">
                       <SelectValue placeholder="seleccionar" />
                     </SelectTrigger>
                     <SelectContent>
@@ -257,7 +257,7 @@ export function CrearUsuarios() {
               />
             </div>
             <div className="py-2">
-              <Label className="text-cpalet-500 uppercase">sucursal:</Label>
+              <Label className="text-cpalet-500 capitalize">sucursal:</Label>
               <Controller
                 name="sucursal"
                 control={control}
@@ -267,7 +267,7 @@ export function CrearUsuarios() {
                     onValueChange={(value) => field.onChange(value)}
                     value={field.value}
                   >
-                    <SelectTrigger className="w-full text-cpalet-500 uppercase">
+                    <SelectTrigger className="w-full text-cpalet-500 capitalize">
                       <SelectValue placeholder="seleccionar" />
                     </SelectTrigger>
                     <SelectContent>
