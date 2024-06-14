@@ -22,12 +22,14 @@ import { Buscador } from '../componentes/Buscador';
 export function Domoticus() {
   const [selectedComponent, setSelectedComponent] = useState(null);
   const [buscarUrl, setBuscarUrl] = useState('');
+  const [buscarUrlPorNom, setBuscarUrlPorNom] = useState('');
   const [titulo, setTitulo] = useState('');
 
-  const handleSelection = (component, url, title) => {
+  const handleSelection = (component, url, title, urlpornom) => {
     setSelectedComponent(component);
     setBuscarUrl(url);
     setTitulo(title);
+    setBuscarUrlPorNom(urlpornom);
   };
 
   const renderComponent = () => {
@@ -58,7 +60,12 @@ export function Domoticus() {
           <BreadcrumbList className="text-cpalet-500">
             <BreadcrumbItem
               onClick={() =>
-                handleSelection('CrearEmpresa', 'empresas', 'Empresa')
+                handleSelection(
+                  'CrearEmpresa',
+                  'empresas',
+                  'Empresa',
+                  'porempresa'
+                )
               }
             >
               <h1 className="menuDomoticus">Crear Empresa</h1>
@@ -69,7 +76,8 @@ export function Domoticus() {
                 handleSelection(
                   'CrearDirecciones',
                   'direcciones',
-                  'Direcciones'
+                  'Direcciones',
+                  'pordireccion'
                 )
               }
             >
@@ -78,27 +86,41 @@ export function Domoticus() {
             <BreadcrumbSeparator></BreadcrumbSeparator>
             <BreadcrumbItem
               onClick={() =>
-                handleSelection('CrearUnidades', 'unidades', 'Unidades')
+                handleSelection(
+                  'CrearUnidades',
+                  'unidades',
+                  'Unidades',
+                  'porunidad'
+                )
               }
             >
               <h1 className="menuDomoticus">Crear Unidades</h1>
             </BreadcrumbItem>
             <BreadcrumbSeparator></BreadcrumbSeparator>
             <BreadcrumbItem
-              onClick={() => handleSelection('CrearCargo', 'cargos', 'Cargo')}
+              onClick={() =>
+                handleSelection('CrearCargo', 'cargos', 'Cargo', 'porcargo')
+              }
             >
               <h1 className="menuDomoticus">Crear Cargo</h1>
             </BreadcrumbItem>
             <BreadcrumbSeparator></BreadcrumbSeparator>
             <BreadcrumbItem
-              onClick={() => handleSelection('CrearRol', 'roles', 'Rol')}
+              onClick={() =>
+                handleSelection('CrearRol', 'roles', 'Rol', 'porrol')
+              }
             >
               <h1 className="menuDomoticus">Crear Rol</h1>
             </BreadcrumbItem>
             <BreadcrumbSeparator></BreadcrumbSeparator>
             <BreadcrumbItem
               onClick={() =>
-                handleSelection('CrearCiudad', 'ciudades', 'Ciudad')
+                handleSelection(
+                  'CrearCiudad',
+                  'ciudades',
+                  'Ciudad',
+                  'porciudad'
+                )
               }
             >
               <h1 className="menuDomoticus">Crear Ciudad</h1>
@@ -106,7 +128,12 @@ export function Domoticus() {
             <BreadcrumbSeparator></BreadcrumbSeparator>
             <BreadcrumbItem
               onClick={() =>
-                handleSelection('CrearSucursal', 'sucursales', 'Sucursal')
+                handleSelection(
+                  'CrearSucursal',
+                  'sucursales',
+                  'Sucursal',
+                  'porsucursal'
+                )
               }
             >
               <h1 className="menuDomoticus">Crear Sucursal</h1>
@@ -118,7 +145,11 @@ export function Domoticus() {
         <>
           <div className="w-full ">{renderComponent()}</div>
           <div className="w-full ">
-            <Buscador buscarUrl={buscarUrl} titulo={titulo} />
+            <Buscador
+              buscarUrl={buscarUrl}
+              buscarUrlPorNom={buscarUrlPorNom}
+              titulo={titulo}
+            />
           </div>
         </>
       )}

@@ -11,11 +11,11 @@ export function Usuarios() {
   return (
     <>
       <CrearUsuarios />
-      <Buscador buscarUrl={buscarUrl} titulo={titulo} />
-      {/* <div className="w-full md:w-[800px] mx-auto"><CrearUsuarios/></div>
-      <div className="w-full md:w-[800px] mx-auto">
-        <Buscador buscarUrl={buscarUrl} titulo={titulo} />
-      </div> */}
+      <Buscador
+        buscarUrl={buscarUrl}
+        buscarUrlPorNom="pornomci"
+        titulo={titulo}
+      />
     </>
   );
 }

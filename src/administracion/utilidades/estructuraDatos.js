@@ -1,14 +1,14 @@
 export const columnasUsuario = [
   { id: 'id', label: 'ID' },
   { id: 'actualizar', label: 'actualizar' },
-  /* {
+  {
     id: 'activar',
     label: 'Activar / Desac',
   },
   {
     id: 'resetear',
-    label: 'RESETEAR CONSTRASEñA',
-  }, */
+    label: 'resetear contraseña',
+  },
   { id: 'nombres', label: 'nombres' },
   { id: 'apellidos', label: 'apellidos' },
   { id: 'ci', label: 'CI' },

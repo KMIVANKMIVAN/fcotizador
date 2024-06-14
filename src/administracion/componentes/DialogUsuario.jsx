@@ -19,11 +19,13 @@ export function DialogUsuario({ filaSeleccionada }) {
     <>
       <Dialog>
         <DialogTrigger asChild>
-          <FilePenLine variant="outline" />
+          <FilePenLine className="text-red-500 cursor-pointer" />
         </DialogTrigger>
         <DialogContent className="sm:max-w-md md:max-w-2xl">
           <DialogHeader>
-            <DialogTitle className="text-cpalet-500 capitalize">Actualizar</DialogTitle>
+            <DialogTitle className="text-cpalet-500 capitalize">
+              Actualizar
+            </DialogTitle>
           </DialogHeader>
           <div className="max-h-[calc(100vh-200px)] overflow-y-auto">
             <ActualizarUsuarios filaSeleccionada={filaSeleccionada} />

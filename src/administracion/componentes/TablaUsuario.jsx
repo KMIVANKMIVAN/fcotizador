@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { FilePenLine, Lock } from 'lucide-react';
 import {
   Table,
@@ -8,11 +8,9 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
-import { Switch } from '@/components/ui/switch';
-
 import { DialogUsuario } from './DialogUsuario';
 import { ActivarDesactivarUsuario } from './ActivarDesactivarUsuario';
-import { Pruebas } from '../paginas/Pruebas';
+import { ResetContraseUsuario } from './ResetContraseUsuario';
 
 export function TablaUsuario({ columnasUsuario, respuestaUsuarios }) {
   const [filaSeleccionada, setFilaSeleccionada] = useState(null);
@@ -20,6 +18,7 @@ export function TablaUsuario({ columnasUsuario, respuestaUsuarios }) {
   const obtenerFilaSeleccionada = (fila) => {
     setFilaSeleccionada(fila);
   };
+
   return (
     <>
       <div className="border-4 border-cpalet-500 rounded-lg p-2">
@@ -54,21 +53,15 @@ export function TablaUsuario({ columnasUsuario, respuestaUsuarios }) {
                           onClick={() => obtenerFilaSeleccionada(row)}
                         >
                           <DialogUsuario filaSeleccionada={filaSeleccionada} />
-                          {/* <Pruebas filaSeleccionada={filaSeleccionada} /> */}
                         </div>
                       );
                       break;
                     case 'activar':
                       cellData = (
-                        <div
-                          className="flex items-center justify-center"
-                          onClick={() => (
-                            obtenerId(row.id), obtenerActivo(row.es_activo)
-                          )}
-                        >
+                        <div className="flex items-center justify-center">
                           <ActivarDesactivarUsuario
-                            idActualizar={idActualizar}
-                            esActivo={esActivo}
+                            idActualizar={row.id}
+                            esActivo={row.es_activo}
                           />
                         </div>
                       );
@@ -76,7 +69,9 @@ export function TablaUsuario({ columnasUsuario, respuestaUsuarios }) {
                     case 'resetear':
                       cellData = (
                         <div className="flex items-center justify-center">
-                          <Lock />
+                          <ResetContraseUsuario
+                            idActualizar={row.id}
+                          />
                         </div>
                       );
                       break;

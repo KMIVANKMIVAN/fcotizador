@@ -1,23 +1,22 @@
 import { useState } from 'react';
 import axios from 'axios';
 import { obtenerDatosUsuario } from '../../auth/utilidades/datosUsuarioLocalStor';
-import { Switch } from '@/components/ui/switch';
 import { exitoToast, errorToast } from '../../lib/notificaciones';
 import { manejoError } from '../utilidades/mostrarErrores';
 
+import { LockKeyhole, LockKeyholeOpen } from 'lucide-react';
+
 export function ActivarDesactivarUsuario({ idActualizar, esActivo }) {
   const urlBackendBase = import.meta.env.VITE_URL_BACKEND;
-  const urlUsuarios = `${urlBackendBase}usuarios/${idActualizar}`;
+  const urlUsuarios = `${urlBackendBase}usuarios/actestado/${idActualizar}`;
   const headers = {
     Authorization: `Bearer ${obtenerDatosUsuario().tk}`,
   };
 
-  const [respuestaUsuarios, setRespuestaUsuarios] = useState([]);
+  const [respuestaUsuarios, setRespuestaUsuarios] = useState(null);
+  const [activo, setActivo] = useState(esActivo);
 
   const actualizarEstado = async (nuevoEstado) => {
-    console.log('Actualizando estado a:', nuevoEstado);
-    console.log('URL:', urlUsuarios);
-    console.log('Headers:', headers);
     try {
       const respuesta = await axios.patch(
         urlUsuarios,
@@ -25,24 +24,38 @@ export function ActivarDesactivarUsuario({ idActualizar, esActivo }) {
         { headers }
       );
       exitoToast(
-        `Estado actualizado a: ${respuesta.data.activo ? 'Activo' : 'Inactivo'}`,
+        `Usuario ${respuesta.data.nombres} se actualizó el estado a: ${respuesta.data.es_activo ? 'Activo' : 'Inactivo'}`,
         false
       );
       setRespuestaUsuarios(respuesta.data);
+      setActivo(nuevoEstado);
     } catch (error) {
-      setRespuestaUsuarios([]);
+      setRespuestaUsuarios(null);
       manejoError(error);
     }
   };
 
-  const handleSwitchToggle = () => {
-    const nuevoEstado = !esActivo; // Invertimos el estado actual
-    actualizarEstado(nuevoEstado);
+  const activarUsuario = () => {
+    actualizarEstado(true);
+  };
+
+  const desactivarUsuario = () => {
+    actualizarEstado(false);
   };
 
   return (
-    <div className="flex flex-col md:flex-row p-5 border-4 border-cpalet-500 rounded-lg bg-cpalet-800">
-      <Switch checked={esActivo} onChange={handleSwitchToggle} />
+    <div>
+      {activo ? (
+        <LockKeyholeOpen
+          onClick={desactivarUsuario}
+          className="cursor-pointer text-green-500"
+        />
+      ) : (
+        <LockKeyhole
+          onClick={activarUsuario}
+          className="cursor-pointer text-red-500"
+        />
+      )}
     </div>
   );
 }

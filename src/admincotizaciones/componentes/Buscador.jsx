@@ -44,10 +44,6 @@ export function Buscador({ buscarUrl, buscarUrlPorNom, titulo }) {
     }
   };
 
-  useEffect(() => {
-    setRespuestaBuscar([]);
-  }, [titulo]);
-
   const columnasMap = {
     Ciudad_Zona: columnasCiudadzona,
     Cotizacion: columnasCotizacion,
@@ -62,7 +58,7 @@ export function Buscador({ buscarUrl, buscarUrlPorNom, titulo }) {
 
   const columnas = columnasMap[titulo] || [];
   const tituloSinSubrayados = titulo.replace(/_/g, ' ');
-  console.log('respuestaBuscar', respuestaBuscar);
+
   useEffect(() => {
     setRespuestaBuscar([]);
     setTextoBuscar(''); // Restablece textoBuscar cuando cambia el título

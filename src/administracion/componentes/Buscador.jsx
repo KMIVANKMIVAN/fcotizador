@@ -21,17 +21,31 @@ import {
   columnasUsuario,
 } from '../utilidades/estructuraDatos';
 
-export function Buscador({ buscarUrl, titulo }) {
+export function Buscador({ buscarUrl, buscarUrlPorNom, titulo }) {
   const urlBackendBase = import.meta.env.VITE_URL_BACKEND;
-  const url = `${urlBackendBase}${buscarUrl}`;
 
   const [respuestaBuscar, setRespuestaBuscar] = useState([]);
+  const [textoBuscar, setTextoBuscar] = useState('');
+
+  /* const roles = obtenerDatosUsuario().roles;
 
   const headers = {
     Authorization: `Bearer ${obtenerDatosUsuario().tk}`,
+  }; */
+  const usuario = obtenerDatosUsuario();
+  const roles = usuario.roles;
+
+  const headers = {
+    Authorization: `Bearer ${usuario.tk}`,
+    'x-roles': roles.join(','), // Añade los roles como una lista separada por comas en el header
   };
 
+  console.log('headers', headers);
+
   const buscarDatos = async () => {
+    const url = textoBuscar
+      ? `${urlBackendBase}${buscarUrl}/${buscarUrlPorNom}/${textoBuscar}`
+      : `${urlBackendBase}${buscarUrl}`;
     try {
       const respuesta = await axios.get(url, { headers });
       setRespuestaBuscar(respuesta.data);
@@ -43,6 +57,7 @@ export function Buscador({ buscarUrl, titulo }) {
 
   useEffect(() => {
     setRespuestaBuscar([]);
+    setTextoBuscar(''); // Restablece textoBuscar cuando cambia el título
   }, [titulo]);
 
   const columnasMap = {
@@ -62,7 +77,13 @@ export function Buscador({ buscarUrl, titulo }) {
       <div className="flex flex-col items-center my-4">
         <p className="text-2xl text-cpalet-500">{titulo}</p>
         <div className="flex w-full md:w-[500px] items-center space-x-2 my-5">
-          <Input className="flex-grow" type="text" placeholder="Buscar..." />
+          <Input
+            className="flex-grow"
+            type="text"
+            placeholder="Buscar..."
+            value={textoBuscar}
+            onChange={(e) => setTextoBuscar(e.target.value)}
+          />
           <Button
             type="submit"
             variant="mibotonprimario"
