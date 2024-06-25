@@ -65,7 +65,7 @@ export function CrearCiudadZona() {
 
   return (
     <>
-      <div className="flex flex-col md:flex-row p-5 border-4 border-cpalet-500 rounded-lg ">
+      <div className="tarjetasEstilos">
         <form
           onSubmit={handleSubmit(crearCiudadZona)}
           className="flex flex-col md:flex-row w-full"

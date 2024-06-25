@@ -37,7 +37,7 @@ export function Tablas({ columnas, respuesta, titulo }) {
   return (
     <>
       {respuesta && (
-        <div className="border-4 border-cpalet-500 rounded-lg p-2">
+        <div className="margentabla">
           <Table>
             {/* <TableCaption>A list of your recent items.</TableCaption> */}
             <TableHeader>

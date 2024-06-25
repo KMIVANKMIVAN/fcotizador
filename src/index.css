@@ -86,10 +86,16 @@
     @apply flex items-center justify-center;
   }
   .tarjetaContras {
-    @apply bg-cpalet-500 bg-opacity-10 w-96 h-auto p-5 border-2  border-white rounded-lg;
+    @apply w-96 h-auto p-5 border-2  border-white rounded-lg;
   }
   .menuDomoticus {
     @apply cursor-pointer text-lg hover:bg-sky-500 hover:ring-sky-500 hover:text-white px-1 hover:rounded-md;
+  }
+  .tarjetasEstilos {
+    @apply flex flex-col md:flex-row p-5 border-2 border-cpalet-500 rounded-lg shadow-xl;
+  }
+  .margentabla {
+    @apply border-2 border-cpalet-500 rounded-lg p-2 shadow-xl;
   }
 }
 

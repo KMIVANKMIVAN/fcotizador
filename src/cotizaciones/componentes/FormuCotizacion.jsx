@@ -19,6 +19,8 @@ import { obtenerDatosUsuario } from '../../auth/utilidades/datosUsuarioLocalStor
 import { manejoError } from '../utilidades/mostrarErrores';
 import { exitoToast } from '../../lib/notificaciones';
 
+import { FormuCotizAmbiente } from '../componentes/FormuCotizAmbiente';
+
 export function FormuCotizacion() {
   const urlBackendBase = import.meta.env.VITE_URL_BACKEND;
   const urlCiudades = `${urlBackendBase}ciudades/svc`;
@@ -31,6 +33,9 @@ export function FormuCotizacion() {
   const urlTipocotizacion = `${urlBackendBase}tiposcotizaciones`;
   const urlCotizacion = `${urlBackendBase}cotizaciones`;
   const urlCiudadZona = `${urlBackendBase}ciudadeszonas/porciudad/`;
+
+  const urlRadiadoreje50cm = `${urlBackendBase}radiadoresejes50cm/svc`;
+  const urlToalleroeje50cm = `${urlBackendBase}toallerosejes50cm/svc`;
   // const url = `${urlBackendBase}`;
 
   const headers = {
@@ -47,7 +52,12 @@ export function FormuCotizacion() {
   const [respuestaTiposuelo, setRespuestaTiposuelo] = useState([]);
   const [respuestaTipocotizacion, setRespuestaTipocotizacion] = useState([]);
   const [respuestaCotizacion, setRespuestaCotizacion] = useState([]);
+
+  const [respuestaRadiadoreje50cm, setRespuestaRadiadoreje50cm] = useState([]);
+  const [respuestaToalleroeje50cm, setRespuestaToalleroeje50cm] = useState([]);
   // const [respuesta, setRespuesta] = useState([]);
+
+  const [ambientes, setAmbientes] = useState([]);
 
   const [area, setArea] = useState(0);
   const [altura, setAltura] = useState(0);
@@ -152,6 +162,26 @@ export function FormuCotizacion() {
       manejoError(error);
     }
   };
+
+  const pedirRadiadoreje50cm = async () => {
+    const respuesta = await axios.get(urlRadiadoreje50cm, { headers });
+    try {
+      setRespuestaRadiadoreje50cm(respuesta.data);
+    } catch (error) {
+      setRespuestaRadiadoreje50cm([]);
+      manejoError(error);
+    }
+  };
+  const pedirToalleroeje50cm = async () => {
+    const respuesta = await axios.get(urlToalleroeje50cm, { headers });
+    try {
+      setRespuestaToalleroeje50cm(respuesta.data);
+    } catch (error) {
+      setRespuestaToalleroeje50cm([]);
+      manejoError(error);
+    }
+  };
+
   /* const pedir = async () => {
     const respuesta = await axios.get(url, { headers });
     try {
@@ -171,6 +201,9 @@ export function FormuCotizacion() {
     pedirTipotecho();
     pedirTiposuelo();
     pedirTipocotizacion();
+
+    pedirRadiadoreje50cm();
+    pedirToalleroeje50cm();
     // pedir();
   }, []);
 
@@ -204,13 +237,25 @@ export function FormuCotizacion() {
     }
   };
 
+  const agregarAmbiente = () => {
+    setAmbientes([
+      ...ambientes,
+      <>
+        {/* <div className="tarjetasEstilos"> */}
+          <FormuCotizAmbiente key={ambientes.length} />
+        {/* </div> */}
+      </>,
+    ]);
+  };
+
   return (
     <>
-      <div className="flex flex-col md:flex-row p-5 border-4 border-cpalet-500 rounded-lg ">
-        <form
+      <div className="flex flex-col md:flex-row p-5 border-2 border-cpalet-500 rounded-lg shadow-2xl">
+        {/* <form
           onSubmit={handleSubmit(crearCotizacion)}
           className="flex flex-wrap w-full"
-        >
+        > */}
+        <div className="flex flex-wrap w-full">
           <div className="w-full  md:p-2">
             <Label className="text-cpalet-500  capitalize">
               nombre de la cotizacion
@@ -299,7 +344,7 @@ export function FormuCotizacion() {
                 <p className="text-red-500">{errors.tipovidrio_id.message}</p>
               )}
             </div>
-            <div className="py-2 flex flex-wrap items-center">
+            {/* <div className="py-2 flex flex-wrap items-center">
               <div className="w-full md:w-1/3">
                 <Label className="text-cpalet-500 text-sm">
                   Área m<sup>2</sup>:
@@ -348,6 +393,53 @@ export function FormuCotizacion() {
               {errors.area && (
                 <p className="text-red-500">{errors.area.message}</p>
               )}
+            </div> */}
+            <div className="py-2">
+              <Label className="text-cpalet-500 capitalize">toalleros:</Label>
+              <Controller
+                name="radiadoresejes50cm"
+                control={control}
+                rules={{ required: 'La longitud de la tuberia es requerida' }}
+                render={({ field }) => (
+                  <Select
+                    {...field}
+                    onValueChange={(value) => field.onChange(value)}
+                    value={field.value}
+                  >
+                    <SelectTrigger className="w-full text-cpalet-500 capitalize">
+                      <SelectValue placeholder="Seleccionar" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectGroup>
+                        <SelectLabel>MODELO:</SelectLabel>
+                        {respuestaRadiadoreje50cm.map((radiadoresejes50cm) => (
+                          <SelectItem
+                            key={radiadoresejes50cm.id}
+                            value={radiadoresejes50cm.id.toString()}
+                          >
+                            {radiadoresejes50cm.modelo}
+                          </SelectItem>
+                        ))}
+                      </SelectGroup>
+                    </SelectContent>
+                  </Select>
+                )}
+              />
+              {errors.ciudad_id && (
+                <p className="text-red-500">
+                  {errors.radiadoresejes50cm.message}
+                </p>
+              )}
+            </div>
+            <div className="py-2">
+              <Button
+                type=""
+                onClick={agregarAmbiente}
+                variant="mibotoncrear"
+                className=""
+              >
+                + Ambiente
+              </Button>
             </div>
           </div>
           <div className="w-full md:w-1/4 md:p-2">
@@ -429,13 +521,11 @@ export function FormuCotizacion() {
               )}
             </div>
             <div className="py-2">
-              <Label className="text-cpalet-500 capitalize">
-                cantidad de ventanas:
-              </Label>
+              <Label className="text-cpalet-500 capitalize">radiadores:</Label>
               <Controller
-                name="cantidadventana"
+                name="toallerosejes50cm"
                 control={control}
-                rules={{ required: 'La cantidad de ventanas es requerida' }}
+                rules={{ required: 'La Nro Personas es requerida' }}
                 render={({ field }) => (
                   <Select
                     {...field}
@@ -447,18 +537,22 @@ export function FormuCotizacion() {
                     </SelectTrigger>
                     <SelectContent>
                       <SelectGroup>
-                        <SelectLabel>CANTIDAD DE VENTANAS:</SelectLabel>
-                        <SelectItem value="1">1 Ventana</SelectItem>
-                        <SelectItem value="2">2 Ventanas</SelectItem>
-                        <SelectItem value="3">3 Ventanas</SelectItem>
-                        <SelectItem value="4">4 Ventanas</SelectItem>
+                        <SelectLabel>MODELO:</SelectLabel>
+                        {respuestaToalleroeje50cm.map((toallerosejes50cm) => (
+                          <SelectItem
+                            key={toallerosejes50cm.id}
+                            value={toallerosejes50cm.id.toString()}
+                          >
+                            {toallerosejes50cm.modelo}
+                          </SelectItem>
+                        ))}
                       </SelectGroup>
                     </SelectContent>
                   </Select>
                 )}
               />
-              {errors.cantidadventana && (
-                <p className="text-red-500">{errors.cantidadventana.message}</p>
+              {errors.ciudad_id && (
+                <p className="text-red-500">{errors.ciudad_id.message}</p>
               )}
             </div>
           </div>
@@ -652,14 +746,25 @@ export function FormuCotizacion() {
             </div>
           </div>
           <div className="py-3"></div>
-          <div className="centrarHorizontal">
+
+          {/* <div className="centrarHorizontal">
             <Button type="submit" variant="mibotoncrear" className="">
               Crear cotizacion
             </Button>
-          </div>
-        </form>
+          </div> */}
+          {/* </form> */}
+        </div>
       </div>
+
       {/* <span>{JSON.stringify(watch())}</span> */}
+      <div className="py-4"></div>
+
+      {ambientes.map((ambiente, index) => (
+        <div key={index} className=" mb-4">
+          {ambiente}
+          <hr className="my-4 border-t-2 border-cpalet-500" />
+        </div>
+      ))}
     </>
   );
 }

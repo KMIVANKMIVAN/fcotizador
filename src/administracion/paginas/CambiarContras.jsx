@@ -8,20 +8,24 @@ export function CambiarContras() {
   return (
     <>
       <div
-        className="centrarHorizontalVerticar"
-        // style={{ backgroundImage: 'url("../../../public/website2.png")' }}
+        className="relative centrarHorizontalVerticar"
         style={{
           backgroundImage: 'url("../../../public/website2.png")',
           height: '100vh',
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
           backgroundSize: 'cover',
           backgroundPosition: 'center',
           backgroundRepeat: 'no-repeat',
         }}
       >
-        <TarjetaCambiar />
+        {/* Overlay */}
+        <div
+          className="absolute inset-0 bg-black opacity-50"
+        ></div>
+        
+        {/* Content */}
+        <div className="relative z-10 flex justify-center items-center h-full">
+          <TarjetaCambiar />
+        </div>
       </div>
     </>
   );

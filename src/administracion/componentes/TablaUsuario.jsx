@@ -21,7 +21,7 @@ export function TablaUsuario({ columnasUsuario, respuestaUsuarios }) {
 
   return (
     <>
-      <div className="border-4 border-cpalet-500 rounded-lg p-2">
+      <div className="border-2 border-cpalet-500 rounded-lg p-2 shadow-xl">
         <Table>
           <TableHeader>
             <TableRow>

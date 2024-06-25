@@ -64,15 +64,15 @@ export function TarjetaCambiar() {
 
   return (
     <>
-      <div className="tarjetaContras">
-        <img src="../../../public/logo1.webp" className="w-full" />
+      <div className="tarjetaContras ">
+        <img src="../../../public/logo1.webp" className="w-full " />
         <div className="grid w-full max-w-sm items-center gap-1.5">
           <form onSubmit={handleSubmit(onSubmit)}>
-            <Label className="text-cpalet-800 text-lg">
+            <Label className="text-cpalet-500 text-lg">
               Contraseña anterior:
             </Label>
             <Input
-              className="text-cpalet-800"
+              className="text-cpalet-500"
               type="text"
               {...register('contraseniaAntigua', {
                 required: {
@@ -87,10 +87,10 @@ export function TarjetaCambiar() {
               </p>
             )}
             <div className="py-2"></div>
-            <Label className="text-cpalet-800 text-lg">Nueva Contraseña:</Label>
+            <Label className="text-cpalet-500 text-lg">Nueva Contraseña:</Label>
             <div className="relative">
               <Input
-                className="text-cpalet-800"
+                className="text-cpalet-500"
                 type={mostrarContrasenia ? 'text' : 'password'}
                 {...register('contrasenia', {
                   required: {
@@ -131,12 +131,12 @@ export function TarjetaCambiar() {
             {errors.contrasenia && (
               <p className="text-red-500">{errors.contrasenia.message}</p>
             )}
-            <Label className="text-cpalet-800 text-lg">
+            <Label className="text-cpalet-500 text-lg">
               Confirmar Contraseña:
             </Label>
             <div className="relative">
               <Input
-                className="text-cpalet-800"
+                className="text-cpalet-500"
                 type={mostrarContrasenia ? 'text' : 'password'}
                 {...register('confirContrasenia', {
                   required: {
@@ -165,7 +165,7 @@ export function TarjetaCambiar() {
             )}
             <div className="py-3"></div>
             <div className="centrarHorizontal">
-              <Button type="submit" variant="outline" className="w-full">
+              <Button type="submit" variant="mibotonprimario" className="w-full">
                 Actualizar Contraseña
               </Button>
             </div>
