@@ -19,7 +19,10 @@ import { ActualizarTiposuelo } from './ActualizarTiposuelo';
 import { ActualizarTipotecho } from './ActualizarTipotecho';
 import { ActualizarTipovidrio } from './ActualizarTipovidrio';
 import { ActualizarTipocotizacion } from './ActualizarTipocotizacion';
-
+import { ActualizarFactorviaje } from './ActualizarFactorviaje';
+import { ActualizarGastopersona } from './ActualizarGastopersona';
+import { ActualizarInstalradiatoallero } from './ActualizarInstalradiatoallero';
+import { ActualizarInstaltuberia } from './ActualizarInstaltuberia';
 
 export function DialogAdmCotiz({ filaSeleccionada, titulo }) {
   // Función para renderizar el componente correspondiente según el título
@@ -41,6 +44,14 @@ export function DialogAdmCotiz({ filaSeleccionada, titulo }) {
         return <ActualizarTipovidrio filaSeleccionada={filaSeleccionada} />;
       case 'Tipo_de_Cotizacion':
         return <ActualizarTipocotizacion filaSeleccionada={filaSeleccionada} />;
+      case 'Factor_Viaje':
+        return <ActualizarFactorviaje filaSeleccionada={filaSeleccionada} />;
+      case 'Gasto_Persona':
+        return <ActualizarGastopersona filaSeleccionada={filaSeleccionada} />;
+      case 'Instalar_Radiador_Toallero':
+        return <ActualizarInstalradiatoallero filaSeleccionada={filaSeleccionada} />;
+      case 'Instalar_Tuberia':
+        return <ActualizarInstaltuberia filaSeleccionada={filaSeleccionada} />;
       default:
         return null;
     }

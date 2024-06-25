@@ -9,13 +9,13 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
 
-export function ActualizarOrientacion({ filaSeleccionada }) {
+export function CrearGastopersona() {
   const urlBackendBase = import.meta.env.VITE_URL_BACKEND;
-  const urlOrientacion = `${urlBackendBase}orientaciones/${filaSeleccionada.id}`;
+  const urlGastopersona = `${urlBackendBase}gastospersonas`;
 
   const headers = { Authorization: `Bearer ${obtenerDatosUsuario().tk}` };
 
-  const [respuestaOrientacion, setRespuestaOrientacion] = useState([]);
+  const [respuestaGastopersona, setRespuestaGastopersona] = useState([]);
 
   const {
     register,
@@ -24,24 +24,19 @@ export function ActualizarOrientacion({ filaSeleccionada }) {
     control,
     reset,
     formState: { errors },
-  } = useForm({
-    defaultValues: {
-      orientacion: filaSeleccionada.orientacion,
-      valor: filaSeleccionada.valor,
-    },
-  });
+  } = useForm();
 
-  const actualizarOrientacion = async (data) => {
+  const crearGastopersona = async (data) => {
     try {
-      const respuesta = await axios.patch(urlOrientacion, data, { headers });
+      const respuesta = await axios.post(urlGastopersona, data, { headers });
       exitoToast(
-        `Se Actualizo la Orientacion : ${respuesta.data.orientacion}`,
+        `Se Creo el Gasto nro de Persona: ${respuesta.data.nropersona}`,
         false
       );
-      setRespuestaOrientacion(respuesta.data);
+      setRespuestaGastopersona(respuesta.data);
       reset();
     } catch (error) {
-      setRespuestaOrientacion([]);
+      setRespuestaGastopersona([]);
       manejoError(error);
     }
   };
@@ -50,40 +45,51 @@ export function ActualizarOrientacion({ filaSeleccionada }) {
     <>
       <div className="flex flex-col md:flex-row p-5 border-4 border-cpalet-500 rounded-lg ">
         <form
-          onSubmit={handleSubmit(actualizarOrientacion)}
+          onSubmit={handleSubmit(crearGastopersona)}
           className="flex flex-col md:flex-row w-full"
         >
           <div className="basis-full md:basis-1/2 p-2 ">
             <div className="py-2">
-              <Label className="text-cpalet-500 capitalize">orientacion:</Label>
+              <Label className="text-cpalet-500 capitalize">nro persona:</Label>
               <Input
                 className="text-cpalet-500 capitalize"
-                type="text"
-                {...register('orientacion', { required: true })}
+                type="number"
+                {...register('nropersona', { required: true })}
+              />
+            </div>
+            <div className="py-2">
+              <Label className="text-cpalet-500 capitalize">alojamiento:</Label>
+              <Input
+                className="text-cpalet-500 capitalize"
+                type="number"
+                {...register('alojamiento', { required: true })}
               />
             </div>
           </div>
           <div className="basis-full md:basis-1/2 p-2 ">
             <div className="py-2">
-              <Label className="text-cpalet-500 capitalize">valor:</Label>
+              <Label className="text-cpalet-500 capitalize">alimento:</Label>
               <Input
                 className="text-cpalet-500 capitalize"
                 type="number"
-                step="0.0001"
+                {...register('alimento', { required: true })}
+              />
+            </div>
+            <div className="py-2">
+              <Label className="text-cpalet-500 capitalize">extras:</Label>
+              <Input
+                className="text-cpalet-500 capitalize"
+                type="number"
+                step="0.01"
                 min="0"
-                max="10"
-                {...register('valor', { required: true })}
+                {...register('extras', { required: true })}
               />
             </div>
 
             <div className="py-2">
               <div className="mt-6">
-                <Button
-                  type="submit"
-                  variant="mibotoncrear"
-                  className="w-full"
-                >
-                  Actualizar Orientacion
+                <Button type="submit" variant="mibotoncrear" className="w-full">
+                  Crear Gasto Persona
                 </Button>
               </div>
             </div>

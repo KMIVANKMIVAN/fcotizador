@@ -9,19 +9,8 @@ import { manejoError } from '../utilidades/mostrarErrores';
 import { Tablas } from './Tablas';
 
 import {
-  columnasCiudadzona,
-  columnasCotizacion,
-  columnasNivelpiso,
-  columnasOrientacion,
-  columnasTipopared,
-  columnasTiposuelo,
-  columnasTipotecho,
-  columnasTipovidrio,
-  columnasTipocotizacion,
-  columnasFactorviaje,
-  columnasGastopersona,
-  columnasInstalradiatoallero,
-  columnasInstaltuberia,
+  columnasRadiadoreje50cm,
+  columnasToalleroeje50cm,
 } from '../utilidades/estructuraDatos';
 
 export function Buscador({ buscarUrl, buscarUrlPorNom, titulo }) {
@@ -49,19 +38,8 @@ export function Buscador({ buscarUrl, buscarUrlPorNom, titulo }) {
   };
 
   const columnasMap = {
-    Ciudad_Zona: columnasCiudadzona,
-    Cotizacion: columnasCotizacion,
-    Nivel_de_Piso: columnasNivelpiso,
-    Orientacion: columnasOrientacion,
-    Tipo_de_Pared: columnasTipopared,
-    Tipo_de_Suelo: columnasTiposuelo,
-    Tipo_de_Techo: columnasTipotecho,
-    Tipo_de_Vidrio: columnasTipovidrio,
-    Tipo_de_Cotizacion: columnasTipocotizacion,
-    Factor_Viaje: columnasFactorviaje,
-    Gasto_Persona: columnasGastopersona,
-    Instalar_Radiador_Toallero: columnasInstalradiatoallero,
-    Instalar_Tuberia: columnasInstaltuberia,
+    Radiador_Eje_50cm: columnasRadiadoreje50cm,
+    Toallero_Eje_50cm: columnasToalleroeje50cm,
   };
 
   const columnas = columnasMap[titulo] || [];

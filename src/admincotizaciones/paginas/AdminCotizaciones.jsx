@@ -17,6 +17,10 @@ import { CrearTipotecho } from '../componentes/CrearTipotecho';
 import { CrearTiposuelo } from '../componentes/CrearTiposuelo';
 import { CrearTipovidrio } from '../componentes/CrearTipovidrio';
 import { CrearTipocotizacion } from '../componentes/CrearTipocotizacion';
+import { CrearFactorviaje } from '../componentes/CrearFactorviaje';
+import { CrearGastopersona } from '../componentes/CrearGastopersona';
+import { CrearInstalradiatoallero } from '../componentes/CrearInstalradiatoallero';
+import { CrearInstaltuberia } from '../componentes/CrearInstaltuberia';
 
 import { Buscador } from '../componentes/Buscador';
 
@@ -53,6 +57,16 @@ export function AdminCotizaciones() {
         return <CrearTipovidrio buscarUrl={buscarUrl} titulo={titulo} />;
       case 'CrearTipocotizacion':
         return <CrearTipocotizacion buscarUrl={buscarUrl} titulo={titulo} />;
+      case 'CrearFactorviaje':
+        return <CrearFactorviaje buscarUrl={buscarUrl} titulo={titulo} />;
+      case 'CrearGastopersona':
+        return <CrearGastopersona buscarUrl={buscarUrl} titulo={titulo} />;
+      case 'CrearInstalradiatoallero':
+        return (
+          <CrearInstalradiatoallero buscarUrl={buscarUrl} titulo={titulo} />
+        );
+      case 'CrearInstaltuberia':
+        return <CrearInstaltuberia buscarUrl={buscarUrl} titulo={titulo} />;
       default:
         return null;
     }
@@ -164,6 +178,62 @@ export function AdminCotizaciones() {
               }
             >
               <h1 className="menuDomoticus">Crear Tipo de Cotizacion</h1>
+            </BreadcrumbItem>
+            <BreadcrumbSeparator></BreadcrumbSeparator>
+            <BreadcrumbItem
+              onClick={() =>
+                handleSelection(
+                  'CrearFactorviaje',
+                  'factoresviajes',
+                  'Factor_Viaje',
+                  'porciudad'
+                )
+              }
+            >
+              <h1 className="menuDomoticus">Crear Factor Viaje</h1>
+            </BreadcrumbItem>
+            <BreadcrumbSeparator></BreadcrumbSeparator>
+            <BreadcrumbItem
+              onClick={() =>
+                handleSelection(
+                  'CrearGastopersona',
+                  'gastospersonas',
+                  'Gasto_Persona',
+                  'pornropersona'
+                )
+              }
+            >
+              <h1 className="menuDomoticus">Crear Gasto Persona</h1>
+            </BreadcrumbItem>
+            <BreadcrumbSeparator></BreadcrumbSeparator>
+            <BreadcrumbItem
+              onClick={() =>
+                handleSelection(
+                  'CrearInstalradiatoallero',
+                  'instalradiatoalleros',
+                  'Instalar_Radiador_Toallero',
+                  'pornroradiador'
+                )
+              }
+            >
+              <h1 className="menuDomoticus">
+                Crear Tiempo de Instalar el R. T.
+              </h1>
+            </BreadcrumbItem>
+            <BreadcrumbSeparator></BreadcrumbSeparator>
+            <BreadcrumbItem
+              onClick={() =>
+                handleSelection(
+                  'CrearInstaltuberia',
+                  'instaltuberias',
+                  'Instalar_Tuberia',
+                  'porrango'
+                )
+              }
+            >
+              <h1 className="menuDomoticus">
+                Crear Tiempo de Instalar Tuberia
+              </h1>
             </BreadcrumbItem>
           </BreadcrumbList>
         </Breadcrumb>

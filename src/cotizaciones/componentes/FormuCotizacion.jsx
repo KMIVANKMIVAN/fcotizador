@@ -222,6 +222,9 @@ export function FormuCotizacion() {
                 required: 'El nombre de la cotizacion es requerida',
               })}
             />
+            {errors.nombrecotizacion && (
+              <p className="text-red-500">{errors.nombrecotizacion.message}</p>
+            )}
           </div>
           <div className="w-full md:w-1/4 md:p-2">
             <div className="py-2">

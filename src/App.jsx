@@ -11,6 +11,7 @@ import { CambiarContras } from './administracion/paginas/CambiarContras';
 import { Cotizaciones } from './cotizaciones/paginas/Cotizaciones';
 import { Pruebas } from './administracion/paginas/Pruebas';
 import { AdminCotizaciones } from './admincotizaciones/paginas/AdminCotizaciones';
+import { AdminProductos } from './adminproductos/paginas/AdminProductos';
 
 const router = createBrowserRouter([
   {
@@ -44,6 +45,10 @@ const router = createBrowserRouter([
       {
         path: 'admincotizaciones',
         element: <AdminCotizaciones />,
+      },
+      {
+        path: 'adminproductos',
+        element: <AdminProductos />,
       },
     ],
   },

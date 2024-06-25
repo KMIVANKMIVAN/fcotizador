@@ -9,6 +9,7 @@ import {
   NotebookText,
   PackageOpen,
   FileCog,
+  ReceiptEuro,
 } from 'lucide-react';
 
 import {
@@ -39,7 +40,7 @@ export function Navegacion() {
   return (
     <>
       <Sheet>
-      <div className="bg-cpalet-500 w-full h-10 flex items-center mb-5 sticky top-0 z-50">
+        <div className="bg-cpalet-500 w-full h-10 flex items-center mb-5 sticky top-0 z-50">
           <SheetTrigger>
             <Menu className="ml-5 text-white" />
           </SheetTrigger>
@@ -54,6 +55,17 @@ export function Navegacion() {
                 >
                   <UsersRound size={23} className="min-w-max" />
                   Usuarios
+                </span>
+              </SheetClose>
+            )}
+            {mostrarMenu && (
+              <SheetClose asChild>
+                <span
+                  className="link text-cpalet-500"
+                  onClick={() => navigate('/navegacion/adminproductos')}
+                >
+                  <ReceiptEuro size={23} className="min-w-max" />
+                  Productos
                 </span>
               </SheetClose>
             )}

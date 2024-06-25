@@ -9,13 +9,14 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
 
-export function ActualizarOrientacion({ filaSeleccionada }) {
+export function ActualizarInstaltuberia({ filaSeleccionada }) {
   const urlBackendBase = import.meta.env.VITE_URL_BACKEND;
-  const urlOrientacion = `${urlBackendBase}orientaciones/${filaSeleccionada.id}`;
+  const urlInstalradiatoallero = `${urlBackendBase}instaltuberias/${filaSeleccionada.id}`;
 
   const headers = { Authorization: `Bearer ${obtenerDatosUsuario().tk}` };
 
-  const [respuestaOrientacion, setRespuestaOrientacion] = useState([]);
+  const [respuestaInstalradiatoallero, setRespuestaInstalradiatoallero] =
+    useState([]);
 
   const {
     register,
@@ -26,22 +27,25 @@ export function ActualizarOrientacion({ filaSeleccionada }) {
     formState: { errors },
   } = useForm({
     defaultValues: {
-      orientacion: filaSeleccionada.orientacion,
-      valor: filaSeleccionada.valor,
+      inicio: filaSeleccionada.inicio,
+      fin: filaSeleccionada.fin,
+      horas: filaSeleccionada.horas,
     },
   });
 
-  const actualizarOrientacion = async (data) => {
+  const actualizarInstalradiatoallero = async (data) => {
     try {
-      const respuesta = await axios.patch(urlOrientacion, data, { headers });
+      const respuesta = await axios.patch(urlInstalradiatoallero, data, {
+        headers,
+      });
       exitoToast(
-        `Se Actualizo la Orientacion : ${respuesta.data.orientacion}`,
+        `Se Actualizo el Tiempo de Instalar la Tuberia: ${respuesta.data.nropersona}`,
         false
       );
-      setRespuestaOrientacion(respuesta.data);
+      setRespuestaInstalradiatoallero(respuesta.data);
       reset();
     } catch (error) {
-      setRespuestaOrientacion([]);
+      setRespuestaInstalradiatoallero([]);
       manejoError(error);
     }
   };
@@ -50,40 +54,48 @@ export function ActualizarOrientacion({ filaSeleccionada }) {
     <>
       <div className="flex flex-col md:flex-row p-5 border-4 border-cpalet-500 rounded-lg ">
         <form
-          onSubmit={handleSubmit(actualizarOrientacion)}
+          onSubmit={handleSubmit(actualizarInstalradiatoallero)}
           className="flex flex-col md:flex-row w-full"
         >
           <div className="basis-full md:basis-1/2 p-2 ">
             <div className="py-2">
-              <Label className="text-cpalet-500 capitalize">orientacion:</Label>
+              <Label className="text-cpalet-500 capitalize">
+                longitud inicial:
+              </Label>
               <Input
                 className="text-cpalet-500 capitalize"
-                type="text"
-                {...register('orientacion', { required: true })}
+                type="number"
+                step="0.1"
+                min="0"
+                {...register('inicio', { required: true })}
+              />
+            </div>
+            <div className="py-2">
+              <Label className="text-cpalet-500 capitalize">horas:</Label>
+              <Input
+                className="text-cpalet-500 capitalize"
+                type="number"
+                {...register('horas', { required: true })}
               />
             </div>
           </div>
           <div className="basis-full md:basis-1/2 p-2 ">
             <div className="py-2">
-              <Label className="text-cpalet-500 capitalize">valor:</Label>
+              <Label className="text-cpalet-500 capitalize">
+                logitud final:
+              </Label>
               <Input
                 className="text-cpalet-500 capitalize"
                 type="number"
-                step="0.0001"
+                step="0.1"
                 min="0"
-                max="10"
-                {...register('valor', { required: true })}
+                {...register('fin', { required: true })}
               />
             </div>
-
             <div className="py-2">
               <div className="mt-6">
-                <Button
-                  type="submit"
-                  variant="mibotoncrear"
-                  className="w-full"
-                >
-                  Actualizar Orientacion
+                <Button type="submit" variant="mibotoncrear" className="w-full">
+                  Actualizar Tiempo de Instalar
                 </Button>
               </div>
             </div>

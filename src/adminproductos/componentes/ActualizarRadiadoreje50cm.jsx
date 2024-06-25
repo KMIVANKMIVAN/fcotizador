@@ -9,13 +9,13 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
 
-export function ActualizarOrientacion({ filaSeleccionada }) {
+export function ActualizarRadiadoreje50cm({ filaSeleccionada }) {
   const urlBackendBase = import.meta.env.VITE_URL_BACKEND;
-  const urlOrientacion = `${urlBackendBase}orientaciones/${filaSeleccionada.id}`;
+  const urlRadiadoreje50cm = `${urlBackendBase}radiadoresejes50cm/${filaSeleccionada.id}`;
 
   const headers = { Authorization: `Bearer ${obtenerDatosUsuario().tk}` };
 
-  const [respuestaOrientacion, setRespuestaOrientacion] = useState([]);
+  const [respuestaRadiadoreje50cm, setRespuestaRadiadoreje50cm] = useState([]);
 
   const {
     register,
@@ -26,22 +26,24 @@ export function ActualizarOrientacion({ filaSeleccionada }) {
     formState: { errors },
   } = useForm({
     defaultValues: {
-      orientacion: filaSeleccionada.orientacion,
-      valor: filaSeleccionada.valor,
+      modelo: filaSeleccionada.modelo,
+      potenciawats: filaSeleccionada.potenciawats,
     },
   });
 
-  const actualizarOrientacion = async (data) => {
+  const actualizarRadiadoreje50cm = async (data) => {
     try {
-      const respuesta = await axios.patch(urlOrientacion, data, { headers });
+      const respuesta = await axios.patch(urlRadiadoreje50cm, data, {
+        headers,
+      });
       exitoToast(
-        `Se Actualizo la Orientacion : ${respuesta.data.orientacion}`,
+        `Se Actualizo el Radiador Eje 50cm: ${respuesta.data.modelo}`,
         false
       );
-      setRespuestaOrientacion(respuesta.data);
+      setRespuestaRadiadoreje50cm(respuesta.data);
       reset();
     } catch (error) {
-      setRespuestaOrientacion([]);
+      setRespuestaRadiadoreje50cm([]);
       manejoError(error);
     }
   };
@@ -50,40 +52,37 @@ export function ActualizarOrientacion({ filaSeleccionada }) {
     <>
       <div className="flex flex-col md:flex-row p-5 border-4 border-cpalet-500 rounded-lg ">
         <form
-          onSubmit={handleSubmit(actualizarOrientacion)}
+          onSubmit={handleSubmit(actualizarRadiadoreje50cm)}
           className="flex flex-col md:flex-row w-full"
         >
           <div className="basis-full md:basis-1/2 p-2 ">
             <div className="py-2">
-              <Label className="text-cpalet-500 capitalize">orientacion:</Label>
+              <Label className="text-cpalet-500 capitalize">modelo:</Label>
               <Input
                 className="text-cpalet-500 capitalize"
                 type="text"
-                {...register('orientacion', { required: true })}
+                {...register('modelo', { required: true })}
               />
             </div>
           </div>
           <div className="basis-full md:basis-1/2 p-2 ">
             <div className="py-2">
-              <Label className="text-cpalet-500 capitalize">valor:</Label>
+              <Label className="text-cpalet-500 capitalize">
+                potenciawats:
+              </Label>
               <Input
                 className="text-cpalet-500 capitalize"
                 type="number"
-                step="0.0001"
+                step="0.1"
                 min="0"
-                max="10"
-                {...register('valor', { required: true })}
+                {...register('potenciawats', { required: true })}
               />
             </div>
 
             <div className="py-2">
               <div className="mt-6">
-                <Button
-                  type="submit"
-                  variant="mibotoncrear"
-                  className="w-full"
-                >
-                  Actualizar Orientacion
+                <Button type="submit" variant="mibotoncrear" className="w-full">
+                  Actualizar Radiador Eje 50cm
                 </Button>
               </div>
             </div>

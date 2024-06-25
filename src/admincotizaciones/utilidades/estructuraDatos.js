@@ -61,3 +61,30 @@ export const columnasCotizacion = [
   { id: 'tipotecho', label: 'tipo de techo' },
   { id: 'tipovidrio', label: 'tipo de vidrio' },
 ];
+export const columnasFactorviaje = [
+  { id: 'id', label: 'ID' },
+  { id: 'actualizar', label: 'actualizar' },
+  { id: 'ciudad', label: 'ciudad' },
+  { id: 'valor', label: 'valor' },
+];
+export const columnasGastopersona = [
+  { id: 'id', label: 'ID' },
+  { id: 'actualizar', label: 'actualizar' },
+  { id: 'nropersona', label: 'nro persona' },
+  { id: 'alimento', label: 'alimento' },
+  { id: 'alojamiento', label: 'alojamiento' },
+  { id: 'extras', label: 'extras' },
+];
+export const columnasInstalradiatoallero = [
+  { id: 'id', label: 'ID' },
+  { id: 'actualizar', label: 'actualizar' },
+  { id: 'nroradiador', label: 'nro radiador' },
+  { id: 'horas', label: 'horas' },
+];
+export const columnasInstaltuberia = [
+  { id: 'id', label: 'ID' },
+  { id: 'actualizar', label: 'actualizar' },
+  { id: 'inicio', label: 'inicio' },
+  { id: 'fin', label: 'fin' },
+  { id: 'horas', label: 'horas' },
+];
