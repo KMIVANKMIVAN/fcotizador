@@ -51,17 +51,14 @@ export function FormuCotizacion() {
   const [respuestaTipotecho, setRespuestaTipotecho] = useState([]);
   const [respuestaTiposuelo, setRespuestaTiposuelo] = useState([]);
   const [respuestaTipocotizacion, setRespuestaTipocotizacion] = useState([]);
-  const [respuestaCotizacion, setRespuestaCotizacion] = useState([]);
+
+  const [respuestaCotizacion, setRespuestaCotizacion] = useState(null);
 
   const [respuestaRadiadoreje50cm, setRespuestaRadiadoreje50cm] = useState([]);
   const [respuestaToalleroeje50cm, setRespuestaToalleroeje50cm] = useState([]);
   // const [respuesta, setRespuesta] = useState([]);
 
   const [ambientes, setAmbientes] = useState([]);
-
-  const [area, setArea] = useState(0);
-  const [altura, setAltura] = useState(0);
-  const [volumen, setVolumen] = useState(0);
 
   const {
     control,
@@ -207,22 +204,6 @@ export function FormuCotizacion() {
     // pedir();
   }, []);
 
-  const handleChangeArea = (e) => {
-    const newArea = parseFloat(e.target.value);
-    const altura = watch('altura');
-    const newVolumen = newArea * altura;
-    setValue('area', newArea);
-    setValue('volumen', newVolumen.toFixed(4)); // Redondear a 4 decimales
-  };
-
-  const handleChangeAltura = (e) => {
-    const newAltura = parseFloat(e.target.value);
-    const area = watch('area');
-    const newVolumen = newAltura * area;
-    setValue('altura', newAltura);
-    setValue('volumen', newVolumen.toFixed(4)); // Redondear a 4 decimales
-  };
-
   const crearCotizacion = async (data) => {
     try {
       const respuesta = await axios.post(urlCotizacion, data, { headers });
@@ -240,531 +221,497 @@ export function FormuCotizacion() {
   const agregarAmbiente = () => {
     setAmbientes([
       ...ambientes,
-      <>
-        {/* <div className="tarjetasEstilos"> */}
-          <FormuCotizAmbiente key={ambientes.length} />
-        {/* </div> */}
-      </>,
+      <FormuCotizAmbiente
+        key={ambientes.length}
+        idCotizacion={respuestaCotizacion.id}
+      />,
     ]);
   };
 
   return (
     <>
       <div className="flex flex-col md:flex-row p-5 border-2 border-cpalet-500 rounded-lg shadow-2xl">
-        {/* <form
+        <form
           onSubmit={handleSubmit(crearCotizacion)}
           className="flex flex-wrap w-full"
-        > */}
-        <div className="flex flex-wrap w-full">
-          <div className="w-full  md:p-2">
-            <Label className="text-cpalet-500  capitalize">
-              nombre de la cotizacion
-            </Label>
-            <Input
-              className="text-cpalet-500 capitalize"
-              type="text"
-              {...register('nombrecotizacion', {
-                required: 'El nombre de la cotizacion es requerida',
-              })}
-            />
-            {errors.nombrecotizacion && (
-              <p className="text-red-500">{errors.nombrecotizacion.message}</p>
-            )}
-          </div>
-          <div className="w-full md:w-1/4 md:p-2">
-            <div className="py-2">
-              <Label className="text-cpalet-500 capitalize">ciudades:</Label>
-              <Controller
-                name="ciudad_id"
-                control={control}
-                rules={{ required: 'La Ciudad es requerida' }}
-                render={({ field }) => (
-                  <Select
-                    {...field}
-                    onValueChange={(value) => field.onChange(value)}
-                    value={field.value}
-                  >
-                    <SelectTrigger className="w-full text-cpalet-500 capitalize">
-                      <SelectValue placeholder="Seleccionar" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectGroup>
-                        <SelectLabel>CIUDADES:</SelectLabel>
-                        {respuestaCiudades.map((ciudad) => (
-                          <SelectItem
-                            key={ciudad.id}
-                            value={ciudad.id.toString()}
-                          >
-                            {ciudad.ciudad}
-                          </SelectItem>
-                        ))}
-                      </SelectGroup>
-                    </SelectContent>
-                  </Select>
-                )}
-              />
-              {errors.ciudad_id && (
-                <p className="text-red-500">{errors.ciudad_id.message}</p>
-              )}
-            </div>
-            <div className="py-2">
-              <Label className="text-cpalet-500 capitalize">
-                tipo de vidrio:
+        >
+          <div className="flex flex-wrap w-full">
+            <div className="w-full  md:p-2">
+              <Label className="text-cpalet-500  capitalize">
+                nombre de la cotizacion
               </Label>
-              <Controller
-                name="tipovidrio_id"
-                control={control}
-                rules={{ required: 'El tipo de vidrio es requerida' }}
-                render={({ field }) => (
-                  <Select
-                    {...field}
-                    onValueChange={(value) => field.onChange(value)}
-                    value={field.value}
-                  >
-                    <SelectTrigger className="w-full text-cpalet-500 capitalize">
-                      <SelectValue placeholder="Seleccionar" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectGroup>
-                        <SelectLabel>TIPO DE VIDRIO:</SelectLabel>
-                        {respuestaTipovidrio.map((tipovidrio) => (
-                          <SelectItem
-                            key={tipovidrio.id}
-                            value={tipovidrio.id.toString()}
-                          >
-                            {tipovidrio.tipovidrio}
-                          </SelectItem>
-                        ))}
-                      </SelectGroup>
-                    </SelectContent>
-                  </Select>
-                )}
+              <Input
+                className="text-cpalet-500 capitalize"
+                type="text"
+                {...register('nombrecotizacion', {
+                  required: 'El nombre de la cotizacion es requerida',
+                })}
               />
-              {errors.tipovidrio_id && (
-                <p className="text-red-500">{errors.tipovidrio_id.message}</p>
-              )}
-            </div>
-            {/* <div className="py-2 flex flex-wrap items-center">
-              <div className="w-full md:w-1/3">
-                <Label className="text-cpalet-500 text-sm">
-                  Área m<sup>2</sup>:
-                </Label>
-                <Input
-                  className="text-cpalet-500 capitalize"
-                  type="number"
-                  step="0.01"
-                  min="0"
-                  {...register('area', { required: 'El área es requerida' })}
-                  onChange={handleChangeArea}
-                />
-              </div>
-              <div className="w-full md:w-1/3">
-                <Label className="text-cpalet-500 text-sm">Altura m:</Label>
-                <Input
-                  className="text-cpalet-500 capitalize"
-                  type="number"
-                  step="0.01"
-                  min="0"
-                  {...register('altura', {
-                    required: 'La altura es requerida',
-                  })}
-                  onChange={handleChangeAltura}
-                />
-              </div>
-              <div className="w-full md:w-1/3">
-                <Label className="text-cpalet-500 text-sm">
-                  Volumen m<sup>3</sup>:
-                </Label>
-                <Input
-                  className="text-cpalet-500 capitalize"
-                  type="text"
-                  {...register('volumen', {
-                    required: 'El volumen es requerido',
-                  })}
-                  disabled
-                />
-              </div>
-              {errors.altura && (
-                <p className="text-red-500">{errors.altura.message}</p>
-              )}
-              {errors.volumen && (
-                <p className="text-red-500">{errors.volumen.message}</p>
-              )}
-              {errors.area && (
-                <p className="text-red-500">{errors.area.message}</p>
-              )}
-            </div> */}
-            <div className="py-2">
-              <Label className="text-cpalet-500 capitalize">toalleros:</Label>
-              <Controller
-                name="radiadoresejes50cm"
-                control={control}
-                rules={{ required: 'La longitud de la tuberia es requerida' }}
-                render={({ field }) => (
-                  <Select
-                    {...field}
-                    onValueChange={(value) => field.onChange(value)}
-                    value={field.value}
-                  >
-                    <SelectTrigger className="w-full text-cpalet-500 capitalize">
-                      <SelectValue placeholder="Seleccionar" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectGroup>
-                        <SelectLabel>MODELO:</SelectLabel>
-                        {respuestaRadiadoreje50cm.map((radiadoresejes50cm) => (
-                          <SelectItem
-                            key={radiadoresejes50cm.id}
-                            value={radiadoresejes50cm.id.toString()}
-                          >
-                            {radiadoresejes50cm.modelo}
-                          </SelectItem>
-                        ))}
-                      </SelectGroup>
-                    </SelectContent>
-                  </Select>
-                )}
-              />
-              {errors.ciudad_id && (
+              {errors.nombrecotizacion && (
                 <p className="text-red-500">
-                  {errors.radiadoresejes50cm.message}
+                  {errors.nombrecotizacion.message}
                 </p>
               )}
             </div>
-            <div className="py-2">
-              <Button
-                type=""
-                onClick={agregarAmbiente}
-                variant="mibotoncrear"
-                className=""
-              >
-                + Ambiente
-              </Button>
-            </div>
-          </div>
-          <div className="w-full md:w-1/4 md:p-2">
-            <div className="py-2">
-              <Label className="text-cpalet-500 capitalize">ciudad zona:</Label>
-              <Controller
-                name="ciudadzona_id"
-                control={control}
-                rules={{ required: 'La ciudad zona es requerida' }}
-                render={({ field }) => (
-                  <Select
-                    {...field}
-                    onValueChange={(value) => field.onChange(value)}
-                    value={field.value}
-                  >
-                    <SelectTrigger className="w-full text-cpalet-500 capitalize">
-                      <SelectValue placeholder="Seleccionar" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectGroup>
-                        <SelectLabel>CIUDAD ZONA:</SelectLabel>
-                        {watch().ciudad_id && (
-                          <>
-                            {respuestaCiudadZona.map((ciudadzona) => (
+            <div className="w-full md:w-1/4 md:p-2">
+              <div className="py-2">
+                <Label className="text-cpalet-500 capitalize">ciudades:</Label>
+                <Controller
+                  name="ciudad_id"
+                  control={control}
+                  rules={{ required: 'La Ciudad es requerida' }}
+                  render={({ field }) => (
+                    <Select
+                      {...field}
+                      onValueChange={(value) => field.onChange(value)}
+                      value={field.value}
+                    >
+                      <SelectTrigger className="w-full text-cpalet-500 capitalize">
+                        <SelectValue placeholder="Seleccionar" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectGroup>
+                          <SelectLabel>CIUDADES:</SelectLabel>
+                          {respuestaCiudades.map((ciudad) => (
+                            <SelectItem
+                              key={ciudad.id}
+                              value={ciudad.id.toString()}
+                            >
+                              {ciudad.ciudad}
+                            </SelectItem>
+                          ))}
+                        </SelectGroup>
+                      </SelectContent>
+                    </Select>
+                  )}
+                />
+                {errors.ciudad_id && (
+                  <p className="text-red-500">{errors.ciudad_id.message}</p>
+                )}
+              </div>
+              <div className="py-2">
+                <Label className="text-cpalet-500 capitalize">
+                  tipo de vidrio:
+                </Label>
+                <Controller
+                  name="tipovidrio_id"
+                  control={control}
+                  rules={{ required: 'El tipo de vidrio es requerida' }}
+                  render={({ field }) => (
+                    <Select
+                      {...field}
+                      onValueChange={(value) => field.onChange(value)}
+                      value={field.value}
+                    >
+                      <SelectTrigger className="w-full text-cpalet-500 capitalize">
+                        <SelectValue placeholder="Seleccionar" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectGroup>
+                          <SelectLabel>TIPO DE VIDRIO:</SelectLabel>
+                          {respuestaTipovidrio.map((tipovidrio) => (
+                            <SelectItem
+                              key={tipovidrio.id}
+                              value={tipovidrio.id.toString()}
+                            >
+                              {tipovidrio.tipovidrio}
+                            </SelectItem>
+                          ))}
+                        </SelectGroup>
+                      </SelectContent>
+                    </Select>
+                  )}
+                />
+                {errors.tipovidrio_id && (
+                  <p className="text-red-500">{errors.tipovidrio_id.message}</p>
+                )}
+              </div>
+
+              <div className="py-2">
+                <Label className="text-cpalet-500 capitalize">toalleros:</Label>
+                <Controller
+                  name="radiadoresejes50cm"
+                  control={control}
+                  rules={{ required: 'La longitud de la tuberia es requerida' }}
+                  render={({ field }) => (
+                    <Select
+                      {...field}
+                      onValueChange={(value) => field.onChange(value)}
+                      value={field.value}
+                    >
+                      <SelectTrigger className="w-full text-cpalet-500 capitalize">
+                        <SelectValue placeholder="Seleccionar" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectGroup>
+                          <SelectLabel>MODELO:</SelectLabel>
+                          {respuestaRadiadoreje50cm.map(
+                            (radiadoresejes50cm) => (
                               <SelectItem
-                                key={ciudadzona.ciudadzona}
-                                value={ciudadzona.id.toString()}
+                                key={radiadoresejes50cm.id}
+                                value={radiadoresejes50cm.id.toString()}
                               >
-                                {ciudadzona.ciudadzona}
+                                {radiadoresejes50cm.modelo}
                               </SelectItem>
-                            ))}
-                          </>
-                        )}
-                      </SelectGroup>
-                    </SelectContent>
-                  </Select>
+                            )
+                          )}
+                        </SelectGroup>
+                      </SelectContent>
+                    </Select>
+                  )}
+                />
+                {errors.ciudad_id && (
+                  <p className="text-red-500">
+                    {errors.radiadoresejes50cm.message}
+                  </p>
                 )}
-              />
+              </div>
+              <div className="py-2">
+                <Button type="submit" variant="mibotoncrear" className="">
+                  Crear cotizacion
+                </Button>
+              </div>
+            </div>
+            <div className="w-full md:w-1/4 md:p-2">
+              <div className="py-2">
+                <Label className="text-cpalet-500 capitalize">
+                  ciudad zona:
+                </Label>
+                <Controller
+                  name="ciudadzona_id"
+                  control={control}
+                  rules={{ required: 'La ciudad zona es requerida' }}
+                  render={({ field }) => (
+                    <Select
+                      {...field}
+                      onValueChange={(value) => field.onChange(value)}
+                      value={field.value}
+                    >
+                      <SelectTrigger className="w-full text-cpalet-500 capitalize">
+                        <SelectValue placeholder="Seleccionar" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectGroup>
+                          <SelectLabel>CIUDAD ZONA:</SelectLabel>
+                          {watch().ciudad_id && (
+                            <>
+                              {respuestaCiudadZona.map((ciudadzona) => (
+                                <SelectItem
+                                  key={ciudadzona.ciudadzona}
+                                  value={ciudadzona.id.toString()}
+                                >
+                                  {ciudadzona.ciudadzona}
+                                </SelectItem>
+                              ))}
+                            </>
+                          )}
+                        </SelectGroup>
+                      </SelectContent>
+                    </Select>
+                  )}
+                />
 
-              {errors.ciudadzona_id && (
-                <p className="text-red-500">{errors.ciudadzona_id.message}</p>
-              )}
-            </div>
-            <div className="py-2">
-              <Label className="text-cpalet-500 capitalize">
-                tipo de pared:
-              </Label>
-              <Controller
-                name="tipopared_id"
-                control={control}
-                rules={{ required: 'El tipo de pared es requerida' }}
-                render={({ field }) => (
-                  <Select
-                    {...field}
-                    onValueChange={(value) => field.onChange(value)}
-                    value={field.value}
-                  >
-                    <SelectTrigger className="w-full text-cpalet-500 capitalize">
-                      <SelectValue placeholder="Seleccionar" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectGroup>
-                        <SelectLabel>TIPO DE PARED:</SelectLabel>
-                        {respuestaTipopared.map((tipopared) => (
-                          <SelectItem
-                            key={tipopared.tipopared}
-                            value={tipopared.id.toString()}
-                          >
-                            {tipopared.tipopared}
-                          </SelectItem>
-                        ))}
-                      </SelectGroup>
-                    </SelectContent>
-                  </Select>
+                {errors.ciudadzona_id && (
+                  <p className="text-red-500">{errors.ciudadzona_id.message}</p>
                 )}
-              />
-              {errors.tipopared_id && (
-                <p className="text-red-500">{errors.tipopared_id.message}</p>
-              )}
-            </div>
-            <div className="py-2">
-              <Label className="text-cpalet-500 capitalize">radiadores:</Label>
-              <Controller
-                name="toallerosejes50cm"
-                control={control}
-                rules={{ required: 'La Nro Personas es requerida' }}
-                render={({ field }) => (
-                  <Select
-                    {...field}
-                    onValueChange={(value) => field.onChange(value)}
-                    value={field.value}
-                  >
-                    <SelectTrigger className="w-full text-cpalet-500 capitalize">
-                      <SelectValue placeholder="Seleccionar" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectGroup>
-                        <SelectLabel>MODELO:</SelectLabel>
-                        {respuestaToalleroeje50cm.map((toallerosejes50cm) => (
-                          <SelectItem
-                            key={toallerosejes50cm.id}
-                            value={toallerosejes50cm.id.toString()}
-                          >
-                            {toallerosejes50cm.modelo}
-                          </SelectItem>
-                        ))}
-                      </SelectGroup>
-                    </SelectContent>
-                  </Select>
+              </div>
+              <div className="py-2">
+                <Label className="text-cpalet-500 capitalize">
+                  tipo de pared:
+                </Label>
+                <Controller
+                  name="tipopared_id"
+                  control={control}
+                  rules={{ required: 'El tipo de pared es requerida' }}
+                  render={({ field }) => (
+                    <Select
+                      {...field}
+                      onValueChange={(value) => field.onChange(value)}
+                      value={field.value}
+                    >
+                      <SelectTrigger className="w-full text-cpalet-500 capitalize">
+                        <SelectValue placeholder="Seleccionar" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectGroup>
+                          <SelectLabel>TIPO DE PARED:</SelectLabel>
+                          {respuestaTipopared.map((tipopared) => (
+                            <SelectItem
+                              key={tipopared.tipopared}
+                              value={tipopared.id.toString()}
+                            >
+                              {tipopared.tipopared}
+                            </SelectItem>
+                          ))}
+                        </SelectGroup>
+                      </SelectContent>
+                    </Select>
+                  )}
+                />
+                {errors.tipopared_id && (
+                  <p className="text-red-500">{errors.tipopared_id.message}</p>
                 )}
-              />
-              {errors.ciudad_id && (
-                <p className="text-red-500">{errors.ciudad_id.message}</p>
+              </div>
+              <div className="py-2">
+                <Label className="text-cpalet-500 capitalize">
+                  radiadores:
+                </Label>
+                <Controller
+                  name="toallerosejes50cm"
+                  control={control}
+                  rules={{ required: 'La Nro Personas es requerida' }}
+                  render={({ field }) => (
+                    <Select
+                      {...field}
+                      onValueChange={(value) => field.onChange(value)}
+                      value={field.value}
+                    >
+                      <SelectTrigger className="w-full text-cpalet-500 capitalize">
+                        <SelectValue placeholder="Seleccionar" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectGroup>
+                          <SelectLabel>MODELO:</SelectLabel>
+                          {respuestaToalleroeje50cm.map((toallerosejes50cm) => (
+                            <SelectItem
+                              key={toallerosejes50cm.id}
+                              value={toallerosejes50cm.id.toString()}
+                            >
+                              {toallerosejes50cm.modelo}
+                            </SelectItem>
+                          ))}
+                        </SelectGroup>
+                      </SelectContent>
+                    </Select>
+                  )}
+                />
+                {errors.ciudad_id && (
+                  <p className="text-red-500">{errors.ciudad_id.message}</p>
+                )}
+              </div>
+            </div>
+            <div className="w-full md:w-1/4 md:p-2">
+              <div className="py-2">
+                <Label className="text-cpalet-500 capitalize">
+                  orientacion:
+                </Label>
+                <Controller
+                  name="orientacion_id"
+                  control={control}
+                  rules={{ required: 'La orientacion es requerida' }}
+                  render={({ field }) => (
+                    <Select
+                      {...field}
+                      onValueChange={(value) => field.onChange(value)}
+                      value={field.value}
+                    >
+                      <SelectTrigger className="w-full text-cpalet-500 capitalize">
+                        <SelectValue placeholder="Seleccionar" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectGroup>
+                          <SelectLabel>ORIENTACION:</SelectLabel>
+                          {respuestaOrientacion.map((orientacion) => (
+                            <SelectItem
+                              key={orientacion.orientacion}
+                              value={orientacion.id.toString()}
+                            >
+                              {orientacion.orientacion}
+                            </SelectItem>
+                          ))}
+                        </SelectGroup>
+                      </SelectContent>
+                    </Select>
+                  )}
+                />
+                {errors.orientacion_id && (
+                  <p className="text-red-500">
+                    {errors.orientacion_id.message}
+                  </p>
+                )}
+              </div>
+              <div className="py-2">
+                <Label className="text-cpalet-500 capitalize">
+                  tipo de techo:
+                </Label>
+                <Controller
+                  name="tipotecho_id"
+                  control={control}
+                  rules={{ required: 'El tipo de techo es requerida' }}
+                  render={({ field }) => (
+                    <Select
+                      {...field}
+                      onValueChange={(value) => field.onChange(value)}
+                      value={field.value}
+                    >
+                      <SelectTrigger className="w-full text-cpalet-500 capitalize">
+                        <SelectValue placeholder="Seleccionar" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectGroup>
+                          <SelectLabel>TIPO DE TECHO:</SelectLabel>
+                          {respuestaTipotecho.map((tipotecho) => (
+                            <SelectItem
+                              key={tipotecho.tipotecho}
+                              value={tipotecho.id.toString()}
+                            >
+                              {tipotecho.tipotecho}
+                            </SelectItem>
+                          ))}
+                        </SelectGroup>
+                      </SelectContent>
+                    </Select>
+                  )}
+                />
+                {errors.tipotecho_id && (
+                  <p className="text-red-500">{errors.tipotecho_id.message}</p>
+                )}
+              </div>
+              <div className="py-2">
+                <Label className="text-cpalet-500 uppercase">
+                  tipo de cotizacion:
+                </Label>
+                <Controller
+                  name="tipocotizacion_id"
+                  control={control}
+                  rules={{ required: 'El tipo de cotizacion es requerida' }}
+                  render={({ field }) => (
+                    <Select
+                      {...field}
+                      onValueChange={(value) => field.onChange(value)}
+                      value={field.value}
+                    >
+                      <SelectTrigger className="w-full text-cpalet-500 capitalize">
+                        <SelectValue placeholder="Seleccionar" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectGroup>
+                          <SelectLabel>TIPO DE COTIZACION:</SelectLabel>
+                          {respuestaTipocotizacion.map((tipocotizacion) => (
+                            <SelectItem
+                              key={tipocotizacion.id}
+                              value={tipocotizacion.id.toString()}
+                            >
+                              {tipocotizacion.tipocotizacion}
+                            </SelectItem>
+                          ))}
+                        </SelectGroup>
+                      </SelectContent>
+                    </Select>
+                  )}
+                />
+                {errors.tipocotizacion_id && (
+                  <p className="text-red-500">
+                    {errors.tipocotizacion_id.message}
+                  </p>
+                )}
+              </div>
+            </div>
+            <div className="w-full md:w-1/4 md:p-2">
+              <div className="py-2">
+                <Label className="text-cpalet-500 capitalize">
+                  nivel de piso:
+                </Label>
+                <Controller
+                  name="nivelpiso_id"
+                  control={control}
+                  rules={{ required: 'El nivel de piso es requerida' }}
+                  render={({ field }) => (
+                    <Select
+                      {...field}
+                      onValueChange={(value) => field.onChange(value)}
+                      value={field.value}
+                    >
+                      <SelectTrigger className="w-full text-cpalet-500 capitalize">
+                        <SelectValue placeholder="Seleccionar" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectGroup>
+                          <SelectLabel>NIVEL DE PISO:</SelectLabel>
+                          {respuestaNivelpiso.map((nivelpiso) => (
+                            <SelectItem
+                              key={nivelpiso.nivelpiso}
+                              value={nivelpiso.id.toString()}
+                            >
+                              {nivelpiso.nivelpiso}
+                            </SelectItem>
+                          ))}
+                        </SelectGroup>
+                      </SelectContent>
+                    </Select>
+                  )}
+                />
+                {errors.nivelpiso_id && (
+                  <p className="text-red-500">{errors.nivelpiso_id.message}</p>
+                )}
+              </div>
+              <div className="py-2">
+                <Label className="text-cpalet-500 capitalize">
+                  tipo de suelo:
+                </Label>
+                <Controller
+                  name="tiposuelo_id"
+                  control={control}
+                  rules={{ required: 'El tipo de suelo es requerida' }}
+                  render={({ field }) => (
+                    <Select
+                      {...field}
+                      onValueChange={(value) => field.onChange(value)}
+                      value={field.value}
+                    >
+                      <SelectTrigger className="w-full text-cpalet-500 capitalize">
+                        <SelectValue placeholder="Seleccionar" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectGroup>
+                          <SelectLabel>TIPO DE SUELO:</SelectLabel>
+                          {respuestaTiposuelo.map((tiposuelo) => (
+                            <SelectItem
+                              key={tiposuelo.tiposuelo}
+                              value={tiposuelo.id.toString()}
+                            >
+                              {tiposuelo.tiposuelo}
+                            </SelectItem>
+                          ))}
+                        </SelectGroup>
+                      </SelectContent>
+                    </Select>
+                  )}
+                />
+                {errors.tiposuelo_id && (
+                  <p className="text-red-500">{errors.tiposuelo_id.message}</p>
+                )}
+              </div>
+              {respuestaCotizacion && (
+                <div className="pt-20">
+                  <Button
+                    type=""
+                    onClick={agregarAmbiente}
+                    variant="mibotoncrear"
+                    className=""
+                  >
+                    Anadir Ambiente
+                  </Button>
+                </div>
               )}
             </div>
+            <div className="py-3"></div>
           </div>
-          <div className="w-full md:w-1/4 md:p-2">
-            <div className="py-2">
-              <Label className="text-cpalet-500 capitalize">orientacion:</Label>
-              <Controller
-                name="orientacion_id"
-                control={control}
-                rules={{ required: 'La orientacion es requerida' }}
-                render={({ field }) => (
-                  <Select
-                    {...field}
-                    onValueChange={(value) => field.onChange(value)}
-                    value={field.value}
-                  >
-                    <SelectTrigger className="w-full text-cpalet-500 capitalize">
-                      <SelectValue placeholder="Seleccionar" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectGroup>
-                        <SelectLabel>ORIENTACION:</SelectLabel>
-                        {respuestaOrientacion.map((orientacion) => (
-                          <SelectItem
-                            key={orientacion.orientacion}
-                            value={orientacion.id.toString()}
-                          >
-                            {orientacion.orientacion}
-                          </SelectItem>
-                        ))}
-                      </SelectGroup>
-                    </SelectContent>
-                  </Select>
-                )}
-              />
-              {errors.orientacion_id && (
-                <p className="text-red-500">{errors.orientacion_id.message}</p>
-              )}
-            </div>
-            <div className="py-2">
-              <Label className="text-cpalet-500 capitalize">
-                tipo de techo:
-              </Label>
-              <Controller
-                name="tipotecho_id"
-                control={control}
-                rules={{ required: 'El tipo de techo es requerida' }}
-                render={({ field }) => (
-                  <Select
-                    {...field}
-                    onValueChange={(value) => field.onChange(value)}
-                    value={field.value}
-                  >
-                    <SelectTrigger className="w-full text-cpalet-500 capitalize">
-                      <SelectValue placeholder="Seleccionar" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectGroup>
-                        <SelectLabel>TIPO DE TECHO:</SelectLabel>
-                        {respuestaTipotecho.map((tipotecho) => (
-                          <SelectItem
-                            key={tipotecho.tipotecho}
-                            value={tipotecho.id.toString()}
-                          >
-                            {tipotecho.tipotecho}
-                          </SelectItem>
-                        ))}
-                      </SelectGroup>
-                    </SelectContent>
-                  </Select>
-                )}
-              />
-              {errors.tipotecho_id && (
-                <p className="text-red-500">{errors.tipotecho_id.message}</p>
-              )}
-            </div>
-            <div className="py-2">
-              <Label className="text-cpalet-500 uppercase">
-                tipo de cotizacion:
-              </Label>
-              <Controller
-                name="tipocotizacion_id"
-                control={control}
-                rules={{ required: 'El tipo de cotizacion es requerida' }}
-                render={({ field }) => (
-                  <Select
-                    {...field}
-                    onValueChange={(value) => field.onChange(value)}
-                    value={field.value}
-                  >
-                    <SelectTrigger className="w-full text-cpalet-500 capitalize">
-                      <SelectValue placeholder="Seleccionar" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectGroup>
-                        <SelectLabel>TIPO DE COTIZACION:</SelectLabel>
-                        {respuestaTipocotizacion.map((tipocotizacion) => (
-                          <SelectItem
-                            key={tipocotizacion.id}
-                            value={tipocotizacion.id.toString()}
-                          >
-                            {tipocotizacion.tipocotizacion}
-                          </SelectItem>
-                        ))}
-                      </SelectGroup>
-                    </SelectContent>
-                  </Select>
-                )}
-              />
-              {errors.tipocotizacion_id && (
-                <p className="text-red-500">
-                  {errors.tipocotizacion_id.message}
-                </p>
-              )}
-            </div>
-          </div>
-          <div className="w-full md:w-1/4 md:p-2">
-            <div className="py-2">
-              <Label className="text-cpalet-500 capitalize">
-                nivel de piso:
-              </Label>
-              <Controller
-                name="nivelpiso_id"
-                control={control}
-                rules={{ required: 'El nivel de piso es requerida' }}
-                render={({ field }) => (
-                  <Select
-                    {...field}
-                    onValueChange={(value) => field.onChange(value)}
-                    value={field.value}
-                  >
-                    <SelectTrigger className="w-full text-cpalet-500 capitalize">
-                      <SelectValue placeholder="Seleccionar" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectGroup>
-                        <SelectLabel>NIVEL DE PISO:</SelectLabel>
-                        {respuestaNivelpiso.map((nivelpiso) => (
-                          <SelectItem
-                            key={nivelpiso.nivelpiso}
-                            value={nivelpiso.id.toString()}
-                          >
-                            {nivelpiso.nivelpiso}
-                          </SelectItem>
-                        ))}
-                      </SelectGroup>
-                    </SelectContent>
-                  </Select>
-                )}
-              />
-              {errors.nivelpiso_id && (
-                <p className="text-red-500">{errors.nivelpiso_id.message}</p>
-              )}
-            </div>
-            <div className="py-2">
-              <Label className="text-cpalet-500 capitalize">
-                tipo de suelo:
-              </Label>
-              <Controller
-                name="tiposuelo_id"
-                control={control}
-                rules={{ required: 'El tipo de suelo es requerida' }}
-                render={({ field }) => (
-                  <Select
-                    {...field}
-                    onValueChange={(value) => field.onChange(value)}
-                    value={field.value}
-                  >
-                    <SelectTrigger className="w-full text-cpalet-500 capitalize">
-                      <SelectValue placeholder="Seleccionar" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectGroup>
-                        <SelectLabel>TIPO DE SUELO:</SelectLabel>
-                        {respuestaTiposuelo.map((tiposuelo) => (
-                          <SelectItem
-                            key={tiposuelo.tiposuelo}
-                            value={tiposuelo.id.toString()}
-                          >
-                            {tiposuelo.tiposuelo}
-                          </SelectItem>
-                        ))}
-                      </SelectGroup>
-                    </SelectContent>
-                  </Select>
-                )}
-              />
-              {errors.tiposuelo_id && (
-                <p className="text-red-500">{errors.tiposuelo_id.message}</p>
-              )}
-            </div>
-          </div>
-          <div className="py-3"></div>
-
-          {/* <div className="centrarHorizontal">
-            <Button type="submit" variant="mibotoncrear" className="">
-              Crear cotizacion
-            </Button>
-          </div> */}
-          {/* </form> */}
-        </div>
+        </form>
       </div>
 
       {/* <span>{JSON.stringify(watch())}</span> */}
       <div className="py-4"></div>
-
-      {ambientes.map((ambiente, index) => (
-        <div key={index} className=" mb-4">
-          {ambiente}
-          <hr className="my-4 border-t-2 border-cpalet-500" />
+      {respuestaCotizacion && (
+        <div className="flex flex-col p-5 border-2 border-cpalet-500 rounded-lg shadow-2xl">
+          {ambientes.map((ambiente, index) => (
+            <div key={index} className="mb-2">
+              {ambiente}
+              <hr className="border-t-2 border-cpalet-500" />
+            </div>
+          ))}
         </div>
-      ))}
+      )}
     </>
   );
 }

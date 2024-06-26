@@ -87,6 +87,7 @@ module.exports = {
       width: {
         90: '90%', // Agrega un ancho personalizado del 95%
         10: '10%', // Agrega un ancho personalizado del 5%
+        '1/8': '12.5%',
       },
     },
   },

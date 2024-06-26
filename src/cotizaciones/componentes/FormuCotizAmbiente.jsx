@@ -19,30 +19,20 @@ import { obtenerDatosUsuario } from '../../auth/utilidades/datosUsuarioLocalStor
 import { manejoError } from '../utilidades/mostrarErrores';
 import { exitoToast } from '../../lib/notificaciones';
 
-export function FormuCotizAmbiente() {
+export function FormuCotizAmbiente({ idCotizacion }) {
   const urlBackendBase = import.meta.env.VITE_URL_BACKEND;
-  const urlFactorviaje = `${urlBackendBase}factoresviajes/svc`;
-  const urlGastopersona = `${urlBackendBase}gastospersonas/svc`;
-  const urlInstalradiatoallero = `${urlBackendBase}instalradiatoalleros/svc`;
-  const urlInstaltuberia = `${urlBackendBase}instaltuberias/svc`;
-  const urlRadiadoreje50cm = `${urlBackendBase}radiadoresejes50cm/svc`;
-  const urlToalleroeje50cm = `${urlBackendBase}toallerosejes50cm/svc`;
-  const urlTipocotizacion = `${urlBackendBase}tiposcotizaciones`;
-  // const url = `${urlBackendBase}/svc`;
+  const urlCotizacionambiente = `${urlBackendBase}cotizacionesambientes`;
 
   const headers = {
     Authorization: `Bearer ${obtenerDatosUsuario().tk}`,
   };
 
-  const [respuestaFactorviaje, setRespuestaFactorviaje] = useState([]);
-  const [respuestaGastopersona, setRespuestaGastopersona] = useState([]);
-  const [respuestaInstalradiatoallero, setRespuestaInstalradiatoallero] =
+  const [respuestaCotizacionambiente, setRespuestaCotizacionambiente] =
     useState([]);
-  const [respuestaInstaltuberia, setRespuestaInstaltuberia] = useState([]);
-  const [respuestaRadiadoreje50cm, setRespuestaRadiadoreje50cm] = useState([]);
-  const [respuestaToalleroeje50cm, setRespuestaToalleroeje50cm] = useState([]);
-  const [respuestaTipocotizacion, setRespuestaTipocotizacion] = useState([]);
-  // const [respuesta, setRespuesta] = useState([]);
+
+  const [area, setArea] = useState(0);
+  const [altura, setAltura] = useState(0);
+  const [volumen, setVolumen] = useState(0);
 
   const {
     control,
@@ -51,229 +41,183 @@ export function FormuCotizAmbiente() {
     watch,
     formState: { errors },
     setValue,
-  } = useForm();
+  } = useForm({
+    defaultValues: {
+      cotizacion_id: idCotizacion,
+    },
+  });
 
-  const area = watch('area');
-
-  const pedirFactorviaje = async () => {
-    try {
-      const respuesta = await axios.get(urlFactorviaje, { headers });
-      setRespuestaFactorviaje(respuesta.data);
-    } catch (error) {
-      manejoError(error);
-    }
-  };
-  const pedirGastopersona = async () => {
-    const respuesta = await axios.get(urlGastopersona, { headers });
-    try {
-      setRespuestaGastopersona(respuesta.data);
-    } catch (error) {
-      setRespuestaGastopersona([]);
-      manejoError(error);
-    }
-  };
-  const pedirInstalradiatoallero = async () => {
-    const respuesta = await axios.get(urlInstalradiatoallero, { headers });
-    try {
-      setRespuestaInstalradiatoallero(respuesta.data);
-    } catch (error) {
-      setRespuestaInstalradiatoallero([]);
-      manejoError(error);
-    }
-  };
-  const pedirInstaltuberia = async () => {
-    const respuesta = await axios.get(urlInstaltuberia, { headers });
-    try {
-      setRespuestaInstaltuberia(respuesta.data);
-    } catch (error) {
-      setRespuestaInstaltuberia([]);
-      manejoError(error);
-    }
-  };
-  const pedirRadiadoreje50cm = async () => {
-    const respuesta = await axios.get(urlRadiadoreje50cm, { headers });
-    try {
-      setRespuestaRadiadoreje50cm(respuesta.data);
-    } catch (error) {
-      setRespuestaRadiadoreje50cm([]);
-      manejoError(error);
-    }
-  };
-  const pedirToalleroeje50cm = async () => {
-    const respuesta = await axios.get(urlToalleroeje50cm, { headers });
-    try {
-      setRespuestaToalleroeje50cm(respuesta.data);
-    } catch (error) {
-      setRespuestaToalleroeje50cm([]);
-      manejoError(error);
-    }
-  };
-  const pedirTipocotizacion = async () => {
-    try {
-      const respuesta = await axios.get(urlTipocotizacion, { headers });
-      setRespuestaTipocotizacion(respuesta.data);
-    } catch (error) {
-      setRespuestaTipocotizacion([]);
-      manejoError(error);
-    }
-  };
-
-  useEffect(() => {
-    pedirFactorviaje();
-    pedirGastopersona();
-    pedirInstalradiatoallero();
-    pedirInstaltuberia();
-    pedirRadiadoreje50cm();
-    pedirToalleroeje50cm();
-    pedirTipocotizacion();
-    // ();
-  }, []);
-
-  console.log();
   useEffect(() => {
     if (area) {
-      const nroceldas = area / 1.5;
-      setValue('nroceldas', nroceldas.toFixed(2));
+      const nrocelda = area / 1.5;
+      setValue('nrocelda', Math.round(nrocelda));
 
       // Determinar el valor de nroradiadores
       let nroradiadores;
-      if (nroceldas < 18.5) {
+      if (nrocelda < 18.5) {
         nroradiadores = 1;
       } else {
-        nroradiadores = Math.ceil(nroceldas / 15);
+        nroradiadores = Math.ceil(nrocelda / 15);
       }
       setValue('nroradiadores', nroradiadores);
     }
   }, [area, setValue]);
 
+  const handleChangeArea = (e) => {
+    const newArea = parseFloat(e.target.value);
+    setArea(newArea); // Aquí se actualiza el estado del área
+    const altura = watch('altura');
+    const newVolumen = newArea * altura;
+    setValue('area', newArea);
+    setValue('volumen', newVolumen.toFixed(4)); // Redondear a 4 decimales
+  };
+
+  const handleChangeAltura = (e) => {
+    const newAltura = parseFloat(e.target.value);
+    setAltura(newAltura); // Aquí se actualiza el estado de la altura
+    const area = watch('area');
+    const newVolumen = newAltura * area;
+    setValue('altura', newAltura);
+    setValue('volumen', newVolumen.toFixed(4)); // Redondear a 4 decimales
+  };
+
+  const crearCotizacionambiente = async (data) => {
+    try {
+      const respuesta = await axios.post(urlCotizacionambiente, data, {
+        headers,
+      });
+      exitoToast(
+        `Se Creo la Abitacion: ${respuesta.data.nombreambiente}`,
+        false
+      );
+      setRespuestaCotizacionambiente(respuesta.data);
+    } catch (error) {
+      setRespuestaCotizacionambiente([]);
+      manejoError(error);
+    }
+  };
+
+  const handleChangeRadiadores = (e) => {
+    const newRadiadores = parseInt(e.target.value, 10);
+    setValue('nroradiador', newRadiadores);
+  };
+
+  console.log('idCotizacion', idCotizacion);
   return (
     <>
-      {/* <div className="flex flex-col md:flex-row p-5 border-2 border-cpalet-500 rounded-lg shadow-xl"> */}
-        <form className="flex flex-wrap w-full">
-          <div className="w-full md:w-1/4 md:p-2">
+      <form
+        onSubmit={handleSubmit(crearCotizacionambiente)}
+        className="flex flex-wrap w-full"
+      >
+        <div className="flex flex-wrap w-full">
+          <div className="w-full md:w-1/8 md:p-2">
             <div className="py-2">
-              <Label className="text-cpalet-500 capitalize">area</Label>
+              <Label className="text-cpalet-500 text-sm">
+                Nombre Abitacion:
+              </Label>
               <Input
                 className="text-cpalet-500 capitalize"
                 type="text"
-                {...register('area', {
-                  required: 'area es requerida',
+                {...register('nombreambiente', {
+                  required: 'El nombre ambiente es requerida',
                 })}
+                onChange={handleChangeArea}
+              />
+              {errors.nombreambiente && (
+                <p className="text-red-500">{errors.nombreambiente.message}</p>
+              )}
+            </div>
+          </div>
+          <div className="w-full md:w-1/8 md:p-2">
+            <div className="py-2">
+              <Label className="text-cpalet-500 text-sm">
+                Área m<sup>2</sup>:
+              </Label>
+              <Input
+                className="text-cpalet-500 capitalize"
+                type="number"
+                step="0.01"
+                min="0"
+                {...register('area', { required: 'El área es requerida' })}
+                onChange={handleChangeArea}
               />
               {errors.area && (
                 <p className="text-red-500">{errors.area.message}</p>
               )}
             </div>
-            {/* <div className="py-2">
-              <Label className="text-cpalet-500 capitalize">radiadores:</Label>
-              <Controller
-                name="toallerosejes50cm"
-                control={control}
-                rules={{ required: 'La Nro Personas es requerida' }}
-                render={({ field }) => (
-                  <Select
-                    {...field}
-                    onValueChange={(value) => field.onChange(value)}
-                    value={field.value}
-                  >
-                    <SelectTrigger className="w-full text-cpalet-500 capitalize">
-                      <SelectValue placeholder="Seleccionar" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectGroup>
-                        <SelectLabel>MODELO:</SelectLabel>
-                        {respuestaToalleroeje50cm.map((toallerosejes50cm) => (
-                          <SelectItem
-                            key={toallerosejes50cm.id}
-                            value={toallerosejes50cm.id.toString()}
-                          >
-                            {toallerosejes50cm.modelo}
-                          </SelectItem>
-                        ))}
-                      </SelectGroup>
-                    </SelectContent>
-                  </Select>
-                )}
-              />
-              {errors.ciudad_id && (
-                <p className="text-red-500">{errors.ciudad_id.message}</p>
-              )}
-            </div> */}
           </div>
-          <div className="w-full md:w-1/4 md:p-2">
+          <div className="w-full md:w-1/8 md:p-2">
+            <div className="py-2">
+              <Label className="text-cpalet-500 text-sm">Altura m:</Label>
+              <Input
+                className="text-cpalet-500 capitalize"
+                type="number"
+                step="0.01"
+                min="0"
+                {...register('altura', {
+                  required: 'La altura es requerida',
+                })}
+                onChange={handleChangeAltura}
+              />
+              {errors.altura && (
+                <p className="text-red-500">{errors.altura.message}</p>
+              )}
+            </div>
+          </div>
+          <div className="w-full md:w-1/8 md:p-2">
+            <div className="py-2">
+              <Label className="text-cpalet-500 text-sm">
+                Volumen m<sup>3</sup>:
+              </Label>
+              <Input
+                className="text-cpalet-500 capitalize"
+                type="text"
+                {...register('volumen', {
+                  required: 'El volumen es requerido',
+                })}
+                disabled
+              />
+              {errors.volumen && (
+                <p className="text-red-500">{errors.volumen.message}</p>
+              )}
+            </div>
+          </div>
+          <div className="w-full md:w-1/8 md:p-2">
             <div className="py-2">
               <Label className="text-cpalet-500 capitalize">nro celdas</Label>
               <Input
                 className="text-cpalet-500 capitalize"
-                type="text"
-                {...register('nroceldas', {
+                type="number"
+                {...register('nrocelda', {
                   required: 'El nro celdas es requerida',
                 })}
                 readOnly
               />
-              {errors.nroceldas && (
-                <p className="text-red-500">{errors.nroceldas.message}</p>
+              {errors.nrocelda && (
+                <p className="text-red-500">{errors.nrocelda.message}</p>
               )}
             </div>
           </div>
-          <div className="w-full md:w-1/4 md:p-2">
+          <div className="w-full md:w-1/8 md:p-2">
             <div className="py-2">
               <Label className="text-cpalet-500 capitalize">
                 nro radiadores
               </Label>
               <Input
                 className="text-cpalet-500 capitalize"
-                type="text"
-                {...register('nroradiadores', {
+                type="number"
+                min="1"
+                {...register('nroradiador', {
                   required: 'El nro radiadores es requerida',
                 })}
-                readOnly
+                onChange={handleChangeRadiadores}
               />
-              {errors.nroradiadores && (
-                <p className="text-red-500">{errors.nroradiadores.message}</p>
+              {errors.nroradiador && (
+                <p className="text-red-500">{errors.nroradiador.message}</p>
               )}
             </div>
-            {/* <div className="py-2">
-              <Label className="text-cpalet-500 uppercase">
-                tipo de cotizacion:
-              </Label>
-              <Controller
-                name="tipocotizacion_id"
-                control={control}
-                rules={{ required: 'El tipo de cotizacion es requerida' }}
-                render={({ field }) => (
-                  <Select
-                    {...field}
-                    onValueChange={(value) => field.onChange(value)}
-                    value={field.value}
-                  >
-                    <SelectTrigger className="w-full text-cpalet-500 capitalize">
-                      <SelectValue placeholder="Seleccionar" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectGroup>
-                        <SelectLabel>TIPO DE COTIZACION:</SelectLabel>
-                        {respuestaTipocotizacion.map((tipocotizacion) => (
-                          <SelectItem
-                            key={tipocotizacion.id}
-                            value={tipocotizacion.id.toString()}
-                          >
-                            {tipocotizacion.tipocotizacion}
-                          </SelectItem>
-                        ))}
-                      </SelectGroup>
-                    </SelectContent>
-                  </Select>
-                )}
-              />
-              {errors.tipocotizacion_id && (
-                <p className="text-red-500">
-                  {errors.tipocotizacion_id.message}
-                </p>
-              )}
-            </div> */}
           </div>
-          <div className="w-full md:w-1/4 md:p-2">
+          <div className="w-full md:w-1/8 md:p-2">
             <div className="py-2">
               <Label className="text-cpalet-500 capitalize">
                 cantidad de ventanas:
@@ -307,53 +251,16 @@ export function FormuCotizAmbiente() {
                 <p className="text-red-500">{errors.cantidadventana.message}</p>
               )}
             </div>
-            {/* <div className="py-2">
-              <Label className="text-cpalet-500 capitalize">toalleros:</Label>
-              <Controller
-                name="radiadoresejes50cm"
-                control={control}
-                rules={{ required: 'La longitud de la tuberia es requerida' }}
-                render={({ field }) => (
-                  <Select
-                    {...field}
-                    onValueChange={(value) => field.onChange(value)}
-                    value={field.value}
-                  >
-                    <SelectTrigger className="w-full text-cpalet-500 capitalize">
-                      <SelectValue placeholder="Seleccionar" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectGroup>
-                        <SelectLabel>MODELO:</SelectLabel>
-                        {respuestaRadiadoreje50cm.map((radiadoresejes50cm) => (
-                          <SelectItem
-                            key={radiadoresejes50cm.id}
-                            value={radiadoresejes50cm.id.toString()}
-                          >
-                            {radiadoresejes50cm.modelo}
-                          </SelectItem>
-                        ))}
-                      </SelectGroup>
-                    </SelectContent>
-                  </Select>
-                )}
-              />
-              {errors.ciudad_id && (
-                <p className="text-red-500">
-                  {errors.radiadoresejes50cm.message}
-                </p>
-              )}
-            </div> */}
           </div>
-          {/* <div className="w-full md:w-1/4 md:p-2">
+          <div className="w-full md:w-1/8 md:p-2">
             <div className="py-2">
               <Button type="submit" variant="mibotoncrear" className="">
-                Crear cotizacion
+                Crear Ambiente
               </Button>
             </div>
-          </div> */}
-        </form>
-      {/* </div> */}
+          </div>
+        </div>
+      </form>
     </>
   );
 }
