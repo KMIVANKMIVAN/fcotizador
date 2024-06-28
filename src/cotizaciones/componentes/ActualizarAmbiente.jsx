@@ -1,11 +1,9 @@
+import { useForm, Controller } from 'react-hook-form';
 import axios from 'axios';
 import { useState, useEffect } from 'react';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
-import { useForm, Controller } from 'react-hook-form';
-import useStore from '../estados/idCotizador';
-
 import {
   Select,
   SelectContent,
@@ -15,113 +13,82 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-
 import { obtenerDatosUsuario } from '../../auth/utilidades/datosUsuarioLocalStor';
+
+import { errorToast, exitoToast } from '../../lib/notificaciones';
 import { manejoError } from '../utilidades/mostrarErrores';
-import { exitoToast } from '../../lib/notificaciones';
 
 import useStoreRecargador from '../estados/recargarPeticiones';
 
-export function FormuCotizAmbiente({ idSeleccionada }) {
-  const idCotizador = useStore((state) => state.idCotizador);
+// import { FormuCotizAmbiente } from './FormuCotizAmbiente';
 
+export function ActualizarAmbiente({ filaSeleccionada }) {
+  console.log('filaSeleccionada', filaSeleccionada);
   const urlBackendBase = import.meta.env.VITE_URL_BACKEND;
-  const urlCotizacionambiente = `${urlBackendBase}cotizacionesambientes`;
+  const urlCotizacionambiente = `${urlBackendBase}cotizacionesambientes/${filaSeleccionada.id}`;
 
   const headers = {
     Authorization: `Bearer ${obtenerDatosUsuario().tk}`,
   };
 
+  const increcargador = useStoreRecargador((state) => state.increcargador);
+
   const [respuestaCotizacionambiente, setRespuestaCotizacionambiente] =
     useState([]);
 
-  const increcargador = useStoreRecargador((state) => state.increcargador);
-
-  const [area, setArea] = useState(0);
-  const [altura, setAltura] = useState(0);
-  const [volumen, setVolumen] = useState(0);
-
   const {
-    control,
     register,
     handleSubmit,
     watch,
+    control,
     formState: { errors },
     setValue,
   } = useForm({
     defaultValues: {
-      // cotizacion_id: idCotizador,
-      cotizacion_id:
-        idCotizador !== 0 && idSeleccionada === null
-          ? idCotizador
-          : idSeleccionada,
+      nombreambiente: filaSeleccionada.nombreambiente,
+      volumen: filaSeleccionada.volumen,
+      area: filaSeleccionada.area,
+      altura: filaSeleccionada.altura,
+      nrocelda: filaSeleccionada.nrocelda,
+      nroradiador: filaSeleccionada.nroradiador,
+      nroventana: filaSeleccionada.nroventana.toString(),
     },
   });
 
-  useEffect(() => {
-    if (area) {
-      const nrocelda = area / 1.5;
-      setValue('nrocelda', Math.round(nrocelda));
-
-      // Determinar el valor de nroradiadores
-      let nroradiadores;
-      if (nrocelda < 18.5) {
-        nroradiadores = 1;
-      } else {
-        nroradiadores = Math.ceil(nrocelda / 15);
-      }
-      setValue('nroradiadores', nroradiadores);
-    }
-  }, [area, setValue]);
-
-  const handleChangeArea = (e) => {
-    const newArea = parseFloat(e.target.value);
-    setArea(newArea); // Aquí se actualiza el estado del área
-    const altura = watch('altura');
-    const newVolumen = newArea * altura;
-    setValue('area', newArea);
-    setValue('volumen', newVolumen.toFixed(4)); // Redondear a 4 decimales
-  };
-
-  const handleChangeAltura = (e) => {
-    const newAltura = parseFloat(e.target.value);
-    setAltura(newAltura); // Aquí se actualiza el estado de la altura
-    const area = watch('area');
-    const newVolumen = newAltura * area;
-    setValue('altura', newAltura);
-    setValue('volumen', newVolumen.toFixed(4)); // Redondear a 4 decimales
-  };
-
-  const crearCotizacionambiente = async (data) => {
+  const actualizarCotizacionambiente = async (data) => {
     try {
-      const respuesta = await axios.post(urlCotizacionambiente, data, {
+      const respuesta = await axios.patch(urlCotizacionambiente, data, {
         headers,
       });
       exitoToast(
-        `Se Creo la Abitacion: ${respuesta.data.nombreambiente}`,
+        `Ambientes actualizado: ${respuesta.data.nombreambiente}`,
         false
       );
       setRespuestaCotizacionambiente(respuesta.data);
       increcargador();
     } catch (error) {
-      setRespuestaCotizacionambiente([]);
       manejoError(error);
     }
   };
 
-  const handleChangeRadiadores = (e) => {
-    const newRadiadores = parseInt(e.target.value, 10);
-    setValue('nroradiador', newRadiadores);
+  const eliminarCotizacionambiente = async () => {
+    try {
+      const respuesta = await axios.delete(urlCotizacionambiente, { headers });
+      exitoToast(`Ambiente eliminado: ${respuesta.data.message}`, false);
+      increcargador();
+    } catch (error) {
+      manejoError(error);
+    }
   };
 
   return (
     <>
       <form
-        onSubmit={handleSubmit(crearCotizacionambiente)}
-        className="flex flex-wrap w-full"
+        onSubmit={handleSubmit(actualizarCotizacionambiente)}
+        className="w-full"
       >
         <div className="flex flex-wrap w-full">
-          <div className="w-full md:w-1/8 md:p-2">
+          <div className="w-full md:w-1/7 md:p-2">
             <div className="py-2">
               <Label className="text-cpalet-500 text-sm">
                 Nombre Abitacion:
@@ -132,14 +99,13 @@ export function FormuCotizAmbiente({ idSeleccionada }) {
                 {...register('nombreambiente', {
                   required: 'El nombre ambiente es requerida',
                 })}
-                onChange={handleChangeArea}
               />
               {errors.nombreambiente && (
                 <p className="text-red-500">{errors.nombreambiente.message}</p>
               )}
             </div>
           </div>
-          <div className="w-full md:w-1/8 md:p-2">
+          <div className="w-full md:w-1/7 md:p-2">
             <div className="py-2">
               <Label className="text-cpalet-500 text-sm">
                 Área m<sup>2</sup>:
@@ -150,14 +116,13 @@ export function FormuCotizAmbiente({ idSeleccionada }) {
                 step="0.01"
                 min="0"
                 {...register('area', { required: 'El área es requerida' })}
-                onChange={handleChangeArea}
               />
               {errors.area && (
                 <p className="text-red-500">{errors.area.message}</p>
               )}
             </div>
           </div>
-          <div className="w-full md:w-1/8 md:p-2">
+          <div className="w-full md:w-1/7 md:p-2">
             <div className="py-2">
               <Label className="text-cpalet-500 text-sm">Altura m:</Label>
               <Input
@@ -168,14 +133,13 @@ export function FormuCotizAmbiente({ idSeleccionada }) {
                 {...register('altura', {
                   required: 'La altura es requerida',
                 })}
-                onChange={handleChangeAltura}
               />
               {errors.altura && (
                 <p className="text-red-500">{errors.altura.message}</p>
               )}
             </div>
           </div>
-          <div className="w-full md:w-1/8 md:p-2">
+          <div className="w-full md:w-1/7 md:p-2">
             <div className="py-2">
               <Label className="text-cpalet-500 text-sm">
                 Volumen m<sup>3</sup>:
@@ -193,7 +157,7 @@ export function FormuCotizAmbiente({ idSeleccionada }) {
               )}
             </div>
           </div>
-          <div className="w-full md:w-1/8 md:p-2">
+          <div className="w-full md:w-1/7 md:p-2">
             <div className="py-2">
               <Label className="text-cpalet-500 capitalize">nro celdas</Label>
               <Input
@@ -209,7 +173,7 @@ export function FormuCotizAmbiente({ idSeleccionada }) {
               )}
             </div>
           </div>
-          <div className="w-full md:w-1/8 md:p-2">
+          <div className="w-full md:w-1/7 md:p-2">
             <div className="py-2">
               <Label className="text-cpalet-500 capitalize">
                 nro radiadores
@@ -221,14 +185,13 @@ export function FormuCotizAmbiente({ idSeleccionada }) {
                 {...register('nroradiador', {
                   required: 'El nro radiadores es requerida',
                 })}
-                onChange={handleChangeRadiadores}
               />
               {errors.nroradiador && (
                 <p className="text-red-500">{errors.nroradiador.message}</p>
               )}
             </div>
           </div>
-          <div className="w-full md:w-1/8 md:p-2">
+          <div className="w-full md:w-1/7 md:p-2">
             <div className="py-2">
               <Label className="text-cpalet-500 capitalize">
                 nro ventanas:
@@ -236,7 +199,7 @@ export function FormuCotizAmbiente({ idSeleccionada }) {
               <Controller
                 name="nroventana"
                 control={control}
-                rules={{ required: 'La nro de ventanas es requerida' }}
+                rules={{ required: 'La cantidad de ventanas es requerida' }}
                 render={({ field }) => (
                   <Select
                     {...field}
@@ -263,15 +226,22 @@ export function FormuCotizAmbiente({ idSeleccionada }) {
               )}
             </div>
           </div>
-          <div className="w-full md:w-1/8 md:p-2">
-            <div className="pt-7">
-              <Button type="submit" variant="mibotoncrear" className="">
-                Crear Ambiente
-              </Button>
-            </div>
-          </div>
+        </div>
+        <div className="flex justify-between mb-4">
+          <Button type="submit" variant="mibotoncrear" className="">
+            Actualizar Ambiente
+          </Button>
+          <Button
+            type="button"
+            onClick={eliminarCotizacionambiente}
+            variant="mibotoneliminarambie"
+            className=""
+          >
+            Eliminar Ambiente
+          </Button>
         </div>
       </form>
+      {/* <FormuCotizAmbiente /> */}
     </>
   );
 }

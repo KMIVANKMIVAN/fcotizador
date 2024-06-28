@@ -20,6 +20,7 @@ import { manejoError } from '../utilidades/mostrarErrores';
 import { exitoToast } from '../../lib/notificaciones';
 
 import { FormuCotizAmbiente } from '../componentes/FormuCotizAmbiente';
+import useStore from '../estados/idCotizador';
 
 export function FormuCotizacion() {
   const urlBackendBase = import.meta.env.VITE_URL_BACKEND;
@@ -53,12 +54,16 @@ export function FormuCotizacion() {
   const [respuestaTipocotizacion, setRespuestaTipocotizacion] = useState([]);
 
   const [respuestaCotizacion, setRespuestaCotizacion] = useState(null);
+  const [botonCrear, setBotonCrear] = useState(false);
 
   const [respuestaRadiadoreje50cm, setRespuestaRadiadoreje50cm] = useState([]);
   const [respuestaToalleroeje50cm, setRespuestaToalleroeje50cm] = useState([]);
   // const [respuesta, setRespuesta] = useState([]);
 
   const [ambientes, setAmbientes] = useState([]);
+
+  // const idCotizador = useStore((state) => state.idCotizador);
+  const guardarIdCotizador = useStore((state) => state.guardarIdCotizador);
 
   const {
     control,
@@ -67,6 +72,7 @@ export function FormuCotizacion() {
     watch,
     formState: { errors },
     setValue,
+    reset,
   } = useForm();
 
   useEffect(() => {
@@ -159,7 +165,6 @@ export function FormuCotizacion() {
       manejoError(error);
     }
   };
-
   const pedirRadiadoreje50cm = async () => {
     const respuesta = await axios.get(urlRadiadoreje50cm, { headers });
     try {
@@ -212,28 +217,54 @@ export function FormuCotizacion() {
         false
       );
       setRespuestaCotizacion(respuesta.data);
+      guardarIdCotizador(respuesta.data.id);
+      setBotonCrear(true);
     } catch (error) {
-      setRespuestaCotizacion([]);
+      setRespuestaCotizacion(null);
       manejoError(error);
     }
   };
 
   const agregarAmbiente = () => {
-    setAmbientes([
-      ...ambientes,
-      <FormuCotizAmbiente
-        key={ambientes.length}
-        idCotizacion={respuestaCotizacion.id}
-      />,
-    ]);
+    setAmbientes([...ambientes, <FormuCotizAmbiente key={ambientes.length} />]);
   };
 
+  const quitarAmbiente = () => {
+    setAmbientes(ambientes.slice(0, -1));
+  };
+
+  const handleReset = () => {
+    reset({
+      nombrecotizacion: '',
+      ciudad_id: '',
+      tipovidrio_id: '',
+      // Añade aquí otros campos que necesites resetear
+      radiadoreje50cm_id: '',
+      tipocaldero: '',
+      ciudadzona_id: '',
+      tipopared_id: '',
+      toalleroeje50cm_id: '',
+      orientacion_id: '',
+      tipotecho_id: '',
+      tipocotizacion_id: '',
+      nivelpiso_id: '',
+      tiposuelo_id: '',
+      ducha: '',
+    });
+    setRespuestaCotizacion(null);
+    setBotonCrear(false);
+    guardarIdCotizador(0);
+  };
+
+  // console.log('respuestaCotizacion', respuestaCotizacion);
   return (
     <>
+      {/* <Label>ID de Cotización: {idCotizador}</Label> */}
       <div className="flex flex-col md:flex-row p-5 border-2 border-cpalet-500 rounded-lg shadow-2xl">
         <form
           onSubmit={handleSubmit(crearCotizacion)}
-          className="flex flex-wrap w-full"
+          // className="flex flex-wrap w-full"
+          className="w-full"
         >
           <div className="flex flex-wrap w-full">
             <div className="w-full  md:p-2">
@@ -326,13 +357,14 @@ export function FormuCotizacion() {
                   <p className="text-red-500">{errors.tipovidrio_id.message}</p>
                 )}
               </div>
-
               <div className="py-2">
-                <Label className="text-cpalet-500 capitalize">toalleros:</Label>
+                <Label className="text-cpalet-500 capitalize">
+                  radiadores:
+                </Label>
                 <Controller
-                  name="radiadoresejes50cm"
+                  name="radiadoreje50cm_id"
                   control={control}
-                  rules={{ required: 'La longitud de la tuberia es requerida' }}
+                  // rules={{ required: 'radiadores es requerida' }}
                   render={({ field }) => (
                     <Select
                       {...field}
@@ -360,16 +392,44 @@ export function FormuCotizacion() {
                     </Select>
                   )}
                 />
-                {errors.ciudad_id && (
+                {/* {errors.radiadoresejes50cm && (
                   <p className="text-red-500">
                     {errors.radiadoresejes50cm.message}
                   </p>
-                )}
+                )} */}
               </div>
               <div className="py-2">
-                <Button type="submit" variant="mibotoncrear" className="">
-                  Crear cotizacion
-                </Button>
+                <Label className="text-cpalet-500 capitalize">
+                  tipo caldero:
+                </Label>
+                <Controller
+                  name="tipocaldero"
+                  control={control}
+                  rules={{ required: 'La cantidad de ventanas es requerida' }}
+                  render={({ field }) => (
+                    <Select
+                      {...field}
+                      onValueChange={(value) => field.onChange(value)}
+                      value={field.value}
+                    >
+                      <SelectTrigger className="w-full text-cpalet-500 capitalize">
+                        <SelectValue placeholder="Seleccionar" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectGroup>
+                          <SelectLabel>TIPO DE CALDERO:</SelectLabel>
+                          <SelectItem value="Estandar">Estandar</SelectItem>
+                          <SelectItem value="Condenzacion">
+                            Condenzacion
+                          </SelectItem>
+                        </SelectGroup>
+                      </SelectContent>
+                    </Select>
+                  )}
+                />
+                {errors.tipocaldero && (
+                  <p className="text-red-500">{errors.tipocaldero.message}</p>
+                )}
               </div>
             </div>
             <div className="w-full md:w-1/4 md:p-2">
@@ -453,13 +513,11 @@ export function FormuCotizacion() {
                 )}
               </div>
               <div className="py-2">
-                <Label className="text-cpalet-500 capitalize">
-                  radiadores:
-                </Label>
+                <Label className="text-cpalet-500 capitalize">toalleros:</Label>
                 <Controller
-                  name="toallerosejes50cm"
+                  name="toalleroeje50cm_id"
                   control={control}
-                  rules={{ required: 'La Nro Personas es requerida' }}
+                  // rules={{ required: 'toalleros es requerida' }}
                   render={({ field }) => (
                     <Select
                       {...field}
@@ -485,9 +543,18 @@ export function FormuCotizacion() {
                     </Select>
                   )}
                 />
-                {errors.ciudad_id && (
-                  <p className="text-red-500">{errors.ciudad_id.message}</p>
-                )}
+                {/* {errors.toallerosejes50cm && (
+                  <p className="text-red-500">{errors.toallerosejes50cm.message}</p>
+                )} */}
+              </div>
+              <div className="py-2">
+                <Label className="text-cpalet-500 capitalize">
+                  subir plano:
+                </Label>
+                <Input
+                  className="text-cpalet-500 capitalize text-xs"
+                  type="file"
+                />
               </div>
             </div>
             <div className="w-full md:w-1/4 md:p-2">
@@ -568,7 +635,7 @@ export function FormuCotizacion() {
                 )}
               </div>
               <div className="py-2">
-                <Label className="text-cpalet-500 uppercase">
+                <Label className="text-cpalet-500 capitalize">
                   tipo de cotizacion:
                 </Label>
                 <Controller
@@ -682,28 +749,87 @@ export function FormuCotizacion() {
                   <p className="text-red-500">{errors.tiposuelo_id.message}</p>
                 )}
               </div>
-              {respuestaCotizacion && (
-                <div className="pt-20">
-                  <Button
-                    type=""
-                    onClick={agregarAmbiente}
-                    variant="mibotoncrear"
-                    className=""
-                  >
-                    Anadir Ambiente
-                  </Button>
-                </div>
-              )}
+              <div className="py-2">
+                <Label className="text-cpalet-500 capitalize">
+                  nro duchas:
+                </Label>
+                <Controller
+                  name="ducha"
+                  control={control}
+                  rules={{ required: 'La cantidad de ventanas es requerida' }}
+                  render={({ field }) => (
+                    <Select
+                      {...field}
+                      onValueChange={(value) => field.onChange(value)}
+                      value={field.value}
+                    >
+                      <SelectTrigger className="w-full text-cpalet-500 capitalize">
+                        <SelectValue placeholder="Seleccionar" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectGroup>
+                          <SelectLabel>CANTIDAD DE DUCHAS:</SelectLabel>
+                          <SelectItem value="24">1 DUCHA</SelectItem>
+                          <SelectItem value="28">2 DUCHA</SelectItem>
+                          <SelectItem value="32">3 DUCHA</SelectItem>
+                          <SelectItem value="40">4 DUCHA</SelectItem>
+                        </SelectGroup>
+                      </SelectContent>
+                    </Select>
+                  )}
+                />
+                {errors.ducha && (
+                  <p className="text-red-500">{errors.ducha.message}</p>
+                )}
+              </div>
             </div>
             <div className="py-3"></div>
           </div>
+          <div className="mx-2 flex justify-between">
+            <Button
+              type="submit"
+              disabled={botonCrear}
+              variant="mibotoncrear"
+              className=""
+            >
+              Crear cotizacion
+            </Button>
+            {respuestaCotizacion && (
+              <Button
+                variant="mibotonprimario"
+                className=""
+                onClick={handleReset}
+              >
+                Nueva cotizacion
+              </Button>
+            )}
+          </div>
         </form>
       </div>
-
       {/* <span>{JSON.stringify(watch())}</span> */}
       <div className="py-4"></div>
       {respuestaCotizacion && (
         <div className="flex flex-col p-5 border-2 border-cpalet-500 rounded-lg shadow-2xl">
+          <div className="flex justify-between">
+            <Button
+              type=""
+              onClick={agregarAmbiente}
+              variant="mibotoncrearambie"
+              className=""
+            >
+              Anadir Ambiente
+            </Button>
+            <Button
+              type=""
+              onClick={quitarAmbiente}
+              variant="mibotoneliminarambie"
+              className=""
+            >
+              Quitar Ambiente
+            </Button>
+          </div>
+          <hr className="border-t-2 mt-4 border-cpalet-500" />
+
           {ambientes.map((ambiente, index) => (
             <div key={index} className="mb-2">
               {ambiente}

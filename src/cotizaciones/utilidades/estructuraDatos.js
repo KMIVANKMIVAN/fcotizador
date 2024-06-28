@@ -1,11 +1,9 @@
 export const columnasCotizacion = [
   { id: 'id', label: 'ID' },
+  { id: 'ambientes', label: 'ambientes' },
+  { id: 'descargarcotizacion', label: 'cotizacion' },
   { id: 'nombrecotizacion', label: 'Nombre de Cotización' },
   { id: 'nrocotizacion', label: 'Nro de Cotización' },
-  { id: 'volumen', label: 'Volumen' },
-  { id: 'area', label: 'Área' },
-  { id: 'altura', label: 'Altura' },
-  { id: 'cantidadventana', label: 'Cantidad de Ventanas' },
   { id: 'ciudadzona', label: 'Ciudad Zona' },
   { id: 'nivelpiso', label: 'Nivel de Piso' },
   { id: 'orientacion', label: 'Orientación' },
@@ -13,4 +11,9 @@ export const columnasCotizacion = [
   { id: 'tiposuelo', label: 'Tipo de Suelo' },
   { id: 'tipotecho', label: 'Tipo de Techo' },
   { id: 'tipovidrio', label: 'Tipo de Vidrio' },
+  { id: 'radiadoreje50cm', label: 'radiador' },
+  { id: 'toalleroeje50cm', label: 'toallero' },
+  { id: 'ducha', label: 'ducha' },
+  { id: 'tipocaldero', label: 'tipocaldero' },
+  // { id: '', label: '' },
 ];

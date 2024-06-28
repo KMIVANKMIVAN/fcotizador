@@ -17,6 +17,12 @@ const buttonVariants = cva(
           'bg-cpalet-500 text-white shadow-sm hover:bg-cpalet-100 hover:text-cpalet-500',
         mibotoncrear:
           'bg-green-500 text-white shadow-sm hover:bg-green-100 hover:text-green-500',
+        mibotoneliminar:
+          'bg-red-500 text-white shadow-sm hover:bg-red-100 hover:text-red-500',
+        mibotoneliminarambie:
+          'text-red-500 hover:bg-red-100 hover:text-red-500',
+        mibotoncrearambie:
+          'text-green-500 hover:bg-green-100 hover:text-green-500',
         outline:
           'border border-input bg-background shadow-sm hover:bg-accent hover:text-accent-foreground',
         secondary:

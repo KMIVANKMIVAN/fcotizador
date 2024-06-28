@@ -29,7 +29,6 @@ const renderCellContent = (value) => {
 
 export function Tablas({ columnas, respuesta, titulo }) {
   const [filaSeleccionada, setFilaSeleccionada] = useState(null);
-  console.log('respuesta', respuesta);
   const obtenerFilaSeleccionada = (fila) => {
     setFilaSeleccionada(fila);
   };

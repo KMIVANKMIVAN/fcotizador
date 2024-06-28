@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { FilePenLine } from 'lucide-react';
+import { FileDown } from 'lucide-react';
 import {
   Table,
   TableBody,
@@ -10,7 +10,7 @@ import {
   TableRow,
 } from '@/components/ui/table';
 
-// import { DialogDomo } from './DialogDomo';
+import { DialogAmbiente } from './DialogAmbiente';
 
 const getSecondProperty = (obj) => {
   if (typeof obj === 'object' && obj !== null) {
@@ -28,10 +28,10 @@ const renderCellContent = (value) => {
 };
 
 export function Tablas({ columnas, respuesta, titulo }) {
-  const [filaSeleccionada, setFilaSeleccionada] = useState(null);
+  const [idSeleccionada, setIdSeleccionada] = useState(null);
 
-  const obtenerFilaSeleccionada = (fila) => {
-    setFilaSeleccionada(fila);
+  const IdSeleccionada = (id) => {
+    setIdSeleccionada(id);
   };
   console.log('respuesta', respuesta);
   return (
@@ -58,17 +58,24 @@ export function Tablas({ columnas, respuesta, titulo }) {
                   {columnas.map((col) => (
                     <TableCell
                       key={col.id}
-                      className={`whitespace-nowrap overflow-visible  text-lg text-cpalet-500`}
+                      className="whitespace-nowrap overflow-visible text-lg text-cpalet-500"
                     >
-                      {col.id === 'actualizar' ? (
+                      {col.id === 'ambientes' ? (
                         <div
                           className="flex items-center justify-center"
-                          onClick={() => obtenerFilaSeleccionada(row)}
+                          onClick={() => IdSeleccionada(row.id)}
                         >
-                          {/* <DialogDomo
-                            filaSeleccionada={filaSeleccionada}
+                          <DialogAmbiente
+                            idSeleccionada={idSeleccionada}
                             titulo={titulo}
-                          /> */}
+                          />
+                        </div>
+                      ) : col.id === 'descargarcotizacion' ? (
+                        <div
+                          className="flex items-center justify-center"
+                          // onClick={() => IdSeleccionada(row.id)}
+                        >
+                          <FileDown className='cursor-pointer'/>
                         </div>
                       ) : (
                         renderCellContent(row[col.id])
